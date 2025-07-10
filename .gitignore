@@ -1,0 +1,9 @@
+# Node
+node_modules
+.env
+
+# Vite / React
+client/dist
+
+# Sequelize build output (optional)
+server/migrations/*.js~
