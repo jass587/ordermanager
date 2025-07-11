@@ -1,10 +1,12 @@
+/* Prevent scrollbars */
 body, html {
   overflow-x: hidden;
   margin: 0;
   padding: 0;
 }
 
-.admin-layout {
+/* Layout */
+.user-layout {
   min-height: 100vh;
   display: flex;
   width: 100vw;
@@ -18,6 +20,10 @@ body, html {
 }
 
 .page-content {
-  min-height: calc(100vh - 60px); /* adjust header height */
+  min-height: calc(100vh - 60px);
   padding: 1rem;
+}
+
+* {
+  box-sizing: border-box;
 }

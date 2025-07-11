@@ -3,7 +3,6 @@ import AdminRoutes from './routes/AdminRoutes';
 import UserRoutes from './routes/UserRoutes';
 import SignIn from './pages/signin/SignIn';
 import './assets/scss/app.scss';
-import 'bootstrap/dist/css/bootstrap.min.css';
 
 function App() {
   return (
