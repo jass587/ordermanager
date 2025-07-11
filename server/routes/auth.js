@@ -16,7 +16,6 @@ const User = defineUser(sequelize, DataTypes);
 
 router.post('/login', async (req, res) => {
   const { email, password } = req.body;
-
   try {
     const user = await User.findOne({ where: { email } });
     if (!user) {

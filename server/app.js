@@ -2,8 +2,12 @@ const express = require('express');
 const app = express();
 const db = require('./models');
 const authRoutes = require('./routes/auth');
+const cors = require('cors');
 
 app.use(express.json());
+
+app.use(cors());
+
 app.use('/api/auth', authRoutes);
 
 app.get("/", (req, res) => {
