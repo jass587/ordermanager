@@ -1,30 +1,64 @@
 const express = require('express');
-const app = express();
-const db = require('./models');
-const authRoutes = require('./routes/auth');
 const cors = require('cors');
+const session = require('express-session');
+const passport = require('passport');
+const dotenv = require('dotenv');
+const db = require('./models');
 
+// Load env vars from .env
+dotenv.config();
+
+// Import passport strategies
+require('./utils/passport/github2')(passport);
+require('./utils/passport/google')(passport);
+require('./utils/passport/google')(passport)
+require('./utils/passport/twitter')(passport);
+
+// Routes
+const authRoutes = require('./routes/auth');
+
+const app = express();
+
+// Middleware
+app.use(cors({
+  origin: 'http://localhost:5173',
+  credentials: true,
+}));
 app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 
-app.use(cors());
+// Session (required for passport)
+app.use(session({
+  secret: process.env.SESSION_SECRET || 'keyboardcat',
+  resave: false,
+  saveUninitialized: false,
+}));
 
+// Passport Middleware
+app.use(passport.initialize());
+app.use(passport.session());
+
+// Routes
 app.use('/api/auth', authRoutes);
 
-app.get("/", (req, res) => {
-  res.send("Api is working")
-})
+// Default Route
+app.get('/', (req, res) => {
+  res.send('API is working');
+});
+
+// Sync DB and Start Server
 const startServer = async () => {
   try {
-    db.sequelize.sync();           // safer
-    db.sequelize.sync({ alter: true });// or { force: true } or { alter: true }
-    console.log('Database synced');
-    
+    await db.sequelize.sync(); // use alter:true or force:true if needed
+
+    console.log('✅ Database synced');
+
     app.listen(5000, () => {
-      console.log('Server started on http://localhost:5000');
+      console.log('🚀 Server started on http://localhost:5000');
     });
-  } catch (err) {
-    console.error('Failed to sync database:', err);
-    process.exit(1); // Optional: exit process on failure
+  } catch (error) {
+    console.error('❌ Failed to start server:', error);
+    process.exit(1);
   }
 };
 
