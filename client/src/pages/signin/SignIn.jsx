@@ -5,7 +5,7 @@ import axios from "axios";
 
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faAngleLeft, faEnvelope, faUnlockAlt } from "@fortawesome/free-solid-svg-icons";
-import { faFacebookF, faGithub, faTwitter } from "@fortawesome/free-brands-svg-icons";
+import { faFacebookF, faGithub, faTwitter, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { Col, Row, Form, Card, Button, FormCheck, Container, InputGroup } from '@themesberg/react-bootstrap';
 import { Link } from 'react-router-dom';
 import BgImage from "../../assets/img/illustrations/signin.svg";
@@ -107,13 +107,39 @@ export default function SignIn() {
                   <span className="fw-normal">or login with</span>
                 </div>
                 <div className="d-flex justify-content-center my-4">
-                  <Button variant="outline-light" className="btn-icon-only btn-pill text-facebook me-2">
+                  {/* Google */}
+                  <Button
+                    variant="outline-light"
+                    className="btn-icon-only btn-pill text-danger me-2"
+                    onClick={() => window.location.href = "http://localhost:5000/api/auth/google"}
+                  >
+                    <FontAwesomeIcon icon={faGoogle} />
+                  </Button>
+
+                  {/* Facebook */}
+                  <Button
+                    variant="outline-light"
+                    className="btn-icon-only btn-pill text-facebook me-2"
+                    onClick={() => window.location.href = "http://localhost:5000/api/auth/facebook"}
+                  >
                     <FontAwesomeIcon icon={faFacebookF} />
                   </Button>
-                  <Button variant="outline-light" className="btn-icon-only btn-pill text-twitter me-2">
+
+                  {/* Twitter */}
+                  <Button
+                    variant="outline-light"
+                    className="btn-icon-only btn-pill text-twitter me-2"
+                    onClick={() => window.location.href = "http://localhost:5000/api/auth/twitter"}
+                  >
                     <FontAwesomeIcon icon={faTwitter} />
                   </Button>
-                  <Button variant="outline-light" className="btn-icon-only btn-pil text-dark">
+
+                  {/* GitHub */}
+                  <Button
+                    variant="outline-light"
+                    className="btn-icon-only btn-pill text-dark"
+                    onClick={() => window.location.href = "http://localhost:5000/api/auth/github"}
+                  >
                     <FontAwesomeIcon icon={faGithub} />
                   </Button>
                 </div>
