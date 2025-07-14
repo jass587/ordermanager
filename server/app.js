@@ -1,24 +1,16 @@
 const express = require('express');
 const cors = require('cors');
 const session = require('express-session');
-const passport = require('passport');
 const dotenv = require('dotenv');
-const db = require('./models');
+const passportConfig = require('./config/passport');
 
-// Load env vars from .env
+// Load environment variables
 dotenv.config();
 
-// Import passport strategies
-require('./utils/passport/github2')(passport);
-require('./utils/passport/google')(passport);
-require('./utils/passport/google')(passport)
-require('./utils/passport/twitter')(passport);
-
-// Routes
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 
-
+// Initialize app
 const app = express();
 
 // Middleware
@@ -36,7 +28,8 @@ app.use(session({
   saveUninitialized: false,
 }));
 
-// Passport Middleware
+// Passport init
+const passport = passportConfig();
 app.use(passport.initialize());
 app.use(passport.session());
 
@@ -44,25 +37,9 @@ app.use(passport.session());
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 
-// Default Route
+// Health check
 app.get('/', (req, res) => {
   res.send('API is working');
 });
 
-// Sync DB and Start Server
-const startServer = async () => {
-  try {
-    await db.sequelize.sync(); // use alter:true or force:true if needed
-
-    console.log('✅ Database synced');
-
-    app.listen(5000, () => {
-      console.log('🚀 Server started on http://localhost:5000');
-    });
-  } catch (error) {
-    console.error('❌ Failed to start server:', error);
-    process.exit(1);
-  }
-};
-
-startServer();
+module.exports = app;
