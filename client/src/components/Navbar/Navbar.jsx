@@ -30,6 +30,9 @@ export default (props) => {
     navigate("/signin");
   };
 
+    const handleEditProfile = () => {
+    navigate("/admin/edit-profile");
+  };
   const Notification = (props) => {
     const { link, sender, image, time, message, read = false } = props;
     const readClassName = read ? "" : "text-danger";
@@ -98,7 +101,7 @@ export default (props) => {
                 <span className="ms-2 fw-bold d-none d-md-inline text-dark">Bonnie Green</span>
               </Dropdown.Toggle>
               <Dropdown.Menu align="end" className="user-dropdown mt-2">
-                <Dropdown.Item><FontAwesomeIcon icon={faUserCircle} className="me-2" /> My Profile</Dropdown.Item>
+                <Dropdown.Item onClick={handleEditProfile} ><FontAwesomeIcon icon={faUserCircle} className="me-2" /> My Profile</Dropdown.Item>
                 <Dropdown.Item><FontAwesomeIcon icon={faCog} className="me-2" /> Settings</Dropdown.Item>
                 <Dropdown.Item><FontAwesomeIcon icon={faEnvelopeOpen} className="me-2" /> Messages</Dropdown.Item>
                 <Dropdown.Item><FontAwesomeIcon icon={faUserShield} className="me-2" /> Support</Dropdown.Item>
