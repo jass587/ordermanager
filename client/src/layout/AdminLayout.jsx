@@ -1,12 +1,12 @@
 import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
+import Sidebar from '../components/Sidebar/Sidebar';
 import Navbar from '../components/Navbar/Navbar';
 import './admin.css';
 
 export default function AdminLayout() {
   return (
     <div className="admin-layout">
-      <Sidebar />
+      <Sidebar/>
       <div className="main-content">
         <Navbar />
         <div className="page-content">

@@ -1,12 +1,12 @@
 import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
+import Sidebar from '../components/Sidebar/Sidebar';
 import Navbar from '../components/Navbar/Navbar';
 import './user.css'; 
 
 export default function UserLayout() {
   return (
     <div className="user-layout d-flex">
-      <Sidebar />
+      <Sidebar/>
 
       <div className="main-content flex-grow-1">
           <Navbar />
