@@ -5,12 +5,11 @@ import './admin.css';
 
 export default function AdminLayout() {
   return (
-    <div className="admin-layout d-flex" style={{ width : '100vw'}}>
+    <div className="admin-layout">
       <Sidebar />
-
-      <div className="main-content flex-grow-1">
-          <Navbar/>
-        <div className="page-content p-4">
+      <div className="main-content">
+        <Navbar />
+        <div className="page-content">
           <Outlet />
         </div>
       </div>

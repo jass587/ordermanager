@@ -1,120 +1,46 @@
-/* Base layout reset */
+/* admin.css */
+
 body, html {
   margin: 0;
   padding: 0;
   height: 100%;
   width: 100%;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f8f9fa;
   overflow-x: hidden;
 }
 
-/* Layout wrapper */
 .admin-layout {
   display: flex;
-  min-height: 100vh;
-  width: 100%;
-  position: relative;
-  z-index: 0;
+  height: 100vh;
+  width: 100vw;
+  overflow: hidden;
 }
 
-/* Main content beside sidebar */
+.sidebar {
+  width: 250px;
+  min-width: 250px;
+  max-width: 250px;
+  background-color: #1e1e2f; /* dark background for sidebar */
+  color: white;
+  overflow-y: auto;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+}
+
 .main-content {
+  margin-left: 250px; /* Same as sidebar width */
   flex-grow: 1;
-  overflow: visible;
   background-color: #f8f9fa;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: auto;
 }
 
-/* Page content area */
 .page-content {
-  min-height: calc(100vh - 60px); /* account for header */
+  flex-grow: 1;
   padding: 1.5rem;
-}
-
-/* Navbar styles */
-.navbar {
-  background-color: #ffffff;
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
-  border-bottom: 1px solid #dee2e6;
-  padding: 0.75rem 1.5rem;
-  z-index: 1000;
-}
-
-/* Dropdown menu fix */
-.dropdown-menu {
-  z-index: 1051 !important;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
-}
-
-/* Improve UX of dropdown toggles */
-.dropdown-toggle {
-  cursor: pointer;
-  background: transparent !important;
-  border: none !important;
-  box-shadow: none !important;
-  padding: 0;
-}
-
-/* Remove caret (arrow) from dropdown */
-.dropdown-toggle::after {
-  display: none !important;
-}
-
-/* Avatar style */
-.user-avatar {
-  width: 40px;
-  height: 40px;
-  object-fit: cover;
-  border-radius: 50%;
-}
-
-/* Notification dot */
-.icon-badge.unread-notifications {
-  width: 8px;
-  height: 8px;
-  background-color: red;
-  border-radius: 50%;
-  position: absolute;
-  top: 6px;
-  right: 6px;
-}
-
-/* Search bar inside navbar */
-.navbar-search {
-  width: 100%;
-  max-width: 300px;
-}
-
-/* Flex container for navbar content */
-.navbar-content {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  flex-wrap: nowrap;
-  width: 100%;
-}
-
-/* Right-side navbar (bell + avatar) */
-.navbar-actions {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
-/* Fix responsiveness */
-@media (max-width: 768px) {
-  .navbar-content {
-    flex-direction: column;
-    align-items: flex-start;
-    gap: 1rem;
-  }
-
-  .navbar-search {
-    width: 100%;
-    max-width: 100%;
-  }
-
-  .page-content {
-    padding: 1rem;
-  }
+  overflow-y: auto;
 }
