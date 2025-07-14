@@ -9,11 +9,13 @@ import {
 } from "react-bootstrap";
 import NOTIFICATIONS_DATA from "../../data/notifications"
 import Profile3 from "../../assets/img/team/profile-picture-3.jpg";
+import { useNavigate } from "react-router-dom";
 
 
 export default (props) => {
   const [notifications, setNotifications] = useState(NOTIFICATIONS_DATA);
   const areNotificationsRead = notifications.reduce((acc, notif) => acc && notif.read, true);
+  const navigate = useNavigate();
 
   const markNotificationsAsRead = () => {
     setTimeout(() => {
@@ -21,6 +23,12 @@ export default (props) => {
     }, 300);
   };
 
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+
+    navigate("/signin");
+  };
 
   const Notification = (props) => {
     const { link, sender, image, time, message, read = false } = props;
@@ -95,7 +103,7 @@ export default (props) => {
                 <Dropdown.Item><FontAwesomeIcon icon={faEnvelopeOpen} className="me-2" /> Messages</Dropdown.Item>
                 <Dropdown.Item><FontAwesomeIcon icon={faUserShield} className="me-2" /> Support</Dropdown.Item>
                 <Dropdown.Divider />
-                <Dropdown.Item><FontAwesomeIcon icon={faSignOutAlt} className="text-danger me-2" /> Logout</Dropdown.Item>
+                <Dropdown.Item onClick={handleLogout} ><FontAwesomeIcon icon={faSignOutAlt} className="text-danger me-2"/> Logout</Dropdown.Item>
               </Dropdown.Menu>
             </Dropdown>
           </div>

@@ -1,6 +1,5 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from './Sidebar';
-import LogoutButton from '../components/Logout/LogoutButton';
 import Navbar from '../components/Navbar/Navbar';
 import './admin.css';
 
