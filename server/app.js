@@ -16,6 +16,8 @@ require('./utils/passport/twitter')(passport);
 
 // Routes
 const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
+
 
 const app = express();
 
@@ -40,6 +42,7 @@ app.use(passport.session());
 
 // Routes
 app.use('/api/auth', authRoutes);
+app.use('/api/users', userRoutes);
 
 // Default Route
 app.get('/', (req, res) => {
