@@ -1,6 +1,6 @@
 import { useState } from "react";
 import SimpleBar from 'simplebar-react';
-import { useLocation } from "react-router-dom";
+import { useLocation, Link } from "react-router-dom";
 import { CSSTransition } from 'react-transition-group';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
@@ -11,8 +11,8 @@ import {
   faCogs,
   faSignOutAlt
 } from "@fortawesome/free-solid-svg-icons";
-import { Nav, Badge, Image, Button,Navbar } from 'react-bootstrap';
-import { Link } from 'react-router-dom';
+import { jwtDecode } from "jwt-decode";
+import { Nav, Badge, Image, Button, Navbar } from 'react-bootstrap';
 
 import { Routes } from "../../routes";
 import ReactHero from "../../assets/img/technologies/react-hero-logo.svg";
@@ -25,6 +25,18 @@ export default function Sidebar(props = {}) {
   const showClass = show ? "show" : "";
 
   const onCollapse = () => setShow(!show);
+
+  // Decode token to get role
+  const token = localStorage.getItem("token");
+  let userRole = "user";
+  if (token) {
+    try {
+      const decoded = jwtDecode(token);
+      userRole = decoded.role || "user";
+    } catch (err) {
+      console.error("Failed to decode token:", err);
+    }
+  }
 
   const NavItem = ({ title, link, external, target, icon, image, badgeText, badgeBg = "secondary", badgeColor = "primary" }) => {
     const classNames = badgeText ? "d-flex justify-content-start align-items-center justify-content-between" : "";
@@ -68,15 +80,27 @@ export default function Sidebar(props = {}) {
         <SimpleBar className={`collapse ${showClass} sidebar d-md-block bg-primary text-white`}>
           <div className="sidebar-inner px-4 pt-3">
             <Nav className="flex-column pt-3 pt-md-0">
-              <NavItem title="Admin Panel" link={Routes.Presentation.path} image={ReactHero} />
+              <NavItem
+                title={userRole === "admin" ? "Admin Panel" : "User Panel"}
+                link={userRole === "admin" ? "/admin/dashboard" : "/dashboard"}
+                image={ReactHero}
+              />
 
               <SectionHeading title="Dashboard" />
-              <NavItem title="Overview" link={Routes.DashboardOverview.path} icon={faTachometerAlt} />
+              <NavItem
+                title="Overview"
+                link={userRole === "admin" ? "/admin/dashboard" : "/dashboard"}
+                icon={faTachometerAlt}
+              />
 
-              <SectionHeading title="Management" />
-              <NavItem title="Users" link="/admin/users" icon={faUsers} />
-              <NavItem title="Products" link="/admin/products" icon={faBox} />
-              <NavItem title="Categories" link="/admin/categories" icon={faTags} />
+              {userRole === "admin" && (
+                <>
+                  <SectionHeading title="Management" />
+                  <NavItem title="Users" link="/admin/users" icon={faUsers} />
+                  <NavItem title="Products" link="/admin/products" icon={faBox} />
+                  <NavItem title="Categories" link="/admin/categories" icon={faTags} />
+                </>
+              )}
 
               <SectionHeading title="Settings" />
               <NavItem title="Site Settings" link={Routes.Settings.path} icon={faCogs} />
