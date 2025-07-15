@@ -1,8 +1,9 @@
+import { ProductsTable } from "../../../components/Tables/Table";
 
 export default () => {
   return (
     <>
-    <h1>Products Page</h1>
+    <ProductsTable/>
     </>
   );
 };
