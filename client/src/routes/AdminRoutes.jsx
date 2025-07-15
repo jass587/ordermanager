@@ -1,8 +1,9 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import AdminLayout from '../layout/AdminLayout';
-import Dashboard from '../pages/admin/Dashboard';
+import Dashboard from '../pages/admin/Dashboard/Dashboard';
 import EditProfile from '../pages/editprofile/editprofile';
 import ProtectedRoute from './ProtectedRoute';
+import Categories from '../pages/admin/Categories/Categories';
 
 export default function AdminRoutes() {
   return (
@@ -18,6 +19,7 @@ export default function AdminRoutes() {
         <Route index element={<Navigate to="dashboard" replace />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="edit-profile" element={<EditProfile />} />
+        <Route path="categories" element={<Categories />} />
         <Route path="*" element={<Navigate to="dashboard" replace />} />
       </Route>
     </Routes>
