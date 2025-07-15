@@ -10,6 +10,7 @@ dotenv.config();
 const authRoutes = require('./routes/auth');
 const userRoutes = require('./routes/user');
 const categoryRoutes = require("./routes/category");
+const productRoutes = require("./routes/products");
 
 // Initialize app
 const app = express();
@@ -38,6 +39,7 @@ app.use(passport.session());
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use("/api/categories", categoryRoutes);
+app.use("/api/products", productRoutes);
 
 // Health check
 app.get('/', (req, res) => {
