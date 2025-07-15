@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import SimpleBar from 'simplebar-react';
 import { useLocation, Link } from "react-router-dom";
 import { CSSTransition } from 'react-transition-group';
@@ -22,9 +23,12 @@ export default function Sidebar(props = {}) {
   const location = useLocation();
   const { pathname } = location;
   const [show, setShow] = useState(false);
+
   const showClass = show ? "show" : "";
 
   const onCollapse = () => setShow(!show);
+
+  const navigate = useNavigate();
 
   // Decode token to get role
   const token = localStorage.getItem("token");
@@ -38,14 +42,14 @@ export default function Sidebar(props = {}) {
     }
   }
 
-  const NavItem = ({ title, link, external, target, icon, image, badgeText, badgeBg = "secondary", badgeColor = "primary" }) => {
+  const NavItem = ({ title, link, external, target, icon, image, badgeText, badgeBg = "secondary", badgeColor = "primary", onClick}) => {
     const classNames = badgeText ? "d-flex justify-content-start align-items-center justify-content-between" : "";
     const navItemClassName = link === pathname ? "active" : "";
     const linkProps = external ? { href: link } : { as: Link, to: link };
 
     return (
       <Nav.Item className={navItemClassName} onClick={() => setShow(false)}>
-        <Nav.Link {...linkProps} target={target} className={classNames}>
+        <Nav.Link {...linkProps} target={target} className={classNames} onClick={onClick}>
           <span>
             {icon && <span className="sidebar-icon"><FontAwesomeIcon icon={icon} /></span>}
             {image && <Image src={image} width={20} height={20} className="sidebar-icon svg-icon" />}
@@ -64,6 +68,12 @@ export default function Sidebar(props = {}) {
       {title}
     </div>
   );
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    localStorage.removeItem("role");
+    window.location.href = "/signin";
+  };
 
   return (
     <>
@@ -99,14 +109,16 @@ export default function Sidebar(props = {}) {
                   <NavItem title="Users" link="/admin/users" icon={faUsers} />
                   <NavItem title="Products" link="/admin/products" icon={faBox} />
                   <NavItem title="Categories" link="/admin/categories" icon={faTags} />
+                  <NavItem title="Orders" link="/admin/orders" icon={faUsers} />
+                  <NavItem title="Payments" link="/admin/payments" icon={faBox} />
                 </>
               )}
 
               <SectionHeading title="Settings" />
-              <NavItem title="Site Settings" link={Routes.Settings.path} icon={faCogs} />
+              <NavItem title="Site Settings" link="/admin/site-settings" icon={faCogs} />
 
-              <SectionHeading title="Account" />
-              <NavItem title="Sign Out" link="/signin" icon={faSignOutAlt} />
+              <SectionHeading  title="Account" />
+              <NavItem title="Sign Out" icon={faSignOutAlt} onClick={handleLogout} />
             </Nav>
           </div>
         </SimpleBar>
