@@ -47,16 +47,32 @@ exports.createProduct = async (req, res) => {
 // Update an existing product
 exports.updateProduct = async (req, res) => {
   try {
-    const { title, price, description, image, categoryId } = req.body;
+    const { title, price, description, categoryId } = req.body;
+
     const product = await Product.findByPk(req.params.id);
     if (!product) return res.status(404).json({ error: "Product not found" });
 
-    await product.update({ title, price, description, image, categoryId });
+    // Update image only if a new file is uploaded
+    if (req.file) {
+      product.image = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+    }
+
+    // Update other fields
+    await product.update({
+      title,
+      price,
+      description,
+      categoryId,
+      image: product.image, // this will retain the old image if not updated
+    });
+
     res.json(product);
   } catch (err) {
+    console.error("Update Product Error:", err);
     res.status(500).json({ error: "Failed to update product" });
   }
 };
+
 
 // Delete a product
 exports.deleteProduct = async (req, res) => {
