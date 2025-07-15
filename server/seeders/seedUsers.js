@@ -1,38 +1,33 @@
-// server/seedUsers.js
-const { Sequelize, DataTypes } = require('sequelize');
+'use strict';
+
 const { hashPassword } = require('../utils/password');
-const defineUser = require('../models/user');
 
-const sequelize = new Sequelize('ecommerce_db', 'postgres', 'admin123', {
-  host: 'localhost',
-  dialect: 'postgres',
-});
+module.exports = {
+  async up(queryInterface, Sequelize) {
+    const adminPassword = await hashPassword('admin123');
+    const userPassword = await hashPassword('user123');
 
-const User = defineUser(sequelize, DataTypes);
+    await queryInterface.bulkInsert('users', [
+      {
+        name: 'Admin User',
+        email: 'admin@example.com',
+        password_hash: adminPassword,
+        role: 'admin',
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+      {
+        name: 'Normal User',
+        email: 'user@example.com',
+        password_hash: userPassword,
+        role: 'user',
+        created_at: new Date(),
+        updated_at: new Date(),
+      },
+    ]);
+  },
 
-const seed = async () => {
-  await sequelize.sync({ force: true }); // WARNING: drops and recreates table
-
-  const adminPassword = await hashPassword('admin123');
-  const userPassword = await hashPassword('user123');
-
-  await User.bulkCreate([
-    {
-      name: 'Admin User',
-      email: 'admin@example.com',
-      password_hash: adminPassword,
-      role: 'admin',
-    },
-    {
-      name: 'Normal User',
-      email: 'user@example.com',
-      password_hash: userPassword,
-      role: 'user',
-    },
-  ]);
-
-  console.log('Dummy users created.');
-  await sequelize.close();
+  async down(queryInterface, Sequelize) {
+    await queryInterface.bulkDelete('Users', null, {});
+  }
 };
-
-seed();
