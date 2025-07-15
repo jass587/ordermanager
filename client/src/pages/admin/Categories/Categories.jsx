@@ -1,4 +1,5 @@
-import { CategoriesTable } from "../../../components/Tables/Table";
+import { CategoriesTable } from "../../../components/Tables/CategoriesTable";
+
 
 
 export default () => {
