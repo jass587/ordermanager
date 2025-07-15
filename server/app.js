@@ -3,17 +3,18 @@ const cors = require('cors');
 const session = require('express-session');
 const dotenv = require('dotenv');
 const passportConfig = require('./config/passport');
+const uploadRoute = require("./routes/upload");
 
 // Load environment variables
 dotenv.config();
 
-const authRoutes = require('./routes/auth');
-const userRoutes = require('./routes/user');
-const categoryRoutes = require("./routes/category");
-const productRoutes = require("./routes/products");
-
 // Initialize app
 const app = express();
+
+// Health check
+app.get('/', (req, res) => {
+  res.send('API is working');
+});
 
 // Middleware
 app.use(cors({
@@ -35,15 +36,20 @@ const passport = passportConfig();
 app.use(passport.initialize());
 app.use(passport.session());
 
+//File upload
+app.use("/uploads", express.static("uploads")); // serve static files
+app.use("/upload", uploadRoute);
+
 // Routes
+const authRoutes = require('./routes/auth');
+const userRoutes = require('./routes/user');
+const categoryRoutes = require("./routes/category");
+const productRoutes = require("./routes/products");
+
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
 app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
 
-// Health check
-app.get('/', (req, res) => {
-  res.send('API is working');
-});
 
 module.exports = app;
