@@ -7,12 +7,13 @@ const {
     updateCategory,
     deleteCategory
 } = require("../controllers/categoryController");
-const authenticateToken  = require("../middleware/authenticateToken");
+const authenticateToken = require("../middleware/authenticateToken");
+const { isAdmin } = require('../middleware/roleMiddleware.js');
 
-router.post("/", authenticateToken, addCategory);
-router.get("/", authenticateToken, getCategories);
-router.get("/:id", authenticateToken, getCategory);
-router.put("/:id", authenticateToken, updateCategory);
-router.delete("/:id", authenticateToken, deleteCategory);
+router.post("/", authenticateToken, isAdmin, addCategory);
+router.get("/", authenticateToken, isAdmin, getCategories);
+router.get("/:id", authenticateToken, isAdmin, getCategory);
+router.put("/:id", authenticateToken, isAdmin, updateCategory);
+router.delete("/:id", authenticateToken, isAdmin, deleteCategory);
 
 module.exports = router;
