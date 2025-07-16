@@ -9,6 +9,7 @@ import Payments from '../pages/admin/Payments/Payments';
 import Products from '../pages/admin/Products/Products';
 import Users from '../pages/admin/Users/Users';
 import SiteSettings from '../pages/admin/SiteSettings/SiteSettings';
+import NotFound from '../pages/errors/NotFound';
 
 export default function AdminRoutes() {
   return (
@@ -30,7 +31,7 @@ export default function AdminRoutes() {
         <Route path="orders" element={<Orders />} />
         <Route path="payments" element={<Payments />} />
         <Route path="site-settings" element={<SiteSettings />} />
-        <Route path="*" element={<Navigate to="dashboard" replace />} />
+        <Route path="*" element={<NotFound fullScreen={false} />} />
       </Route>
     </Routes>
   );

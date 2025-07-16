@@ -3,6 +3,7 @@ import UserLayout from '../layout/UserLayout';
 import Dashboard from '../pages/user/Dashboard/Dashboard';
 import EditProfile from '../pages/editprofile/editprofile';
 import ProtectedRoute from './ProtectedRoute';
+import NotFound from '../pages/errors/NotFound';
 
 export default function UserRoutes() {
   return (
@@ -19,7 +20,7 @@ export default function UserRoutes() {
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="edit-profile" element={<EditProfile />} />
         {/* Add more user-specific routes here */}
-        <Route path="*" element={<Navigate to="dashboard" replace />} />
+        <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>
   );

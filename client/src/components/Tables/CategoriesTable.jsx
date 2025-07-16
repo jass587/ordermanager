@@ -1,36 +1,20 @@
 import { useEffect, useState } from "react";
-import {
-  Table,
-  Card,
-  Button,
-  Dropdown,
-  ButtonGroup,
-  Pagination,
-  Nav,
-} from "react-bootstrap";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import {
-  faEdit,
-  faTrashAlt,
-  faEllipsisH,
-  faEye,
-} from "@fortawesome/free-solid-svg-icons";
-import axiosInstance from "../../services/api/axiosInstance";
+import ETable from "./Common/eTable";
 import CategoryModal from "../Modals/CategoryModal";
+import CategoryService from "../../services/api/categories";
 
 export const CategoriesTable = () => {
   const [categories, setCategories] = useState([]);
-  const [selectedCategoryId, setSelectedCategoryId] = useState(null);
+  const [selectedId, setSelectedId] = useState(null);
   const [showModal, setShowModal] = useState(false);
-  const [modalMode, setModalMode] = useState("view"); // <-- NEW
+  const [modalMode, setModalMode] = useState("view");
 
-  // Fetch all categories
   const fetchCategories = async () => {
     try {
-      const res = await axiosInstance.get("/categories");
+      const res = await CategoryService.getAll();
       setCategories(res.data);
     } catch (err) {
-      console.error("Failed to fetch categories:", err);
+      console.error("Failed to fetch categories", err);
     }
   };
 
@@ -38,109 +22,58 @@ export const CategoriesTable = () => {
     fetchCategories();
   }, []);
 
-  const handleEditClick = (id) => {
-    setSelectedCategoryId(id);
-    setModalMode("edit"); // <-- set mode
+  const handleView = (id) => {
+    setSelectedId(id);
+    setModalMode("view");
     setShowModal(true);
   };
 
-  const handleViewClick = (id) => {
-    setSelectedCategoryId(id);
-    setModalMode("view"); // <-- set mode
+  const handleEdit = (id) => {
+    setSelectedId(id);
+    setModalMode("edit");
     setShowModal(true);
   };
 
   const handleDelete = async (id) => {
-    const confirm = window.confirm("Are you sure you want to delete this category?");
-    if (!confirm) return;
-
+    if (!window.confirm("Are you sure?")) return;
     try {
-      await axiosInstance.delete(`/categories/${id}`);
-      setCategories((prev) => prev.filter((cat) => cat.id !== id));
+      await CategoryService.delete(id);
+      fetchCategories();
     } catch (err) {
-      console.error("Failed to delete category:", err);
+      console.error("Delete failed", err);
     }
   };
-
-  const TableRow = ({ id, name, createdAt, updatedAt }) => (
-    <tr>
-      <td>{id}</td>
-      <td>{name}</td>
-      <td>{new Date(createdAt).toLocaleDateString()}</td>
-      <td>{new Date(updatedAt).toLocaleDateString()}</td>
-      <td>
-        <Dropdown as={ButtonGroup}>
-          <Dropdown.Toggle
-            as={Button}
-            split
-            variant="link"
-            className="text-dark m-0 p-0"
-          >
-            <span className="icon icon-sm">
-              <FontAwesomeIcon icon={faEllipsisH} className="icon-dark" />
-            </span>
-          </Dropdown.Toggle>
-          <Dropdown.Menu>
-            <Dropdown.Item onClick={() => handleViewClick(id)}>
-              <FontAwesomeIcon icon={faEye} className="me-2" /> View Details
-            </Dropdown.Item>
-            <Dropdown.Item onClick={() => handleEditClick(id)}>
-              <FontAwesomeIcon icon={faEdit} className="me-2" /> Edit
-            </Dropdown.Item>
-            <Dropdown.Item
-              className="text-danger"
-              onClick={() => handleDelete(id)}
-            >
-              <FontAwesomeIcon icon={faTrashAlt} className="me-2" /> Remove
-            </Dropdown.Item>
-          </Dropdown.Menu>
-        </Dropdown>
-      </td>
-    </tr>
-  );
 
   return (
     <>
       <CategoryModal
         show={showModal}
         handleClose={() => setShowModal(false)}
-        categoryId={selectedCategoryId}
+        categoryId={selectedId}
         refreshCategories={fetchCategories}
-        mode={modalMode} // <-- PASS MODE
+        mode={modalMode}
       />
-      <Card border="light" className="table-wrapper table-responsive shadow-sm">
-        <Card.Body className="pt-0">
-          <Table hover className="user-table align-items-center">
-            <thead>
-              <tr>
-                <th className="border-bottom">#</th>
-                <th className="border-bottom">Name</th>
-                <th className="border-bottom">Created At</th>
-                <th className="border-bottom">Updated At</th>
-                <th className="border-bottom">Action</th>
-              </tr>
-            </thead>
-            <tbody>
-              {categories.map((cat) => (
-                <TableRow key={`category-${cat.id}`} {...cat} />
-              ))}
-            </tbody>
-          </Table>
-
-          <Card.Footer className="px-3 border-0 d-lg-flex align-items-center justify-content-between">
-            <Nav>
-              <Pagination className="mb-2 mb-lg-0">
-                <Pagination.Prev>Previous</Pagination.Prev>
-                <Pagination.Item active>1</Pagination.Item>
-                <Pagination.Next>Next</Pagination.Next>
-              </Pagination>
-            </Nav>
-            <small className="fw-bold">
-              Showing <b>{categories.length}</b> entries
-            </small>
-          </Card.Footer>
-        </Card.Body>
-      </Card>
+      <ETable
+        data={categories}
+        title="Categories"
+        columns={[
+          { label: "#", key: "id" },
+          { label: "Name", key: "name" },
+          {
+            label: "Created At",
+            key: "createdAt",
+            render: (val) => new Date(val).toLocaleDateString(),
+          },
+          {
+            label: "Updated At",
+            key: "updatedAt",
+            render: (val) => new Date(val).toLocaleDateString(),
+          },
+        ]}
+        onView={handleView}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
     </>
   );
 };

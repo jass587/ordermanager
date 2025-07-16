@@ -1,58 +1,37 @@
-import { Modal, Button, Form } from "react-bootstrap";
 import { useEffect, useState } from "react";
+import { Modal, Button, Form } from "react-bootstrap";
 import axiosInstance from "../../services/api/axiosInstance";
+import { useProductForm } from "../../hooks/useProductForm";
 
 export default function ProductModal({ show, handleClose, productId, refreshProducts, mode = "edit" }) {
-  const [product, setProduct] = useState({
+  const [initialValues, setInitialValues] = useState({
     title: "",
     price: "",
     categoryId: "",
     description: "",
-    image: ""
+    image: "",
   });
-
   const [categories, setCategories] = useState([]);
-  const [file, setFile] = useState(null);
-
   const isViewMode = mode === "view";
 
-  useEffect(() => {
-    if (productId) {
-      axiosInstance.get(`/products/${productId}`)
-        .then(res => setProduct(res.data));
-    }
-    axiosInstance.get("/categories").then(res => setCategories(res.data));
-  }, [productId]);
-
-  const handleChange = (e) => {
-    setProduct({ ...product, [e.target.name]: e.target.value });
-  };
-
-  const handleFileChange = (e) => {
-    setFile(e.target.files[0]);
-  };
-
-  const handleSubmit = async () => {
+  const handleSubmit = async (values) => {
     try {
-      const formData = new FormData();
-      formData.append("title", product.title);
-      formData.append("price", product.price);
-      formData.append("categoryId", product.categoryId);
-      formData.append("description", product.description);
-      if (file) formData.append("image", file);
-
-      await axiosInstance.put(`/products/${productId}`, formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
-
+      await axiosInstance.put(`/products/${productId}`, values);
       refreshProducts();
       handleClose();
     } catch (err) {
-      console.error("Error updating product", err);
+      console.error("Update failed:", err);
     }
   };
 
-  if (!productId) return null;
+  const formik = useProductForm(initialValues, handleSubmit);
+
+  useEffect(() => {
+    if (productId) {
+      axiosInstance.get(`/products/${productId}`).then((res) => setInitialValues(res.data));
+      axiosInstance.get("/categories").then((res) => setCategories(res.data));
+    }
+  }, [productId]);
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -60,77 +39,70 @@ export default function ProductModal({ show, handleClose, productId, refreshProd
         <Modal.Title>{isViewMode ? "View Product" : "Edit Product"}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form.Group className="mb-3">
-          <Form.Label>Title</Form.Label>
-          <Form.Control
-            name="title"
-            value={product.title}
-            onChange={handleChange}
-            disabled={isViewMode}
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Price</Form.Label>
-          <Form.Control
-            name="price"
-            type="number"
-            value={product.price}
-            onChange={handleChange}
-            disabled={isViewMode}
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Category</Form.Label>
-          <Form.Select
-            name="categoryId"
-            value={product.categoryId}
-            onChange={handleChange}
-            disabled={isViewMode}
-          >
-            <option value="">Select Category</option>
-            {categories.map(cat => (
-              <option key={cat.id} value={cat.id}>{cat.name}</option>
-            ))}
-          </Form.Select>
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Description</Form.Label>
-          <Form.Control
-            as="textarea"
-            rows={3}
-            name="description"
-            value={product.description}
-            onChange={handleChange}
-            disabled={isViewMode}
-          />
-        </Form.Group>
-
-        <Form.Group className="mb-3">
-          <Form.Label>Upload Image</Form.Label>
-          <Form.Control
-            type="file"
-            onChange={handleFileChange}
-            disabled={isViewMode}
-          />
-          {product.image && (
-            <img
-              src={product.image}
-              alt="Preview"
-              className="mt-2"
-              style={{ width: "100px", height: "auto" }}
+        <Form onSubmit={formik.handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Label>Title</Form.Label>
+            <Form.Control
+              name="title"
+              value={formik.values.title}
+              onChange={formik.handleChange}
+              disabled={isViewMode}
+              isInvalid={formik.touched.title && !!formik.errors.title}
             />
-          )}
-        </Form.Group>
+            <Form.Control.Feedback type="invalid">{formik.errors.title}</Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Price</Form.Label>
+            <Form.Control
+              name="price"
+              type="number"
+              value={formik.values.price}
+              onChange={formik.handleChange}
+              disabled={isViewMode}
+              isInvalid={formik.touched.price && !!formik.errors.price}
+            />
+            <Form.Control.Feedback type="invalid">{formik.errors.price}</Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Category</Form.Label>
+            <Form.Select
+              name="categoryId"
+              value={formik.values.categoryId}
+              onChange={formik.handleChange}
+              disabled={isViewMode}
+              isInvalid={formik.touched.categoryId && !!formik.errors.categoryId}
+            >
+              <option value="">Select Category</option>
+              {categories.map((cat) => (
+                <option key={cat.id} value={cat.id}>{cat.name}</option>
+              ))}
+            </Form.Select>
+            <Form.Control.Feedback type="invalid">{formik.errors.categoryId}</Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Description</Form.Label>
+            <Form.Control
+              as="textarea"
+              rows={3}
+              name="description"
+              value={formik.values.description}
+              onChange={formik.handleChange}
+              disabled={isViewMode}
+              isInvalid={formik.touched.description && !!formik.errors.description}
+            />
+            <Form.Control.Feedback type="invalid">{formik.errors.description}</Form.Control.Feedback>
+          </Form.Group>
+        </Form>
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer className="d-flex justify-content-end gap-2">
         <Button variant="secondary" onClick={handleClose}>
-          {isViewMode ? "Close" : "Cancel"}
+          Cancel
         </Button>
         {!isViewMode && (
-          <Button variant="primary" onClick={handleSubmit}>
+          <Button type="submit" variant="primary" onClick={formik.handleSubmit}>
             Save Changes
           </Button>
         )}

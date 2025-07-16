@@ -1,42 +1,29 @@
 import { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
 import axiosInstance from "../../services/api/axiosInstance";
+import { useCategoryForm } from "../../hooks/useCategoryForm";
 
-export default function CategoryModal({
-  show,
-  handleClose,
-  categoryId,
-  refreshCategories,
-  mode = "edit" // default to 'edit'
-}) {
-  const [category, setCategory] = useState({ name: "" });
+export default function CategoryModal({ show, handleClose, categoryId, refreshCategories, mode = "edit" }) {
+  const [initialValues, setInitialValues] = useState({ name: "" });
+  const isViewMode = mode === "view";
 
-  // Fetch category data on open
-  useEffect(() => {
-    if (categoryId) {
-      axiosInstance.get(`/categories/${categoryId}`)
-        .then(res => setCategory(res.data))
-        .catch(err => console.error("Error loading category", err));
-    }
-  }, [categoryId]);
-
-  const handleChange = (e) => {
-    setCategory({ ...category, [e.target.name]: e.target.value });
-  };
-
-  const handleSubmit = async () => {
+  const handleSubmit = async (values) => {
     try {
-      await axiosInstance.put(`/categories/${categoryId}`, { name: category.name });
+      await axiosInstance.put(`/categories/${categoryId}`, values);
       refreshCategories();
       handleClose();
     } catch (err) {
-      console.error("Error updating category", err);
+      console.error("Update failed:", err);
     }
   };
 
-  if (!categoryId) return null;
+  const formik = useCategoryForm(initialValues, handleSubmit);
 
-  const isViewMode = mode === "view";
+  useEffect(() => {
+    if (categoryId) {
+      axiosInstance.get(`/categories/${categoryId}`).then((res) => setInitialValues(res.data));
+    }
+  }, [categoryId]);
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -44,23 +31,26 @@ export default function CategoryModal({
         <Modal.Title>{isViewMode ? "View Category" : "Edit Category"}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
-        <Form.Group>
-          <Form.Label>Name</Form.Label>
-          <Form.Control
-            name="name"
-            value={category.name}
-            onChange={handleChange}
-            placeholder="Enter category name"
-            disabled={isViewMode}
-          />
-        </Form.Group>
+        <Form onSubmit={formik.handleSubmit}>
+          <Form.Group className="mb-3">
+            <Form.Label>Name</Form.Label>
+            <Form.Control
+              name="name"
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              disabled={isViewMode}
+              isInvalid={formik.touched.name && !!formik.errors.name}
+            />
+            <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
+          </Form.Group>
+        </Form>
       </Modal.Body>
-      <Modal.Footer>
+      <Modal.Footer className="d-flex justify-content-end gap-2">
         <Button variant="secondary" onClick={handleClose}>
-          {isViewMode ? "Close" : "Cancel"}
+          Cancel
         </Button>
         {!isViewMode && (
-          <Button variant="primary" onClick={handleSubmit}>
+          <Button type="submit" variant="primary" onClick={formik.handleSubmit}>
             Save Changes
           </Button>
         )}

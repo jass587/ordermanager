@@ -1,3 +1,4 @@
+// routes/ProtectedRoute.jsx
 import { Navigate } from 'react-router-dom';
 
 const ProtectedRoute = ({ children, allowedRoles = [] }) => {
@@ -9,7 +10,7 @@ const ProtectedRoute = ({ children, allowedRoles = [] }) => {
   }
 
   if (!allowedRoles.includes(role)) {
-    return <Navigate to="/unauthorized" replace />;
+    return <Navigate to="/forbidden" replace />;
   }
 
   return children;
