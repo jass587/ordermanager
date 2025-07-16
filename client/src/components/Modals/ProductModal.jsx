@@ -4,7 +4,13 @@ import { useProductForm } from "../../hooks/useProductForm";
 import ProductService from "../../services/api/products";
 import CategoryService from "../../services/api/categories";
 
-export default function ProductModal({ show, handleClose, productId, refreshProducts, mode = "edit" }) {
+export default function ProductModal({
+  show,
+  handleClose,
+  productId,
+  refreshProducts,
+  mode = "edit",
+}) {
   const [initialValues, setInitialValues] = useState({
     title: "",
     price: "",
@@ -29,7 +35,6 @@ export default function ProductModal({ show, handleClose, productId, refreshProd
 
   useEffect(() => {
     if (productId && show) {
-      // Fetch product by ID
       ProductService.getById(productId)
         .then((res) => {
           const product = res;
@@ -37,7 +42,6 @@ export default function ProductModal({ show, handleClose, productId, refreshProd
         })
         .catch((err) => console.error("Failed to fetch product:", err));
 
-      // Fetch categories
       CategoryService.getAll()
         .then((res) => setCategories(res))
         .catch((err) => console.error("Failed to fetch categories:", err));
@@ -60,7 +64,9 @@ export default function ProductModal({ show, handleClose, productId, refreshProd
               disabled={isViewMode}
               isInvalid={formik.touched.title && !!formik.errors.title}
             />
-            <Form.Control.Feedback type="invalid">{formik.errors.title}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {formik.errors.title}
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="mb-3">
@@ -73,7 +79,9 @@ export default function ProductModal({ show, handleClose, productId, refreshProd
               disabled={isViewMode}
               isInvalid={formik.touched.price && !!formik.errors.price}
             />
-            <Form.Control.Feedback type="invalid">{formik.errors.price}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {formik.errors.price}
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="mb-3">
@@ -92,7 +100,9 @@ export default function ProductModal({ show, handleClose, productId, refreshProd
                 </option>
               ))}
             </Form.Select>
-            <Form.Control.Feedback type="invalid">{formik.errors.categoryId}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {formik.errors.categoryId}
+            </Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="mb-3">
@@ -106,7 +116,30 @@ export default function ProductModal({ show, handleClose, productId, refreshProd
               disabled={isViewMode}
               isInvalid={formik.touched.description && !!formik.errors.description}
             />
-            <Form.Control.Feedback type="invalid">{formik.errors.description}</Form.Control.Feedback>
+            <Form.Control.Feedback type="invalid">
+              {formik.errors.description}
+            </Form.Control.Feedback>
+          </Form.Group>
+
+          <Form.Group className="mb-3">
+            <Form.Label>Image Preview</Form.Label>
+            <div className="text-center">
+              <img
+                src={formik.values.image || "/fallback-image.png"}
+                alt="Product"
+                onError={(e) => {
+                  e.target.onerror = null;
+                  e.target.src = "/fallback-image.webp";
+                }}
+                style={{
+                  maxWidth: "100%",
+                  height: "200px",
+                  objectFit: "cover",
+                  border: "1px solid #ddd",
+                  borderRadius: "6px",
+                }}
+              />
+            </div>
           </Form.Group>
         </Form>
       </Modal.Body>
