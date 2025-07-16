@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import axiosInstance from "../../services/api/axiosInstance";
 import { useProductForm } from "../../hooks/useProductForm";
+import ProductService from "../../services/api/products";
+import CategoryService from "../../services/api/categories";
 
 export default function ProductModal({ show, handleClose, productId, refreshProducts, mode = "edit" }) {
   const [initialValues, setInitialValues] = useState({
@@ -16,7 +17,7 @@ export default function ProductModal({ show, handleClose, productId, refreshProd
 
   const handleSubmit = async (values) => {
     try {
-      await axiosInstance.put(`/products/${productId}`, values);
+      await ProductService.update(productId, values);
       refreshProducts();
       handleClose();
     } catch (err) {
@@ -27,11 +28,21 @@ export default function ProductModal({ show, handleClose, productId, refreshProd
   const formik = useProductForm(initialValues, handleSubmit);
 
   useEffect(() => {
-    if (productId) {
-      axiosInstance.get(`/products/${productId}`).then((res) => setInitialValues(res.data));
-      axiosInstance.get("/categories").then((res) => setCategories(res.data));
+    if (productId && show) {
+      // Fetch product by ID
+      ProductService.getById(productId)
+        .then((res) => {
+          const product = res;
+          if (product) setInitialValues(product);
+        })
+        .catch((err) => console.error("Failed to fetch product:", err));
+
+      // Fetch categories
+      CategoryService.getAll()
+        .then((res) => setCategories(res))
+        .catch((err) => console.error("Failed to fetch categories:", err));
     }
-  }, [productId]);
+  }, [productId, show]);
 
   return (
     <Modal show={show} onHide={handleClose}>
@@ -76,7 +87,9 @@ export default function ProductModal({ show, handleClose, productId, refreshProd
             >
               <option value="">Select Category</option>
               {categories.map((cat) => (
-                <option key={cat.id} value={cat.id}>{cat.name}</option>
+                <option key={cat.id} value={cat.id}>
+                  {cat.name}
+                </option>
               ))}
             </Form.Select>
             <Form.Control.Feedback type="invalid">{formik.errors.categoryId}</Form.Control.Feedback>

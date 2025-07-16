@@ -21,7 +21,7 @@ export default function CategoryModal({ show, handleClose, categoryId, refreshCa
 
   useEffect(() => {
     if (categoryId) {
-      axiosInstance.get(`/categories/${categoryId}`).then((res) => setInitialValues(res.data));
+      axiosInstance.get(`/categories/${categoryId}`).then((res) => setInitialValues(res.data.result[0]));
     }
   }, [categoryId]);
 

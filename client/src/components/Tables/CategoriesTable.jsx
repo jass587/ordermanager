@@ -11,8 +11,8 @@ export const CategoriesTable = () => {
 
   const fetchCategories = async () => {
     try {
-      const res = await CategoryService.getAll();
-      setCategories(res.data);
+      const data = await CategoryService.getAll(); 
+      setCategories(data);
     } catch (err) {
       console.error("Failed to fetch categories", err);
     }

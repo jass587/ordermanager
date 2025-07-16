@@ -13,8 +13,8 @@ export const ProductsTable = () => {
 
   const fetchProducts = async () => {
     try {
-      const res = await ProductService.getAll();
-      setProducts(res.data);
+      const data = await ProductService.getAll();
+      setProducts(data);
     } catch (err) {
       console.error("Failed to fetch products:", err);
     }
@@ -22,8 +22,8 @@ export const ProductsTable = () => {
 
   const fetchCategories = async () => {
     try {
-      const res = await CategoryService.getAll();
-      setCategories(res.data);
+      const data = await CategoryService.getAll();
+      setCategories(data);
     } catch (err) {
       console.error("Failed to fetch categories:", err);
     }

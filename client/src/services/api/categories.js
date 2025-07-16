@@ -1,10 +1,25 @@
 import axiosInstance from "./axiosInstance";
 
 const CategoryService = {
-  getAll: () => axiosInstance.get("/categories"),
-  getById: (id) => axiosInstance.get(`/categories/${id}`),
-  update: (id, data) => axiosInstance.put(`/categories/${id}`, data),
-  delete: (id) => axiosInstance.delete(`/categories/${id}`),
+  getAll: async () => {
+    const res = await axiosInstance.get("/categories");
+    return res.data.result;
+  },
+
+  getById: async (id) => {
+    const res = await axiosInstance.get(`/categories/${id}`);
+    return res.data.result[0]; // single category
+  },
+
+  update: async (id, data) => {
+    const res = await axiosInstance.put(`/categories/${id}`, data);
+    return res.data.result[0]; // updated category
+  },
+
+  delete: async (id) => {
+    const res = await axiosInstance.delete(`/categories/${id}`);
+    return res.data; // might include message/status only
+  },
 };
 
 export default CategoryService;
