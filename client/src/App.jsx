@@ -7,6 +7,7 @@ import SocialLoginSuccess from './pages/sociallogin/SocialLoginSuccess';
 import Forbidden from './pages/errors/Forbidden';
 import ServerError from './pages/errors/ServerError';
 import NotFound from './pages/errors/NotFound';
+import DefaultError from './pages/errors/DefaultError';
 
 function App() {
   return (
@@ -19,6 +20,7 @@ function App() {
       <Route path="/not-found" element={<NotFound />} />
       <Route path="/server-error" element={<ServerError />} />
       <Route path="/forbidden" element={<Forbidden />} />
+      <Route path="/default-error" element={<DefaultError />} />
 
       {/* User routes */}
       <Route path="/*" element={<UserRoutes />} />

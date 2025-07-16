@@ -27,28 +27,29 @@ axiosInstance.interceptors.response.use(
   (error) => {
     const status = error.response?.status;
 
-    // switch (status) {
-    //   case 400:
-    //     alert("Bad Request");
-    //     break;
-    //   case 401:
-    //     alert("Unauthorized. Please log in again.");
-    //     localStorage.removeItem("token");
-    //     window.location.href = "/signin"; // force redirect
-    //     break;
-    //   case 403:
-    //     alert("Forbidden. You don’t have access to this resource.");
-    //     window.location.href = "/forbidden";
-    //     break;
-    //   case 404:
-    //     window.location.href = "/not-found";
-    //     break;
-    //   case 500:
-    //     window.location.href = "/server-error";
-    //     break;
-    //   default:
-    //     alert(error.response?.data?.message || "Something went wrong");
-    // }
+    switch (status) {
+      case 400:
+        alert("Bad Request");
+        break;
+      case 401:
+        alert("Unauthorized. Please log in again.");
+        localStorage.removeItem("token");
+        window.location.href = "/signin"; // force redirect
+        break;
+      case 403:
+        alert("Forbidden. You don’t have access to this resource.");
+        window.location.href = "/forbidden";
+        break;
+      case 404:
+        window.location.href = "/not-found";
+        break;
+      case 500:
+        window.location.href = "/server-error";
+        break;
+      default:
+        window.location.href = "/default-error";
+        break;
+    }
 
     return Promise.reject(error);
   }
