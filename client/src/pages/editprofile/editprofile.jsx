@@ -1,98 +1,70 @@
 import { useEffect, useState } from "react";
-import axios from "axios";
-import { jwtDecode } from "jwt-decode";
-import { Form, Button, Card, Alert, Spinner } from "@themesberg/react-bootstrap";
-import { Toast, ToastContainer } from "react-bootstrap"; // 🟢 Use react-bootstrap for toast
+import { Form, Button, Card, Spinner, Toast, ToastContainer } from "react-bootstrap";
+import { useFormik } from "formik";
+import * as Yup from "yup";
+import AuthService from "../../services/api/auth";
 
 export default function EditProfile() {
-  const [user, setUser] = useState({ name: "", email: "", password: "" });
   const [loading, setLoading] = useState(false);
-  const [message, setMessage] = useState({ type: "", text: "" });
   const [showToast, setShowToast] = useState(false);
-  const [initialPwd, setInitialPwd] = useState("********"); // placeholder to compare
+  const [toastMsg, setToastMsg] = useState({ type: "", text: "" });
+
+  const formik = useFormik({
+    initialValues: { name: "", email: "", password: "" },
+    validationSchema: Yup.object({
+      name: Yup.string().required("Name is required"),
+      email: Yup.string().email("Invalid email").required("Email is required"),
+      password: Yup.string().min(4, "Password must be at least 4 characters").notRequired(),
+    }),
+    onSubmit: async (values) => {
+      setLoading(true);
+      try {
+        const payload = {
+          name: values.name,
+          email: values.email,
+        };
+        if (values.password) payload.password = values.password;
+
+        await AuthService.updateProfile(payload);
+        setToastMsg({ type: "success", text: "Profile updated successfully!" });
+      } catch (err) {
+        setToastMsg({ type: "danger", text: "Update failed. Please try again." });
+      } finally {
+        setLoading(false);
+        setShowToast(true);
+      }
+    },
+    enableReinitialize: true,
+  });
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
-    axios
-      .get("http://localhost:5000/api/users", {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+    AuthService.getProfile()
+      .then(({ name, email }) => {
+        formik.setValues({ name, email, password: "" });
       })
-      .then((res) => {
-        const { name, email } = res.data;
-        console.log({ data: { name, email } });
-        setUser({ name, email, password: "" });
-        setInitialPwd("");
-      })
-      .catch((err) => {
-        console.error("Failed to fetch user data:", err);
-        setMessage({ type: "danger", text: "Could not load user data." });
+      .catch(() => {
+        setToastMsg({ type: "danger", text: "Failed to load user data." });
+        setShowToast(true);
       });
   }, []);
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setUser((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const handleSubmit = async (e) => {
-    e.preventDefault();
-    const token = localStorage.getItem("token");
-    if (!token) return;
-
-    setLoading(true);
-    setMessage({ type: "", text: "" });
-
-    try {
-      const payload = {
-        name: user.name,
-        email: user.email,
-      };
-
-      // Only include new password if it's changed from initial
-      if (user.password && user.password !== initialPwd) {
-        payload.password = user.password;
-      }
-
-      await axios.put("http://localhost:5000/api/users/update", payload, {
-        headers: { Authorization: `Bearer ${token}` },
-      });
-
-      setMessage({ type: "success", text: "Profile updated successfully!" });
-      setShowToast(true);
-    } catch (err) {
-      console.error("Update failed:", err);
-      setMessage({ type: "danger", text: "Failed to update profile. Try again." });
-    } finally {
-      setLoading(false);
-    }
-  };
 
   return (
     <>
       <Card className="p-4 w-100 shadow-sm" style={{ margin: "2rem auto" }}>
         <h4 className="mb-3">Edit Profile</h4>
-
-        {message.text && (
-          <Alert variant={message.type} className="mb-3">
-            {message.text}
-          </Alert>
-        )}
-
-        <Form onSubmit={handleSubmit}>
+        <Form onSubmit={formik.handleSubmit}>
           <Form.Group className="mb-3">
             <Form.Label>Name</Form.Label>
             <Form.Control
               type="text"
               name="name"
-              value={user.name}
-              onChange={handleChange}
+              value={formik.values.name}
+              onChange={formik.handleChange}
+              isInvalid={formik.touched.name && !!formik.errors.name}
               placeholder="Enter your name"
               required
             />
+            <Form.Control.Feedback type="invalid">{formik.errors.name}</Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="mb-3">
@@ -100,11 +72,13 @@ export default function EditProfile() {
             <Form.Control
               type="email"
               name="email"
-              value={user.email}
-              onChange={handleChange}
+              value={formik.values.email}
+              onChange={formik.handleChange}
+              isInvalid={formik.touched.email && !!formik.errors.email}
               placeholder="Enter your email"
               required
             />
+            <Form.Control.Feedback type="invalid">{formik.errors.email}</Form.Control.Feedback>
           </Form.Group>
 
           <Form.Group className="mb-3">
@@ -112,10 +86,12 @@ export default function EditProfile() {
             <Form.Control
               type="password"
               name="password"
-              value={user.password}
-              onChange={handleChange}
+              value={formik.values.password}
+              onChange={formik.handleChange}
+              isInvalid={formik.touched.password && !!formik.errors.password}
               placeholder="Change password (optional)"
             />
+            <Form.Control.Feedback type="invalid">{formik.errors.password}</Form.Control.Feedback>
           </Form.Group>
 
           <Button type="submit" variant="primary" disabled={loading}>
@@ -132,21 +108,14 @@ export default function EditProfile() {
       </Card>
 
       <ToastContainer position="top-end" className="p-3">
-        <Toast bg="success" show={showToast} delay={3000} onClose={() => setShowToast(false)} autohide>
-          <Toast.Body className="text-white">Profile updated successfully!</Toast.Body>
-        </Toast>
-      </ToastContainer>
-      <ToastContainer position="top-end" className="p-3">
         <Toast
-          bg={message.type === "danger" ? "danger" : "success"}
-          show={!!message.text}
+          bg={toastMsg.type}
+          show={showToast}
           delay={3000}
           autohide
-          onClose={() => setMessage({ type: "", text: "" })}
+          onClose={() => setShowToast(false)}
         >
-          <Toast.Body className="text-white">
-            {message.text}
-          </Toast.Body>
+          <Toast.Body className="text-white">{toastMsg.text}</Toast.Body>
         </Toast>
       </ToastContainer>
     </>
