@@ -92,14 +92,14 @@ export default function Sidebar(props = {}) {
             <Nav className="flex-column pt-3 pt-md-0">
               <NavItem
                 title={userRole === "admin" ? "Admin Panel" : "User Panel"}
-                link={userRole === "admin" ? "/admin/dashboard" : "/dashboard"}
+                link={userRole === "admin" ? "/admin/dashboard" : "/home"}
                 image={ReactHero}
               />
 
               <SectionHeading title="Dashboard" />
               <NavItem
                 title="Overview"
-                link={userRole === "admin" ? "/admin/dashboard" : "/dashboard"}
+                link={userRole === "admin" ? "/admin/dashboard" : "/home"}
                 icon={faTachometerAlt}
               />
 

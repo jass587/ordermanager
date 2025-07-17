@@ -22,7 +22,7 @@ export default function SocialLoginSuccess() {
           if (role === "admin") {
             navigate("/admin/dashboard");
           } else {
-            navigate("/dashboard");
+            navigate("/home");
           }
         }, 100); // adjust if needed
       } catch (err) {

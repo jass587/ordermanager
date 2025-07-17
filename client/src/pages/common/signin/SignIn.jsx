@@ -27,7 +27,7 @@ export default function SignIn() {
         const res = await AuthService.login(values.email, values.password);
         if (res.role === "admin") {
           navigate("/admin/dashboard/");
-        } else navigate("/dashboard");
+        } else navigate("/home");
       } catch (err) {
         setError(err.message || "Server error or network issue.");
       }
