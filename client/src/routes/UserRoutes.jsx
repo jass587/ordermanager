@@ -8,9 +8,10 @@ import Products from '../pages/frontend/user/Products/Products';
 import ProductDetail from '../pages/frontend/user/ProductDetail/ProductDetail';
 import Cart from '../pages/frontend/user/Cart/Cart';
 import CartItem from '../pages/frontend/user/Cartitems/CartItems';
-
 import ProtectedRoute from './ProtectedRoute';
 import NotFound from '../pages/common/errors/NotFound';
+import Orders from '../pages/frontend/user/Orders/Orders';
+import Checkout from '../pages/frontend/user/Checkout/Checkout';
 
 export default function UserRoutes() {
   return (
@@ -32,6 +33,8 @@ export default function UserRoutes() {
         <Route path="cart-items" element={<CartItem />} />
         <Route path="dashboard" element={<Dashboard />} />
         <Route path="edit-profile" element={<EditProfile />} />
+        <Route path="orders" element={<Orders />} />
+        <Route path="checkout" element={<Checkout />} />
         <Route path="*" element={<NotFound />} />
       </Route>
     </Routes>

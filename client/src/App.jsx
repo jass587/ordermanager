@@ -2,7 +2,6 @@ import { Routes, Route, Navigate } from 'react-router-dom';
 import AdminRoutes from './routes/AdminRoutes';
 import UserRoutes from './routes/UserRoutes';
 import SignIn from './pages/common/signin/SignIn';
-import './assets/scss/app.scss';
 import SocialLoginSuccess from './pages/common/sociallogin/SocialLoginSuccess';
 import Forbidden from './pages/common/errors/Forbidden';
 import ServerError from './pages/common/errors/ServerError';
