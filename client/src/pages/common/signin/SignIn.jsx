@@ -2,14 +2,14 @@ import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
-import AuthService from "../../services/api/auth";
+import AuthService from "../../../services/api/auth";
 import { faEnvelope, faUnlockAlt } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faTwitter, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import {
   Col, Row, Form, Card, Button, InputGroup, Container
 } from "@themesberg/react-bootstrap";
-import BgImage from "../../assets/img/illustrations/signin.svg";
+import BgImage from "../../../assets/img/illustrations/signin.svg";
 
 export default function SignIn() {
   const [error, setError] = useState("");

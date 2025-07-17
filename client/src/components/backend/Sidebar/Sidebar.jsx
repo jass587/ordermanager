@@ -15,8 +15,8 @@ import {
 import { jwtDecode } from "jwt-decode";
 import { Nav, Badge, Image, Button, Navbar } from 'react-bootstrap';
 
-import { Routes } from "../../routes";
-import ReactHero from "../../assets/img/technologies/react-hero-logo.svg";
+import { Routes } from "../../../routes";
+import ReactHero from "../../../assets/img/technologies/react-hero-logo.svg";
 import "./Sidebar.css";
 
 export default function Sidebar(props = {}) {
@@ -42,7 +42,7 @@ export default function Sidebar(props = {}) {
     }
   }
 
-  const NavItem = ({ title, link, external, target, icon, image, badgeText, badgeBg = "secondary", badgeColor = "primary", onClick}) => {
+  const NavItem = ({ title, link, external, target, icon, image, badgeText, badgeBg = "secondary", badgeColor = "primary", onClick }) => {
     const classNames = badgeText ? "d-flex justify-content-start align-items-center justify-content-between" : "";
     const navItemClassName = link === pathname ? "active" : "";
     const linkProps = external ? { href: link } : { as: Link, to: link };
@@ -111,13 +111,13 @@ export default function Sidebar(props = {}) {
                   <NavItem title="Categories" link="/admin/categories" icon={faTags} />
                   <NavItem title="Orders" link="/admin/orders" icon={faUsers} />
                   <NavItem title="Payments" link="/admin/payments" icon={faBox} />
+                  
+                  <SectionHeading title="Settings" />
+                  <NavItem title="Site Settings" link="/admin/site-settings" icon={faCogs} />
                 </>
               )}
 
-              <SectionHeading title="Settings" />
-              <NavItem title="Site Settings" link="/admin/site-settings" icon={faCogs} />
-
-              <SectionHeading  title="Account" />
+              <SectionHeading title="Account" />
               <NavItem title="Sign Out" icon={faSignOutAlt} onClick={handleLogout} />
             </Nav>
           </div>

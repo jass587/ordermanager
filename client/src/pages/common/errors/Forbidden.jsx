@@ -1,4 +1,4 @@
-import "../../assets/scss/app.scss"; 
+import "../../../assets/scss/app.scss"; 
 
 export default function Forbidden({ fullScreen = true }) {
   return (

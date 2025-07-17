@@ -1,9 +1,9 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import UserLayout from '../layout/UserLayout';
-import Dashboard from '../pages/user/Dashboard/Dashboard';
-import EditProfile from '../pages/editprofile/editprofile';
+import Dashboard from '../pages/frontend/user/Dashboard/Dashboard';
+import EditProfile from '../pages/common/editprofile/editprofile';
 import ProtectedRoute from './ProtectedRoute';
-import NotFound from '../pages/errors/NotFound';
+import NotFound from '../pages/common/errors/NotFound';
 
 export default function UserRoutes() {
   return (

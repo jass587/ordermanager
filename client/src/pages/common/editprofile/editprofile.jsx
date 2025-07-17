@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Form, Button, Card, Spinner, Toast, ToastContainer } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import AuthService from "../../services/api/auth";
+import AuthService from "../../../services/api/auth";
 
 export default function EditProfile() {
   const [loading, setLoading] = useState(false);

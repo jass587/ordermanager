@@ -1,15 +1,19 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
+
 import AdminLayout from '../layout/AdminLayout';
-import Dashboard from '../pages/admin/Dashboard/Dashboard';
-import EditProfile from '../pages/editprofile/editprofile';
+import EditProfile from '../pages/common/editprofile/editprofile';
 import ProtectedRoute from './ProtectedRoute';
-import Categories from '../pages/admin/Categories/Categories';
-import Orders from '../pages/admin/Orders/Orders';
-import Payments from '../pages/admin/Payments/Payments';
-import Products from '../pages/admin/Products/Products';
-import Users from '../pages/admin/Users/Users';
-import SiteSettings from '../pages/admin/SiteSettings/SiteSettings';
-import NotFound from '../pages/errors/NotFound';
+
+// ✅ FIXED: Correct relative paths based on actual folder structure
+import Categories from '../pages/backend/admin/Categories/Categories';
+import Orders from '../pages/backend/admin/Orders/Orders';
+import Payments from '../pages/backend/admin/Payments/Payments';
+import Products from '../pages/backend/admin/Products/Products';
+import Users from '../pages/backend/admin/Users/Users';
+import SiteSettings from '../pages/backend/admin/SiteSettings/SiteSettings';
+
+import NotFound from '../pages/common/errors/NotFound';
+import Dashboard from '../pages/backend/admin/Dashboard/Dashboard'; 
 
 export default function AdminRoutes() {
   return (

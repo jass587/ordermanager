@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import ETable from "./Common/eTable";
 import CategoryModal from "../Modals/CategoryModal";
-import CategoryService from "../../services/api/categories";
+import CategoryService from "../../../services/api/categories";
 
 export const CategoriesTable = () => {
   const [categories, setCategories] = useState([]);

@@ -10,8 +10,8 @@ import {
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 
-import NOTIFICATIONS_DATA from "../../data/notifications";
-import Profile3 from "../../assets/img/team/profile-picture-3.jpg";
+import NOTIFICATIONS_DATA from "../../../data/notifications";
+import Profile3 from "../../../assets/img/team/profile-picture-3.jpg";
 
 export default function Topbar() {
   const [notifications, setNotifications] = useState(NOTIFICATIONS_DATA);
