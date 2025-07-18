@@ -88,7 +88,9 @@ import ETable from "../../../components/backend/Tables/Common/eTable";
             {
               label: "Image",
               key: "image",
-              render: (val, row) => (
+              render: (val, row) => {
+                console.log(val)
+                return (
                 <img
                   src={val || "/fallback-image.png"}
                   alt={row.title}
@@ -102,7 +104,7 @@ import ETable from "../../../components/backend/Tables/Common/eTable";
                     objectFit: "cover",
                   }}
                 />
-              ),
+              )},
             },
             {
               label: "Created At",

@@ -25,7 +25,6 @@ export default function UserRoutes() {
       >
         <Route index element={<Navigate to="home" replace />} />
         <Route path="home" element={<Home />} />
-        {/* <Route path="category" element={<Categories />} /> */}
         <Route path="products" element={<ProductsList />} />
         <Route path="product/:id" element={<ProductDetail />} />
         <Route path="cart" element={<Cart />} />

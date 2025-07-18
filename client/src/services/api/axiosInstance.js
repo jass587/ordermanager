@@ -30,6 +30,7 @@ axiosInstance.interceptors.response.use(
     switch (status) {
       case 400:
         alert("Bad Request");
+        Navigate("/home")
         break;
       case 401:
         alert("Unauthorized. Please log in again.");

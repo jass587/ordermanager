@@ -2,22 +2,19 @@ import { Link } from "react-router-dom";
 
 const CardProductList = ({ data }) => {
   const {
+    id,
     image,
-    link,
-    name,
-    star,
+    title,
     description,
     price,
-    isFreeShipping,
+    star = 4,
   } = data;
 
   const renderStars = () =>
     Array.from({ length: 5 }, (_, i) => (
       <i
         key={i}
-        className={`bi bi-star-fill me-1 ${
-          i < star ? "text-warning" : "text-secondary"
-        }`}
+        className={`bi bi-star-fill me-1 ${i < star ? "text-warning" : "text-secondary"}`}
       />
     ));
 
@@ -38,17 +35,20 @@ const CardProductList = ({ data }) => {
   return (
     <div className="card shadow-sm">
       <div className="row g-0">
-        {/* Product Image */}
         <div className="col-md-3 text-center d-flex align-items-center p-2">
-          <img src={image} className="img-fluid" alt={name} />
+          <img
+            src={image}
+            className="img-fluid"
+            alt={title}
+            onError={(e) => (e.target.src = "/fallback-image.webp")}
+          />
         </div>
 
-        {/* Product Info */}
         <div className="col-md-6">
           <div className="card-body">
             <h6 className="card-subtitle me-2 d-inline">
-              <Link to={link} className="text-decoration-none text-dark">
-                {name}
+              <Link to={`/product/${id}`} className="text-decoration-none text-dark">
+                {title}
               </Link>
             </h6>
 
@@ -57,25 +57,14 @@ const CardProductList = ({ data }) => {
           </div>
         </div>
 
-        {/* Price & Actions */}
         <div className="col-md-3">
           <div className="card-body">
             <div className="mb-2">
               <span className="fw-bold h5">${price}</span>
             </div>
 
-            {isFreeShipping && (
-              <p className="text-success small mb-2">
-                <i className="bi bi-truck" /> Free shipping
-              </p>
-            )}
-
             <div className="btn-group d-flex" role="group">
-              <button
-                type="button"
-                className="btn btn-sm btn-primary"
-                title="Add to cart"
-              >
+              <button type="button" className="btn btn-sm btn-primary" title="Add to cart">
                 <i className="bi bi-cart-plus" />
               </button>
             </div>

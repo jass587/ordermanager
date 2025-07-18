@@ -1,12 +1,20 @@
+import { useEffect, useState } from "react";
+import CategoryService from "../../../services/api/categories";
+
 export default function FilterCategory({ selected, onSelect }) {
-  const categories = [
-    "Clothing",
-    "Leather Bag",
-    "Trousers",
-    "Sweater & Cardigans",
-    "High Heels",
-    "Coats & Jackets",
-  ];
+  const [categories, setCategories] = useState([]);
+
+  useEffect(() => {
+    const fetchCategories = async () => {
+      try {
+        const data = await CategoryService.getAll();
+        setCategories(data);
+      } catch (error) {
+        console.error("Failed to fetch categories", error);
+      }
+    };
+    fetchCategories();
+  }, []);
 
   return (
     <div className="accordion mb-3" id="categoryAccordion">
@@ -32,14 +40,14 @@ export default function FilterCategory({ selected, onSelect }) {
             <ul className="list-group list-group-flush">
               {categories.map((cat) => (
                 <li
-                  key={cat}
+                  key={cat.id}
                   className={`list-group-item ${
-                    selected === cat ? "active fw-bold" : ""
+                    selected === cat.name ? "active fw-bold" : ""
                   }`}
                   role="button"
-                  onClick={() => onSelect(cat)}
+                  onClick={() => onSelect(cat.name)}
                 >
-                  {cat}
+                  {cat.name}
                 </li>
               ))}
             </ul>
