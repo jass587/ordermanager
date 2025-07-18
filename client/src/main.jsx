@@ -5,6 +5,7 @@ import { BrowserRouter } from 'react-router-dom';
 import 'simplebar-react/dist/simplebar.min.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import 'bootstrap/dist/js/bootstrap.bundle.min.js';
+import 'bootstrap-icons/font/bootstrap-icons.css';
 import './assets/scss/app.scss';
 import './App.css';
 import App from './App.jsx'

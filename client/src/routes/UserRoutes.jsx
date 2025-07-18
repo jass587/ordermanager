@@ -3,9 +3,8 @@ import UserLayout from '../layout/UserLayout';
 import Dashboard from '../pages/frontend/user/Dashboard/Dashboard';
 import EditProfile from '../pages/common/editprofile/editprofile';
 import Home from '../pages/frontend/user/Home/Home';
-import Categories from '../pages/frontend/user/Categories/Categories';
-import Products from '../pages/frontend/user/Products/Products';
-import ProductDetail from '../pages/frontend/user/ProductDetail/ProductDetail';
+import ProductsList from '../pages/frontend/user/Products/ProductsList';
+import ProductDetail from '../pages/frontend/user/Products/ProductDetail';
 import Cart from '../pages/frontend/user/Cart/Cart';
 import CartItem from '../pages/frontend/user/Cartitems/CartItems';
 import ProtectedRoute from './ProtectedRoute';
@@ -26,8 +25,8 @@ export default function UserRoutes() {
       >
         <Route index element={<Navigate to="home" replace />} />
         <Route path="home" element={<Home />} />
-        <Route path="category" element={<Categories />} />
-        <Route path="products" element={<Products />} />
+        {/* <Route path="category" element={<Categories />} /> */}
+        <Route path="products" element={<ProductsList />} />
         <Route path="product/:id" element={<ProductDetail />} />
         <Route path="cart" element={<Cart />} />
         <Route path="cart-items" element={<CartItem />} />
