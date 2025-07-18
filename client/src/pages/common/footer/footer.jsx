@@ -47,7 +47,7 @@ export default function Footer() {
 
         <div className="row">
           <div className="col-md-12 text-center">
-            <p className="mb-0">© {new Date().getFullYear()} ShopEase. All Rights Reserved.</p>
+            <p className="mb-0">© {new Date().getFullYear()} Ecomm.Wired. All Rights Reserved.</p>
           </div>
         </div>
       </div>

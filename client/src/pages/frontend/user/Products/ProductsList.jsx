@@ -54,7 +54,7 @@ export default function ProductsList() {
           </div>
 
           <div className="col-md-9">
-            <div className="row mb-3">
+            <div className="row mb-3" style={{ marginRight : '1rem'}}>
               <div className="col-md-6">
                 <h6 className="fw-bold">
                   {filtered.length} result(s) for <span className="text-warning">"{selectedCategory}"</span>
