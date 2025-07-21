@@ -1,22 +1,25 @@
 import { Outlet } from 'react-router-dom';
+import { Suspense, lazy } from 'react';
 import TopMenu from '../components/frontend/TopMenu';
 import Footer from '../pages/common/footer/footer';
-import './user.css'; // Ensure this doesn't override layout styling
+import ScrollToTop from '../pages/common/scrolltotop/scrolltotop';
+import Search from '../components/frontend/Search/Search';
+const Header = lazy(() => import('../components/frontend/Header/Header'));
+
 
 export default function UserLayout() {
   return (
     <div className="d-flex flex-column min-vh-100 bg-light" style={{ width: '100vw' }}>
-      {/* Sticky Header */}
       <header className="sticky-top shadow-sm">
+        <Header />
         <TopMenu />
       </header>
 
-      {/* Main Content */}
       <main className="flex-grow-1 py-4 px-2">
+        <ScrollToTop />
         <Outlet />
       </main>
 
-      {/* Footer */}
       <footer className="mt-auto">
         <Footer />
       </footer>

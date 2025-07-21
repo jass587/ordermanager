@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../components/backend/Sidebar/Sidebar';
 import Navbar from '../components/backend/Navbar/Navbar';
-import Footer from '../pages/common/footer/footer';
+import ScrollToTop from '../pages/common/scrolltotop/scrolltotop';
 import './admin.css';
 
 export default function AdminLayout() {
@@ -11,6 +11,7 @@ export default function AdminLayout() {
       <div className="main-content">
         <Navbar />
         <div className="page-content">
+          <ScrollToTop/>
           <Outlet />
         </div>
       </div>

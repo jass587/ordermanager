@@ -45,15 +45,6 @@ const TopMenu = () => {
               <Link className="nav-link" to="/products">Jewellery</Link>
             </li>
           </ul>
-
-          {/* Right aligned logout button */}
-          <ul className="navbar-nav ms-auto">
-            <li className="nav-item">
-              <Link className="nav-link text-danger fw-semibold" onClick={handleLogout}>
-                Logout
-              </Link>
-            </li>
-          </ul>
         </div>
       </div>
     </nav>
