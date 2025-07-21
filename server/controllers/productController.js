@@ -1,28 +1,70 @@
 const { Product, Category } = require("../models");
+const { Op } = require("sequelize");
 
 // Get all products with category name
+
 exports.getAllProducts = async (req, res) => {
   try {
-    const products = await Product.findAll({
-      include: {
-        model: Category,
-        as: 'category',
-        attributes: ['name'],
-      },
+    const {
+      page = 1,
+      limit = 6,
+      sort = "latest",
+      search = "",
+    } = req.query;
+
+    const offset = (page - 1) * limit;
+
+    // Prepare search filter (search across all products)
+    const searchFilter = search
+      ? {
+          [Op.or]: [
+            { title: { [Op.iLike]: `%${search}%` } },
+            { description: { [Op.iLike]: `%${search}%` } },
+          ],
+        }
+      : {};
+
+    // Sorting
+    let order = [["createdAt", "DESC"]];
+    if (sort === "price_low") order = [["price", "ASC"]];
+    else if (sort === "price_high") order = [["price", "DESC"]];
+
+    // Fetch all products matching search (for accurate total)
+    const allMatchingProducts = await Product.findAll({
+      where: searchFilter,
     });
 
-    return res.status(200).json({
+    const total = allMatchingProducts.length;
+    const pages = Math.ceil(total / limit);
+
+    // Fetch paginated + sorted products
+    const products = await Product.findAll({
+      where: searchFilter,
+      include: [
+        {
+          model: Category,
+          as: "category",
+          attributes: ["name"],
+        },
+      ],
+      order,
+      limit: parseInt(limit),
+      offset: parseInt(offset),
+    });
+
+    res.status(200).json({
       message: "Products fetched successfully",
       status: 200,
-      result: products,
+      result: {
+        products,
+        total,
+        page: parseInt(page),
+        totalPages : pages,
+      },
     });
-  } catch (err) {
-    return res.status(500).json({
-      message: "Failed to fetch products",
-      status: 500,
-      result: [],
-      error: err.message,
-    });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ message: "Server error", status: 500 });
   }
 };
 

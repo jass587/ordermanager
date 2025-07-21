@@ -11,5 +11,6 @@ router.get("/:id", authenticate, productController.getProductById);
 router.post("/", authenticate, isAdmin, productController.createProduct);
 router.put("/:id", authenticate, isAdmin, upload.single("image"), productController.updateProduct);
 router.delete("/:id", authenticate, isAdmin, upload.single("image"), productController.deleteProduct);
+router.delete("/:id", authenticate, isAdmin, upload.single("image"), productController.deleteProduct);
 
 module.exports = router;
