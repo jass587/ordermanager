@@ -1,8 +1,10 @@
 import axiosInstance from "./axiosInstance";
 
 const ProductService = {
-  getAll: async () => {
-    const res = await axiosInstance.get("/products");
+  getAll: async ({ page, category }) => {
+    const res = await axiosInstance.get("/products", {
+      params: { page, category }
+    });
     return res.data.result;
   },
 
