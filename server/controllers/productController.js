@@ -1,52 +1,48 @@
 const { Product, Category } = require("../models");
 const { Op } = require("sequelize");
 
-// Get all products with category name
+// Get all products with category name and search
 
 exports.getAllProducts = async (req, res) => {
   try {
     const {
       page = 1,
-      limit = 6,
+      limit = 1,
       sort = "latest",
       search = "",
+      category = ""
     } = req.query;
 
     const offset = (page - 1) * limit;
 
-    // Prepare search filter (search across all products)
-    const searchFilter = search
-      ? {
-          [Op.or]: [
-            { title: { [Op.iLike]: `%${search}%` } },
-            { description: { [Op.iLike]: `%${search}%` } },
-          ],
-        }
-      : {};
+    const searchFilter = {
+      ...(search && {
+        [Op.or]: [
+          { title: { [Op.iLike]: `%${search}%` } },
+          { description: { [Op.iLike]: `%${search}%` } },
+        ],
+      }),
+    };
+
+    if (category) {
+      const categoryRecord = await Category.findOne({
+        where: { name: { [Op.iLike]: category } }
+      });
+      if (categoryRecord) {
+        searchFilter.categoryId = categoryRecord.id;
+      }
+    }
 
     // Sorting
     let order = [["createdAt", "DESC"]];
     if (sort === "price_low") order = [["price", "ASC"]];
     else if (sort === "price_high") order = [["price", "DESC"]];
 
-    // Fetch all products matching search (for accurate total)
-    const allMatchingProducts = await Product.findAll({
-      where: searchFilter,
-    });
+    const total = await Product.count({ where: searchFilter });
 
-    const total = allMatchingProducts.length;
-    const pages = Math.ceil(total / limit);
-
-    // Fetch paginated + sorted products
     const products = await Product.findAll({
       where: searchFilter,
-      include: [
-        {
-          model: Category,
-          as: "category",
-          attributes: ["name"],
-        },
-      ],
+      include: [{ model: Category, as: "category", attributes: ["name"] }],
       order,
       limit: parseInt(limit),
       offset: parseInt(offset),
@@ -59,7 +55,7 @@ exports.getAllProducts = async (req, res) => {
         products,
         total,
         page: parseInt(page),
-        totalPages : pages,
+        pages: Math.ceil(total / limit),
       },
     });
   } catch (error) {
