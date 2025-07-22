@@ -1,102 +1,123 @@
 "use strict";
+const imageURLs = require("../utils/seedData/imageUrls");
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    await queryInterface.bulkInsert("Products", [
-      {
-        title: "Wireless Headphones",
-        price: 199.99,
-        categoryId: 1,
-        description: "High quality noise-cancelling wireless headphones.",
-        image: "/assets/product_images/wireless_headphones.jpeg",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+    const products = [];
+    const imgUrls = imageURLs;
+
+    const categoryData = {
+      1: {
+        name: "Electronics",
+        priceRange: [100, 400],
+        titles: [
+          "Wireless Headphones", "Bluetooth Earbuds", "Smartphone Gimbal", "Noise Cancelling Headset",
+          "Power Bank 20000mAh", "Tablet Stand", "USB Wall Charger", "Portable SSD",
+          "Smart Plug", "Bluetooth Transmitter"
+        ]
       },
-      {
-        title: "Gaming Mouse",
-        price: 49.99,
-        categoryId: 1,
-        description: "Ergonomic gaming mouse with RGB lighting.",
-        image: "/assets/product_images/gaming_mouse.jpeg",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+      2: {
+        name: "Books",
+        priceRange: [10, 50],
+        titles: [
+          "Hardcover Novel", "Science Encyclopedia", "Travel Diary", "Cookbook Deluxe",
+          "Mystery Thriller", "Fantasy Saga Vol.1", "Self Help Guide", "Productivity Hacks",
+          "Children's Storybook", "Classic Literature Set"
+        ]
       },
-      {
-        title: "Bluetooth Speaker",
-        price: 89.99,
-        categoryId: 2,
-        description: "Portable speaker with powerful bass.",
-        image: "/assets/product_images/bluetooth_speaker.jpeg",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+      3: {
+        name: "Clothing",
+        priceRange: [15, 80],
+        titles: [
+          "Cotton T-Shirt", "Slim Fit Jeans", "Hooded Sweatshirt", "Graphic Tee", "Polo Shirt",
+          "Athletic Shorts", "Denim Jacket", "Woolen Scarf", "Rain Jacket", "Running Shoes"
+        ]
       },
-      {
-        title: "Fitness Tracker",
-        price: 79.99,
-        categoryId: 10,
-        description: "Water-resistant fitness tracker with heart-rate monitor.",
-        image: "/assets/product_images/fitness_tracker.jpeg",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+      4: {
+        name: "Home & Kitchen",
+        priceRange: [20, 100],
+        titles: [
+          "Non-stick Frying Pan", "Blender Mixer", "Electric Kettle", "Kitchen Utensil Set",
+          "Microwave Rack", "Glass Container Set", "Induction Cooktop", "Silicone Baking Mat",
+          "Knife Set", "Cutting Board Combo"
+        ]
       },
-      {
-        title: "Laptop Stand",
-        price: 34.99,
-        categoryId: 3,
-        description: "Adjustable aluminum laptop stand for desks.",
-        image: "/assets/product_images/laptop_stand.jpeg",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+      5: {
+        name: "Beauty & Personal Care",
+        priceRange: [10, 60],
+        titles: [
+          "Facial Cleanser", "Organic Shampoo", "Moisturizing Cream", "Beard Trimmer",
+          "Lip Balm Pack", "Hair Dryer", "Nail Clippers", "Face Serum", "Sunscreen SPF 50", "Aloe Vera Gel"
+        ]
       },
-      {
-        title: "Mechanical Keyboard",
-        price: 99.99,
-        categoryId: 1,
-        description: "Backlit mechanical keyboard with blue switches.",
-        image: "/assets/product_images/mechanical_keyboard.jpeg",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+      6: {
+        name: "Toys & Games",
+        priceRange: [15, 70],
+        titles: [
+          "Building Blocks Set", "Remote Control Car", "Puzzle Cube", "Board Game Deluxe",
+          "Stuffed Animal", "Drawing Kit", "Toy Keyboard", "Water Gun", "Play Tent", "Magic Trick Set"
+        ]
       },
-      {
-        title: "Smart Light Bulb",
-        price: 24.99,
-        categoryId: 2,
-        description: "WiFi-enabled smart bulb compatible with Alexa and Google.",
-        image: "/assets/product_images/smart_light_bulb.jpeg",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+      7: {
+        name: "Sports & Outdoors",
+        priceRange: [25, 120],
+        titles: [
+          "Yoga Mat", "Skipping Rope", "Dumbbell Set", "Camping Tent", "Hiking Backpack",
+          "Foldable Chair", "Tennis Racket", "Cricket Bat", "Swim Goggles", "Cycling Gloves"
+        ]
       },
-      {
-        title: "Smartwatch",
-        price: 149.99,
-        categoryId: 10,
-        description: "Smartwatch with fitness tracking and notifications.",
-        image: "/assets/product_images/smartwatch.jpeg",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+      8: {
+        name: "Automotive",
+        priceRange: [10, 50],
+        titles: [
+          "Car Phone Mount", "Dashboard Camera", "Tire Inflator", "Seat Cushion",
+          "Steering Wheel Cover", "FM Transmitter", "Car Vacuum", "Sun Shade Visor",
+          "Car Wash Mitt", "LED Headlights"
+        ]
       },
-      {
-        title: "USB-C Hub",
-        price: 59.99,
-        categoryId: 3,
-        description: "Multi-port USB-C hub with HDMI and Ethernet.",
-        image: "/assets/product_images/usb_c_hub.jpeg",
-        createdAt: new Date(),
-        updatedAt: new Date(),
+      9: {
+        name: "Garden & Outdoor",
+        priceRange: [30, 90],
+        titles: [
+          "LED Garden Lights", "Watering Can", "Outdoor Swing", "Garden Hose Reel",
+          "Compost Bin", "Pruning Shears", "Raised Bed", "BBQ Stand",
+          "Mosquito Net", "Solar Garden Statue"
+        ]
       },
-      {
-        title: "External Hard Drive",
-        price: 119.99,
-        categoryId: 1,
-        description: "1TB external hard drive with USB 3.0 support.",
-        image: "/assets/product_images/external_hard_drive.jpeg",
-        createdAt: new Date(),
-        updatedAt: new Date(),
-      },
-    ], {});
+      10: {
+        name: "Health & Wellness",
+        priceRange: [15, 60],
+        titles: [
+          "Digital Thermometer", "Blood Pressure Monitor", "Pulse Oximeter", "First Aid Kit",
+          "Yoga Roller", "Essential Oils", "Massage Gun", "Weight Scale", "Neck Pillow", "Eye Mask"
+        ]
+      }
+    };
+
+    const description = "Top-rated product in its category.";
+
+    for (const [id, data] of Object.entries(categoryData)) {
+      const urls = imgUrls[data.name] || [];
+      data.titles.forEach((title) => {
+        const image = urls[Math.floor(Math.random() * urls.length)];
+        const price = (Math.random() * (data.priceRange[1] - data.priceRange[0]) + data.priceRange[0]).toFixed(2);
+
+        products.push({
+          title,
+          price,
+          categoryId: Number(id),
+          description,
+          image,
+          createdAt: new Date(),
+          updatedAt: new Date()
+        });
+      });
+    }
+
+    await queryInterface.bulkInsert("Products", products, {});
   },
 
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete("Products", null, {});
-  },
+  }
 };

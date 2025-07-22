@@ -7,7 +7,7 @@ exports.getAllProducts = async (req, res) => {
   try {
     const {
       page = 1,
-      limit = 1,
+      limit = 6,
       sort = "latest",
       search = "",
       category = ""
