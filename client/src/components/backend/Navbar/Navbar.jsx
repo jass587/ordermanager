@@ -41,7 +41,7 @@ export default function Topbar() {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
-    navigate("/signin");
+    navigate("/");
   };
 
   const handleEditProfile = () => {

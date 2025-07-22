@@ -15,14 +15,8 @@ import Checkout from '../pages/frontend/user/Checkout/Checkout';
 export default function UserRoutes() {
   return (
     <Routes>
-      <Route
-        path="/"
-        element={
-          <ProtectedRoute allowedRoles={['user']}>
-            <UserLayout />
-          </ProtectedRoute>
-        }
-      >
+      {/* Public Routes (No Sign-In Required) */}
+      <Route element={<UserLayout />}>
         <Route index element={<Navigate to="home" replace />} />
         <Route path="home" element={<Home />} />
         <Route path="products" element={<ProductsList />} />
@@ -30,11 +24,23 @@ export default function UserRoutes() {
         <Route path="cart" element={<Cart />} />
         <Route path="cart-items" element={<CartItem />} />
         <Route path="dashboard" element={<Dashboard />} />
+      </Route>
+
+      {/* Protected Routes (Requires Sign-In) */}
+      <Route
+        element={
+          <ProtectedRoute allowedRoles={['user']}>
+            <UserLayout />
+          </ProtectedRoute>
+        }
+      >
         <Route path="edit-profile" element={<EditProfile />} />
         <Route path="orders" element={<Orders />} />
         <Route path="checkout" element={<Checkout />} />
-        <Route path="*" element={<NotFound />} />
       </Route>
+
+      {/* Catch-All */}
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

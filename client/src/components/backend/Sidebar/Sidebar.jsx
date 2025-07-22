@@ -72,7 +72,7 @@ export default function Sidebar(props = {}) {
   const handleLogout = () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
-    window.location.href = "/signin";
+    window.location.href = "/";
   };
 
   return (

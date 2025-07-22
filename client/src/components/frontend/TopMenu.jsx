@@ -1,11 +1,6 @@
 import { Link } from "react-router-dom";
 
 const TopMenu = () => {
-    const handleLogout = () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    navigate("/signin");
-  };
   return (
     <nav className="navbar navbar-expand-lg bg-dark p-0 navbar-text-navajowhite">
       <div className="container-fluid navbar-dark">

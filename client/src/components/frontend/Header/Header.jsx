@@ -21,7 +21,7 @@ const Header = () => {
         localStorage.removeItem("token");
         localStorage.removeItem("role");
         setIsLoggedIn(false);
-        navigate("/signin");
+        navigate("/");
     };
 
     return (
@@ -40,7 +40,7 @@ const Header = () => {
                             <span className="fw-bold text-dark fs-5">Ecomm.wired</span>
                         </Link>
                     </div>
-                    
+
                     <div className="col-md-5">
                         <Search />
                     </div>
@@ -76,7 +76,7 @@ const Header = () => {
                                 </ul>
                             </div>
                         ) : (
-                            <Link to="/account/signin" className="btn btn-outline-primary">Sign In</Link>
+                            <Link to="/signin" className="btn btn-outline-primary">Sign In</Link>
                         )}
                     </div>
                 </div>

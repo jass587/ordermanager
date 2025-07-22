@@ -1,4 +1,4 @@
-import { Routes, Route, Navigate } from 'react-router-dom';
+import { Routes, Route } from 'react-router-dom';
 import AdminRoutes from './routes/AdminRoutes';
 import UserRoutes from './routes/UserRoutes';
 import SignIn from './pages/common/signin/SignIn';
@@ -11,8 +11,6 @@ import DefaultError from './pages/common/errors/DefaultError';
 function App() {
   return (
     <Routes>
-       <Route path="/" element={<Navigate to="/signin" replace />} />
-
       <Route path="/signin" element={<SignIn />} />
       <Route path="/admin/*" element={<AdminRoutes />} />
       <Route path="/social-login-success" element={<SocialLoginSuccess />} />

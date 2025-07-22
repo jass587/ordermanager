@@ -9,7 +9,7 @@ const Banner = lazy(() => import("../../../../components/frontend/Carousel"));
 // const CardLogin = lazy(() => import("../components/card/CardLogin"));
 // const CardImage = lazy(() => import("../components/card/CardImage"));
 
-export default function HomeView() {
+export default function Home() {
 
   return (
     <div className="p-4" style={{width : '100vw'}} >

@@ -13,8 +13,8 @@ import ETable from "../../../components/backend/Tables/Common/eTable";
 
     const fetchProducts = async () => {
       try {
-        const data = await ProductService.getAll();
-        setProducts(data);
+        const { result: { products } } = await ProductService.getAll();
+        setProducts(products);
       } catch (err) {
         console.error("Failed to fetch products:", err);
       }
@@ -61,6 +61,8 @@ import ETable from "../../../components/backend/Tables/Common/eTable";
         console.error("Failed to delete product:", err);
       }
     };
+
+    console.log(products)
 
     return (
       <>
