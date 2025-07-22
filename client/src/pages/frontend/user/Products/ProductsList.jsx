@@ -1,10 +1,13 @@
 import { useState, useEffect, useCallback, lazy } from "react";
-import { useSearchParams, useNavigate  } from "react-router-dom";
+import { useSearchParams, useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+
 import CardProductGrid from "../../../../components/frontend/card/CardProductGrid";
 import CardProductList from "../../../../components/frontend/card/CardProductList";
 import ProductService from "../../../../services/api/products";
 import CategoryService from "../../../../services/api/categories";
 import Paging from "../../../../components/Paging";
+import { addToCart } from "../../../../store/cartSlice";
 
 const FilterCategory = lazy(() => import("../../../../components/frontend/filter/FilterCategory"));
 
@@ -20,6 +23,7 @@ export default function ProductsList() {
   const [searchParams] = useSearchParams();
   const searchTerm = searchParams.get("search") || "";
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const effectiveCategory = searchTerm ? "" : selectedCategory;
   const pageLimit = 6;
@@ -62,7 +66,7 @@ export default function ProductsList() {
   }, [fetchProducts]);
 
   useEffect(() => {
-    setCurrentPage(1); // Reset to page 1 when filters change
+    setCurrentPage(1);
   }, [selectedCategory, sort]);
 
   const onPageChanged = ({ currentPage }) => {
@@ -70,9 +74,12 @@ export default function ProductsList() {
     window.scrollTo({ top: 0, behavior: "smooth" });
   };
 
+  const handleAddToCart = (product) => {
+    dispatch(addToCart({ ...product, qty: 1 }));
+  };
+
   return (
     <div className="w-100" style={{ maxHeight: "calc(100vh - 180px)", overflowY: "auto" }}>
-      {/* Banner */}
       <div
         className="p-5 bg-primary bs-cover banner-top"
         style={{ backgroundImage: 'url("/images/banner/50-Banner.webp")', height: "31vh" }}
@@ -84,16 +91,14 @@ export default function ProductsList() {
         </div>
       </div>
 
-      {/* Main Section */}
       <div className="container-fluid my-4">
         <div className="row">
-          {/* Sidebar */}
           <div className="col-md-3">
             <FilterCategory
               selected={searchTerm ? "" : selectedCategory}
               onSelect={(cat) => {
                 if (searchTerm) {
-                  navigate("/products"); // clear ?search= param
+                  navigate("/products");
                 }
                 setSelectedCategory(cat);
               }}
@@ -101,12 +106,11 @@ export default function ProductsList() {
             />
           </div>
 
-          {/* Product List/Grid */}
           <div className="col-md-9">
             <div className="row mb-3 align-items-center">
               <div className="col-md-6">
                 <h6 className="fw-bold">
-                  {products.length} result(s) for{" "}
+                  {products.length} result(s) for {" "}
                   <span className="text-warning">
                     "{searchTerm ? searchTerm : selectedCategory}"
                   </span>
@@ -146,11 +150,11 @@ export default function ProductsList() {
                 products.map((product) =>
                   view === "grid" ? (
                     <div className="col-md-4 mb-4" key={product.id}>
-                      <CardProductGrid data={product} />
+                      <CardProductGrid data={product} onAddToCart={handleAddToCart} />
                     </div>
                   ) : (
                     <div className="col-12" key={product.id}>
-                      <CardProductList data={product} />
+                      <CardProductList data={product} onAddToCart={handleAddToCart} />
                     </div>
                   )
                 )

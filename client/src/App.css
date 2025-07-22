@@ -18,3 +18,11 @@
 .banner-top {
   padding-top: 5rem; /* Adjust if needed based on header+menu height */
 }
+
+.custom-no-padding {
+  padding: 0 !important;
+}
+
+.mt-80 {
+  margin-top: 5rem;
+}

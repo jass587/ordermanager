@@ -1,12 +1,16 @@
 import { lazy } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
 const Search = lazy(() => import("../Search/Search"));
 
 const Header = () => {
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
+
+    const cartItems = useSelector((state) => state.cart.items);
+    const cartCount = cartItems.reduce((acc, item) => acc + item.qty, 0);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -36,19 +40,19 @@ const Header = () => {
                             <span className="fw-bold text-dark fs-5">Ecomm.wired</span>
                         </Link>
                     </div>
-
-                    {/* Search */}
+                    
                     <div className="col-md-5">
                         <Search />
                     </div>
 
-                    {/* Cart + Profile/SignIn */}
                     <div className="col-md-4 text-end">
                         <Link to="/cart" className="btn btn-outline-primary position-relative me-3">
                             <i className="bi bi-cart3"></i>
-                            <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
-                                2
-                            </span>
+                            {cartCount > 0 && (
+                                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                    {cartCount}
+                                </span>
+                            )}
                         </Link>
 
                         {isLoggedIn ? (

@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom";
 
-const CardProductList = ({ data }) => {
+const CardProductList = ({ data, onAddToCart }) => {
   const {
     id,
     image,
@@ -64,7 +64,12 @@ const CardProductList = ({ data }) => {
             </div>
 
             <div className="btn-group d-flex" role="group">
-              <button type="button" className="btn btn-sm btn-primary" title="Add to cart">
+              <button
+                type="button"
+                className="btn btn-sm btn-primary"
+                title="Add to cart"
+                onClick={() => onAddToCart(data)}
+              >
                 <i className="bi bi-cart-plus" />
               </button>
             </div>
