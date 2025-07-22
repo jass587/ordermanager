@@ -1,4 +1,5 @@
 import { useState, useEffect, useCallback, lazy } from "react";
+import { useSearchParams, useNavigate  } from "react-router-dom";
 import CardProductGrid from "../../../../components/frontend/card/CardProductGrid";
 import CardProductList from "../../../../components/frontend/card/CardProductList";
 import ProductService from "../../../../services/api/products";
@@ -9,20 +10,27 @@ const FilterCategory = lazy(() => import("../../../../components/frontend/filter
 
 export default function ProductsList() {
   const [view, setView] = useState("grid");
-  const [selectedCategory, setSelectedCategory] = useState("Electronics"); // default category
+  const [selectedCategory, setSelectedCategory] = useState("Electronics");
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [sort, setSort] = useState("price_low"); // default sort
+  const [sort, setSort] = useState("price_low");
+
+  const [searchParams] = useSearchParams();
+  const searchTerm = searchParams.get("search") || "";
+  const navigate = useNavigate();
+
+  const effectiveCategory = searchTerm ? "" : selectedCategory;
   const pageLimit = 6;
 
   const fetchProducts = useCallback(async () => {
     try {
       const res = await ProductService.getAll({
         page: currentPage,
-        category: selectedCategory,
+        category: effectiveCategory,
         sort,
+        search: searchTerm,
       });
       setProducts(res.result.products || []);
       setTotal(res.result.total || 0);
@@ -31,7 +39,7 @@ export default function ProductsList() {
       setProducts([]);
       setTotal(0);
     }
-  }, [currentPage, selectedCategory, sort]);
+  }, [currentPage, selectedCategory, sort, searchTerm]);
 
   const fetchCategories = useCallback(async () => {
     try {
@@ -71,7 +79,7 @@ export default function ProductsList() {
       >
         <div className="container text-center pt-5 mt-5">
           <span className="fs-2 p-2 bg-white rounded shadow d-inline-block mt-3">
-            {selectedCategory}
+            {searchTerm ? searchTerm : selectedCategory}
           </span>
         </div>
       </div>
@@ -82,8 +90,13 @@ export default function ProductsList() {
           {/* Sidebar */}
           <div className="col-md-3">
             <FilterCategory
-              selected={selectedCategory}
-              onSelect={(cat) => setSelectedCategory(cat)}
+              selected={searchTerm ? "" : selectedCategory}
+              onSelect={(cat) => {
+                if (searchTerm) {
+                  navigate("/products"); // clear ?search= param
+                }
+                setSelectedCategory(cat);
+              }}
               categories={categories}
             />
           </div>
@@ -94,7 +107,9 @@ export default function ProductsList() {
               <div className="col-md-6">
                 <h6 className="fw-bold">
                   {products.length} result(s) for{" "}
-                  <span className="text-warning">"{selectedCategory}"</span>
+                  <span className="text-warning">
+                    "{searchTerm ? searchTerm : selectedCategory}"
+                  </span>
                 </h6>
               </div>
               <div className="col-md-6 d-flex justify-content-end align-items-center gap-2">

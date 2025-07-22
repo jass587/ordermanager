@@ -1,41 +1,36 @@
 import { useState } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { useSearchParams } from "react-router-dom";
 
 const Search = () => {
   const [query, setQuery] = useState("");
-  const navigate = useNavigate();
-  const location = useLocation();
+  const [searchParams, setSearchParams] = useSearchParams();
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); 
-    const trimmed = query.trim();
-
-    if (trimmed) {
-      navigate(`/products?search=${encodeURIComponent(trimmed)}`);
+  const handleSearch = () => {
+    if (query.trim()) {
+      searchParams.set("search", query.trim());
+      searchParams.delete("page"); // reset to page 1
+      setSearchParams(searchParams);
     }
   };
 
+  const handleKeyDown = (e) => {
+    if (e.key === "Enter") handleSearch();
+  };
+
   return (
-    <form className="search" onSubmit={handleSubmit}>
-      <div className="input-group">
-        <input
-          id="search"
-          name="search"
-          type="text"
-          className="form-control"
-          placeholder="Search"
-          value={query}
-          onChange={(e) => setQuery(e.target.value)}
-        />
-        <button
-          className="btn btn-primary text-white"
-          type="submit"
-          aria-label="Search"
-        >
-          <i className="bi bi-search"></i>
-        </button>
-      </div>
-    </form>
+    <div className="input-group">
+      <input
+        type="text"
+        className="form-control"
+        placeholder="Search products..."
+        value={query}
+        onChange={(e) => setQuery(e.target.value)}
+        onKeyDown={handleKeyDown}
+      />
+      <button className="btn btn-outline-primary" onClick={handleSearch}>
+        <i className="bi bi-search" />
+      </button>
+    </div>
   );
 };
 
