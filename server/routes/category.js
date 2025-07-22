@@ -11,8 +11,8 @@ const authenticateToken = require("../middleware/authenticateToken");
 const { isAdmin } = require('../middleware/roleMiddleware.js');
 
 router.post("/", authenticateToken, isAdmin, addCategory);
-router.get("/", authenticateToken, getCategories);
-router.get("/:id", authenticateToken,  getCategory);
+router.get("/", getCategories);
+router.get("/:id", getCategory);
 router.put("/:id", authenticateToken, isAdmin, updateCategory);
 router.delete("/:id", authenticateToken, isAdmin, deleteCategory);
 
