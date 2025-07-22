@@ -1,6 +1,22 @@
+import { useState } from "react";
+import { useNavigate, useLocation } from "react-router-dom";
+
 const Search = () => {
+  const [query, setQuery] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation();
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); 
+    const trimmed = query.trim();
+
+    if (trimmed) {
+      navigate(`/products?search=${encodeURIComponent(trimmed)}`);
+    }
+  };
+
   return (
-    <form action="#" className="search">
+    <form className="search" onSubmit={handleSubmit}>
       <div className="input-group">
         <input
           id="search"
@@ -8,9 +24,9 @@ const Search = () => {
           type="text"
           className="form-control"
           placeholder="Search"
-          required
+          value={query}
+          onChange={(e) => setQuery(e.target.value)}
         />
-        <label className="visually-hidden" htmlFor="search"></label>
         <button
           className="btn btn-primary text-white"
           type="submit"
@@ -22,4 +38,5 @@ const Search = () => {
     </form>
   );
 };
+
 export default Search;

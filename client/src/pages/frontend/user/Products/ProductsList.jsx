@@ -9,39 +9,53 @@ const FilterCategory = lazy(() => import("../../../../components/frontend/filter
 
 export default function ProductsList() {
   const [view, setView] = useState("grid");
-  const [selectedCategory, setSelectedCategory] = useState("");
+  const [selectedCategory, setSelectedCategory] = useState("Electronics"); // default category
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-
-  const pageLimit = 1; // Backend controls this value
+  const [sort, setSort] = useState("price_low"); // default sort
+  const pageLimit = 6;
 
   const fetchProducts = useCallback(async () => {
-    const res = await ProductService.getAll({
-      page: currentPage,
-      category: selectedCategory,
-    });
-    console.log("products", products)
-    setProducts(res.products);
-    setTotal(res.total);
-  }, [currentPage, selectedCategory]);
+    try {
+      const res = await ProductService.getAll({
+        page: currentPage,
+        category: selectedCategory,
+        sort,
+      });
+      setProducts(res.result.products || []);
+      setTotal(res.result.total || 0);
+    } catch (err) {
+      console.error("Error fetching products:", err);
+      setProducts([]);
+      setTotal(0);
+    }
+  }, [currentPage, selectedCategory, sort]);
 
   const fetchCategories = useCallback(async () => {
-    const result = await CategoryService.getAll();
-    setCategories(result);
+    try {
+      const result = await CategoryService.getAll();
+      setCategories(result);
+      if (result.length > 0 && !selectedCategory) {
+        setSelectedCategory("Electronics");
+      }
+    } catch (err) {
+      console.error("Error fetching categories:", err);
+    }
+  }, [selectedCategory]);
 
-    const defaultCategory = result.find(cat => cat.name.toLowerCase() === "electronics");
-    setSelectedCategory(defaultCategory ? defaultCategory.name : result[0]?.name);
-  }, []);
+  useEffect(() => {
+    fetchCategories();
+  }, [fetchCategories]);
 
   useEffect(() => {
     fetchProducts();
   }, [fetchProducts]);
 
   useEffect(() => {
-    fetchCategories();
-  }, [fetchCategories]);
+    setCurrentPage(1); // Reset to page 1 when filters change
+  }, [selectedCategory, sort]);
 
   const onPageChanged = ({ currentPage }) => {
     setCurrentPage(currentPage);
@@ -49,10 +63,11 @@ export default function ProductsList() {
   };
 
   return (
-    <div className="w-100 overflow-hidden">
+    <div className="w-100" style={{ maxHeight: "calc(100vh - 180px)", overflowY: "auto" }}>
+      {/* Banner */}
       <div
         className="p-5 bg-primary bs-cover banner-top"
-        style={{ backgroundImage: "url(../../images/banner/50-Banner.webp)", height: "31vh" }}
+        style={{ backgroundImage: 'url("/images/banner/50-Banner.webp")', height: "31vh" }}
       >
         <div className="container text-center pt-5 mt-5">
           <span className="fs-2 p-2 bg-white rounded shadow d-inline-block mt-3">
@@ -61,33 +76,36 @@ export default function ProductsList() {
         </div>
       </div>
 
+      {/* Main Section */}
       <div className="container-fluid my-4">
         <div className="row">
+          {/* Sidebar */}
           <div className="col-md-3">
             <FilterCategory
               selected={selectedCategory}
-              onSelect={(cat) => {
-                setSelectedCategory(cat);
-                setCurrentPage(1); // Reset to page 1 when category changes
-              }}
+              onSelect={(cat) => setSelectedCategory(cat)}
               categories={categories}
             />
           </div>
 
+          {/* Product List/Grid */}
           <div className="col-md-9">
             <div className="row mb-3 align-items-center">
               <div className="col-md-6">
                 <h6 className="fw-bold">
-                  {total} result(s) for <span className="text-warning">"{selectedCategory}"</span>
+                  {products.length} result(s) for{" "}
+                  <span className="text-warning">"{selectedCategory}"</span>
                 </h6>
               </div>
               <div className="col-md-6 d-flex justify-content-end align-items-center gap-2">
-                <select className="form-select w-auto">
-                  <option value={1}>Most Popular</option>
-                  <option value={2}>Latest items</option>
-                  <option value={3}>Trending</option>
-                  <option value={4}>Price low to high</option>
-                  <option value={5}>Price high to low</option>
+                <select
+                  className="form-select w-auto"
+                  value={sort}
+                  onChange={(e) => setSort(e.target.value)}
+                >
+                  <option value="price_low">Price low to high</option>
+                  <option value="price_high">Price high to low</option>
+                  <option value="latest">Latest items</option>
                 </select>
                 <div className="btn-group">
                   <button
@@ -109,19 +127,19 @@ export default function ProductsList() {
             </div>
 
             <div className="row g-3">
-              {products.map((product) =>
-                view === "grid" ? (
-                  <div className="col-md-4 mb-4" key={product.id}>
-                    <CardProductGrid data={product} />
-                  </div>
-                ) : (
-                  <div className="col-12" key={product.id}>
-                    <CardProductList data={product} />
-                  </div>
+              {products.length > 0 ? (
+                products.map((product) =>
+                  view === "grid" ? (
+                    <div className="col-md-4 mb-4" key={product.id}>
+                      <CardProductGrid data={product} />
+                    </div>
+                  ) : (
+                    <div className="col-12" key={product.id}>
+                      <CardProductList data={product} />
+                    </div>
+                  )
                 )
-              )}
-
-              {products.length === 0 && (
+              ) : (
                 <div className="col-12 text-muted">No products found.</div>
               )}
 

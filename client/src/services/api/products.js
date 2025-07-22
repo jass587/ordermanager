@@ -1,13 +1,10 @@
 import axiosInstance from "./axiosInstance";
 
 const ProductService = {
-  getAll: async ({ page, category }) => {
-    const res = await axiosInstance.get("/products", {
-      params: { page, category }
-    });
-    return res.data.result;
+  getAll: async (params) => {
+    const res = await axiosInstance.get("/products", { params });
+    return res.data;
   },
-
   getById: async (id) => {
     const res = await axiosInstance.get(`/products/${id}`);
     return res.data.result[0]; // single product
