@@ -42,7 +42,7 @@ const Header = () => {
         }
 
         dispatch(clearCart());
-        persistor.purge();
+        await persistor.purge();
         setIsLoggedIn(false);
 
         AuthService.logout(); // Clears localStorage + redirects
