@@ -9,6 +9,7 @@ const CardProductGrid = ({ data, onAddToCart }) => {
     star = 4,
   } = data;
 
+  console.log(data)
   return (
     <div className="card h-100 shadow-sm position-relative d-flex justify-content-between">
       <img

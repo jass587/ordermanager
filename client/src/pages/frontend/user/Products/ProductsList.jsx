@@ -7,7 +7,8 @@ import CardProductList from "../../../../components/frontend/card/CardProductLis
 import ProductService from "../../../../services/api/products";
 import CategoryService from "../../../../services/api/categories";
 import Paging from "../../../../components/Paging";
-import { addToCart } from "../../../../store/cartSlice";
+import { addItem } from "../../../../redux/store/cartSlice";
+import { toast } from 'react-toastify';
 
 const FilterCategory = lazy(() => import("../../../../components/frontend/filter/FilterCategory"));
 
@@ -75,7 +76,13 @@ export default function ProductsList() {
   };
 
   const handleAddToCart = (product) => {
-    dispatch(addToCart({ ...product, qty: 1 }));
+    console.log(product)
+    dispatch(addItem({
+      productId: product.id,
+      quantity: 1,
+      productInfo: product,
+    }));
+    toast.success(`${product.title} added to cart`);
   };
 
   return (

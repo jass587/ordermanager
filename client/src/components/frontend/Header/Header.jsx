@@ -1,21 +1,28 @@
-import { lazy } from "react";
+import { lazy, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { fetchCartFromBackend } from "../../../redux/thunks/cartThunks";
 
 const Search = lazy(() => import("../Search/Search"));
 
 const Header = () => {
     const navigate = useNavigate();
+    const dispatch = useDispatch();
+
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const cartItems = useSelector((state) => state.cart.items);
-    const cartCount = cartItems.reduce((acc, item) => acc + item.qty, 0);
+    const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-        setIsLoggedIn(!!token);
-    }, []);
+        const loggedIn = !!token;
+        setIsLoggedIn(loggedIn);
+
+        if (loggedIn) {
+            dispatch(fetchCartFromBackend()); // ✅ Load cart once if token exists
+        }
+    }, [dispatch]);
 
     const handleLogout = () => {
         localStorage.removeItem("token");
@@ -28,15 +35,9 @@ const Header = () => {
         <header className="p-3 border-bottom bg-white shadow-sm" style={{ minHeight: "65px" }}>
             <div className="container-fluid">
                 <div className="row align-items-center">
-                    {/* Logo */}
                     <div className="col-md-3 text-center text-md-start mb-2 mb-md-0">
                         <Link to="/home" className="d-flex align-items-center gap-2 text-decoration-none">
-                            <img
-                                src="/images/rb_logo.png"
-                                alt="Logo"
-                                className="img-fluid"
-                                style={{ maxHeight: "40px" }}
-                            />
+                            <img src="/images/rb_logo.png" alt="Logo" className="img-fluid" style={{ maxHeight: "40px" }} />
                             <span className="fw-bold text-dark fs-5">Ecomm.wired</span>
                         </Link>
                     </div>

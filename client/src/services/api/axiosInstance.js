@@ -1,6 +1,5 @@
 // client/src/services/api/axiosInstance.js
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
 
 const axiosInstance = axios.create({
   baseURL: "http://localhost:5000/api",
@@ -33,12 +32,10 @@ axiosInstance.interceptors.response.use(
         Navigate("/home")
         break;
       case 401:
-        alert("Unauthorized. Please log in again.");
         localStorage.removeItem("token");
         window.location.href = "/signin"; // force redirect
         break;
       case 403:
-        alert("Forbidden. You don’t have access to this resource.");
         window.location.href = "/forbidden";
         break;
       case 404:

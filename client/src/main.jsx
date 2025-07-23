@@ -9,7 +9,7 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import './assets/scss/app.scss';
 import App from './App.jsx';
 import { Provider } from 'react-redux';
-import { store } from './store/store.js';
+import { store } from './redux/store/store.js';
 import './App.css';
 
 
