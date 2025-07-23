@@ -59,8 +59,8 @@ exports.addToCart = async (req, res) => {
   }
 };
 
-// POST api/cart/bulk
-exports.bulkAddToCart = async (req, res) => {
+// POST api/cart/checkout
+exports.checkoutCart = async (req, res) => {
   const userId = req.user.id;
   const items = req.body.items; // Expected: [{ productId, quantity }]
 

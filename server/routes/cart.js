@@ -8,7 +8,7 @@ router.use(authenticateToken);
 
 router.get('/', cartController.getCartItems);
 router.post('/', cartController.addToCart);
-router.post('/bulk', cartController.bulkAddToCart);
+router.post('/checkout', cartController.checkoutCart);
 router.put('/:id', cartController.updateCartItem);
 router.delete('/:id', cartController.deleteCartItem);
 
