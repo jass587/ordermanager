@@ -1,7 +1,10 @@
 import { lazy, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
-import { fetchCartFromBackend } from "../../../redux/thunks/cartThunks";
+import { fetchCartFromBackend, syncCartToBackend } from "../../../redux/thunks/cartThunks";
+import store, { persistor } from "../../../redux/store/store";
+import { clearCart } from "../../../redux/store/cartSlice";
+import AuthService from "../../../services/api/auth";
 
 const Search = lazy(() => import("../Search/Search"));
 
@@ -12,7 +15,9 @@ const Header = () => {
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const cartItems = useSelector((state) => state.cart.items);
-    const cartCount = cartItems.reduce((acc, item) => acc + item.quantity, 0);
+    const cartCount = cartItems
+        .filter((item) => item.productInfo)
+        .reduce((acc, item) => acc + item.quantity, 0);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
@@ -24,12 +29,24 @@ const Header = () => {
         }
     }, [dispatch]);
 
-    const handleLogout = () => {
-        localStorage.removeItem("token");
-        localStorage.removeItem("role");
+    const handleLogout = async () => {
+        const cartItems = store.getState().cart.items;
+        const token = localStorage.getItem("token");
+
+        if (token && cartItems.length > 0) {
+            try {
+                await dispatch(syncCartToBackend(cartItems));
+            } catch (e) {
+                console.warn("Failed to sync cart during logout", e);
+            }
+        }
+
+        dispatch(clearCart());
+        persistor.purge();
         setIsLoggedIn(false);
-        navigate("/");
-    };
+
+        AuthService.logout(); // Clears localStorage + redirects
+    }
 
     return (
         <header className="p-3 border-bottom bg-white shadow-sm" style={{ minHeight: "65px" }}>

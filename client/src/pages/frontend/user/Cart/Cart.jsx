@@ -9,7 +9,7 @@ const CartView = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
 
-  console.log(cartItems)
+
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + item.quantity * item.productInfo?.price,
     0
@@ -22,7 +22,7 @@ const CartView = () => {
     const newQty = type === "inc" ? quantity + 1 : quantity - 1;
     if (newQty >= 1) {
       console.log("trigger")
-      dispatch(updateQuantity({ productId, quantity : newQty   }));
+      dispatch(updateQuantity({ productId, quantity: newQty }));
     }
   };
 
@@ -49,71 +49,73 @@ const CartView = () => {
                   </tr>
                 </thead>
                 <tbody>
-                  {cartItems.map((item) => (
-                    <tr key={item.productId}>
-                      <td>
-                        <div className="d-flex align-items-center">
-                          <img
-                            src={item.productInfo.image}
-                            alt={item.productInfo.title}
-                            width="70"
-                            className="me-3 rounded shadow-sm"
-                          />
-                          <div>
-                            <Link
-                              to={`/product/${item.productId}`}
-                              className="text-decoration-none fw-semibold text-dark"
-                            >
-                              {item.productInfo.title}
-                            </Link>
+                  {cartItems
+                    .filter(item => item.productInfo)
+                    .map((item) => (
+                      <tr key={item.productId}>
+                        <td>
+                          <div className="d-flex align-items-center">
+                            <img
+                              src={item.productInfo.image}
+                              alt={item.productInfo.title}
+                              width="70"
+                              className="me-3 rounded shadow-sm"
+                            />
+                            <div>
+                              <Link
+                                to={`/product/${item.productId}`}
+                                className="text-decoration-none fw-semibold text-dark"
+                              >
+                                {item.productInfo.title}
+                              </Link>
+                            </div>
                           </div>
-                        </div>
-                      </td>
-                      <td>
-                        <div className="input-group input-group-sm">
+                        </td>
+                        <td>
+                          <div className="input-group input-group-sm">
+                            <button
+                              className="btn btn-outline-secondary"
+                              onClick={() => handleQuantityChange(item, "dec")}
+                            >
+                              <i className="bi bi-dash"></i>
+                            </button>
+                            <input
+                              type="text"
+                              className="form-control text-center"
+                              value={item.quantity}
+                              readOnly
+                            />
+                            <button
+                              className="btn btn-outline-secondary"
+                              onClick={() => handleQuantityChange(item, "inc")}
+                            >
+                              <i className="bi bi-plus"></i>
+                            </button>
+                          </div>
+                        </td>
+                        <td className="text-end">
+                          <div className="fw-bold fs-6 text-primary">
+                            $
+                            {(
+                              item.quantity * item.productInfo.price
+                            ).toFixed(2)}
+                          </div>
+                          <small className="text-muted d-block">
+                            ${item.productInfo.price} each
+                          </small>
+                        </td>
+                        <td className="text-end">
                           <button
-                            className="btn btn-outline-secondary"
-                            onClick={() => handleQuantityChange(item, "dec")}
+                            className="btn btn-sm btn-outline-danger"
+                            onClick={() =>
+                              dispatch(removeItem(item.productId))
+                            }
                           >
-                            <i className="bi bi-dash"></i>
+                            <i className="bi bi-trash"></i>
                           </button>
-                          <input
-                            type="text"
-                            className="form-control text-center"
-                            value={item.quantity}
-                            readOnly
-                          />
-                          <button
-                            className="btn btn-outline-secondary"
-                            onClick={() => handleQuantityChange(item, "inc")}
-                          >
-                            <i className="bi bi-plus"></i>
-                          </button>
-                        </div>
-                      </td>
-                      <td className="text-end">
-                        <div className="fw-bold fs-6 text-primary">
-                          $
-                          {(
-                            item.quantity * item.productInfo.price
-                          ).toFixed(2)}
-                        </div>
-                        <small className="text-muted d-block">
-                          ${item.productInfo.price} each
-                        </small>
-                      </td>
-                      <td className="text-end">
-                        <button
-                          className="btn btn-sm btn-outline-danger"
-                          onClick={() =>
-                            dispatch(removeItem(item.productId))
-                          }
-                        >
-                          <i className="bi bi-trash"></i>
-                        </button>
-                      </td>
-                    </tr>
-                  ))}
+                        </td>
+                      </tr>
+                    ))}
                 </tbody>
               </table>
             </div>

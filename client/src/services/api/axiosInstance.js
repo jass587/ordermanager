@@ -8,10 +8,11 @@ const axiosInstance = axios.create({
   },
 });
 
-// Request Interceptor: Attach token
+// ✅ Request Interceptor: Attach token
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
+    console.log("token", token)
     if (token) {
       config.headers.Authorization = `Bearer ${token}`;
     }
@@ -20,7 +21,7 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// Response Interceptor: Handle errors
+// ✅ Response Interceptor: Handle errors
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
@@ -29,7 +30,7 @@ axiosInstance.interceptors.response.use(
     switch (status) {
       case 400:
         alert("Bad Request");
-        Navigate("/home")
+        window.location.href = "/home";
         break;
       case 401:
         localStorage.removeItem("token");

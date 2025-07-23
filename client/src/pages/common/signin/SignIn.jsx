@@ -1,6 +1,7 @@
 import { useFormik } from "formik";
 import * as Yup from "yup";
 import { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import AuthService from "../../../services/api/auth";
 import { faEnvelope, faUnlockAlt } from "@fortawesome/free-solid-svg-icons";
@@ -10,10 +11,17 @@ import {
   Col, Row, Form, Card, Button, InputGroup, Container
 } from "@themesberg/react-bootstrap";
 import BgImage from "../../../assets/img/illustrations/signin.svg";
+import { fetchCartFromBackend, syncCartToBackend } from "../../../redux/thunks/cartThunks";
+import { mergeCarts } from "../../../utilities/mergeCart";
+import { clearCart } from "../../../redux/store/cartSlice";
+import { toast } from "react-toastify";
 
 export default function SignIn() {
   const [error, setError] = useState("");
   const navigate = useNavigate();
+  const dispatch = useDispatch();
+
+  const guestCart = useSelector((state) => state.cart.items);
 
   const formik = useFormik({
     initialValues: { email: "", password: "" },
@@ -25,10 +33,39 @@ export default function SignIn() {
       setError("");
       try {
         const res = await AuthService.login(values.email, values.password);
-        if (res.role === "admin") {
-          navigate("/admin/dashboard/");
-        } else navigate("/home");
+
+        if (res.success) {
+          const { role } = res;
+
+          // ✅ Save token and role
+          localStorage.setItem("role", role);
+
+          // ✅ Step 1: Load DB cart
+          const dbCart = await dispatch(fetchCartFromBackend()).unwrap();
+
+          // ✅ Step 2: Merge if guest cart exists
+          if (guestCart.length > 0) {
+            const merged = mergeCarts(dbCart, guestCart);
+            await dispatch(syncCartToBackend(merged));
+          }
+
+          // ✅ Step 3: Clear guest cart and reload from backend
+          dispatch(clearCart());
+          await dispatch(fetchCartFromBackend());
+
+          toast.success("Login successful!");
+
+          // ✅ Navigate based on role
+          if (role === "admin") {
+            navigate("/admin/dashboard/");
+          } else {
+            navigate("/home");
+          }
+        } else {
+          setError(res.message || "Invalid login credentials");
+        }
       } catch (err) {
+        console.error("Login error:", err);
         setError(err.message || "Server error or network issue.");
       }
     },
