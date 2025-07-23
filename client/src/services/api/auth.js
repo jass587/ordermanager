@@ -37,7 +37,7 @@ const AuthService = {
   logout: () => {
     localStorage.removeItem("token");
     localStorage.removeItem("role");
-    window.location.href = "/signin";
+    window.location.href = "/home";
   },
 };
 
