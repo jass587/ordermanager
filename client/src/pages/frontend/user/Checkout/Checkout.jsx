@@ -1,6 +1,11 @@
+import { useSelector } from "react-redux";
+
 const CheckoutView = () => {
+
+  const cartItems = useSelector((state) => state.cart.items);
+
   return (
-    <div className="bg-light py-5">
+    <div className="checkout-container bg-light py-5">
       <div className="container">
         <div className="row mb-4">
           <div className="col-md-12">
@@ -158,46 +163,62 @@ const CheckoutView = () => {
           {/* RIGHT SECTION - CART */}
           <div className="col-md-4">
             <div className="card shadow-sm">
-              <div className="card-header d-flex justify-content-between align-items-center">
-                <span><i className="bi bi-cart3 me-2"></i>Cart</span>
-                <span className="badge bg-secondary rounded-pill">3</span>
+              <div
+                className="card-header d-flex justify-content-between align-items-center"
+                style={{ backgroundColor: "#e8f4fd" }}
+              >
+                <span>
+                  <i className="bi bi-cart3 me-2"></i> Cart
+                </span>
+                <span className="badge bg-secondary rounded-pill">{cartItems.length}</span>
               </div>
               <ul className="list-group list-group-flush">
-                <li className="list-group-item d-flex justify-content-between lh-sm">
-                  <div>
-                    <h6 className="my-0">Product name</h6>
-                    <small className="text-muted">Brief description</small>
-                  </div>
-                  <span className="text-muted">$150</span>
-                </li>
-                <li className="list-group-item d-flex justify-content-between lh-sm">
-                  <div>
-                    <h6 className="my-0">Second product</h6>
-                    <small className="text-muted">Brief description</small>
-                  </div>
-                  <span className="text-muted">$12</span>
-                </li>
-                <li className="list-group-item d-flex justify-content-between lh-sm">
-                  <div>
-                    <h6 className="my-0">Third item</h6>
-                    <small className="text-muted">Brief description</small>
-                  </div>
-                  <span className="text-muted">$50</span>
-                </li>
-                <li className="list-group-item d-flex justify-content-between bg-light">
+                {cartItems.map((item, index) => (
+                  <li
+                    key={index}
+                    className="list-group-item d-flex justify-content-between lh-sm"
+                  >
+                    <div>
+                      <h6 className="my-0">{item.productInfo.title}</h6>
+                      <small className="text-muted">Qty: {item.quantity}</small>
+                    </div>
+                    <span className="text-muted">
+                      ${(item.productInfo.price * item.quantity).toFixed(2)}
+                    </span>
+                  </li>
+                ))}
+
+                {/* Promo code if any */}
+                <li
+                  className="list-group-item d-flex justify-content-between"
+                  style={{ backgroundColor: "#e6f4ea" }}
+                >
                   <div className="text-success">
                     <h6 className="my-0">Promo code</h6>
-                    <small>EXAMPLECODE</small>
+                    <small>{/* PromoCodeHere */}</small>
                   </div>
-                  <span className="text-success">−$50</span>
+                  <span className="text-success">−$0.00</span>
                 </li>
+
+                {/* Total */}
                 <li className="list-group-item d-flex justify-content-between">
                   <span>Total (USD)</span>
-                  <strong>$162</strong>
+                  <strong>
+                    $
+                    {cartItems
+                      .reduce(
+                        (total, item) =>
+                          total + item.productInfo.price * item.quantity,
+                        0
+                      )
+                      .toFixed(2)}
+                  </strong>
                 </li>
               </ul>
+
             </div>
           </div>
+
         </div>
       </div>
     </div>

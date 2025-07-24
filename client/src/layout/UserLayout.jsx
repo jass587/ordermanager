@@ -15,7 +15,7 @@ export default function UserLayout() {
         <TopMenu />
       </header>
 
-      <main className="main-outlet flex-grow-1 px-2">
+      <main className="flex-grow-1 px-2">
         <Outlet />
       </main>
 

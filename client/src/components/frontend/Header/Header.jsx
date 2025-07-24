@@ -17,16 +17,23 @@ const Header = () => {
     const cartCount = cartItems
         .filter((item) => item.productInfo)
         .reduce((acc, item) => acc + item.quantity, 0);
+    const isCartLoaded = useSelector((state) => state.cart.isCartLoaded);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
-        const loggedIn = !!token;
-        setIsLoggedIn(loggedIn);
 
-        if (loggedIn) {
-            dispatch(fetchCartFromBackend()); // ✅ Load cart once if token exists
+        if (token) {
+            setIsLoggedIn(true);
+
+            // Only load cart if not already loaded
+            if (!isCartLoaded  && cartItems.length === 0) {
+                dispatch(fetchCartFromBackend());
+            }
+        } else {
+            setIsLoggedIn(false);
         }
-    }, [dispatch]);
+    }, [dispatch, isCartLoaded]);
+
 
     const handleLogout = async () => {
         const cartItems = store.getState().cart.items;
@@ -36,17 +43,17 @@ const Header = () => {
             try {
                 await dispatch(syncCartToBackend(cartItems));
             } catch (e) {
-                console.warn("Failed to sync cart during logout", e);
+                console.warn("⚠️ Failed to sync cart during logout:", e);
             }
         }
 
         dispatch(clearCart());
         await persistor.flush();
         await persistor.purge();
-        setIsLoggedIn(false);
 
-        AuthService.logout(); // Clears localStorage + redirects
-    }
+        setIsLoggedIn(false);
+        AuthService.logout(); // Clears token + redirects
+    };
 
     return (
         <header className="p-3 border-bottom bg-white shadow-sm" style={{ minHeight: "65px" }}>

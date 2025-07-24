@@ -7,7 +7,7 @@ import CardProductList from "../../../../components/frontend/card/CardProductLis
 import ProductService from "../../../../services/api/products";
 import CategoryService from "../../../../services/api/categories";
 import Paging from "../../../../components/Paging";
-import { addItem, clearCart } from "../../../../redux/store/cartSlice";
+import { addItem} from "../../../../redux/store/cartSlice";
 import { toast } from 'react-toastify';
 
 const FilterCategory = lazy(() => import("../../../../components/frontend/filter/FilterCategory"));
@@ -83,8 +83,6 @@ export default function ProductsList() {
     }));
     toast.success(`${product.title} added to cart`);
   };
-
-  // dispatch(clearCart())
 
   return (
     <div className="w-100" style={{ maxHeight: "calc(100vh - 180px)", overflowY: "auto" }}>

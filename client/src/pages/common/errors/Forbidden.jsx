@@ -10,7 +10,6 @@ export default function Forbidden({ fullScreen = true }) {
       const token = localStorage.getItem("token");
       if (token) {
         const { role } = jwtDecode(token);
-        localStorage.clear();
         navigate(role === "admin" ? "/admin/dashboard" : "/home");
       } else {
         navigate("/signin");
