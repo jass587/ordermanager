@@ -1,5 +1,5 @@
 import { lazy, useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { fetchCartFromBackend, syncCartToBackend } from "../../../redux/thunks/cartThunks";
 import store, { persistor } from "../../../redux/store/store";
@@ -9,7 +9,6 @@ import AuthService from "../../../services/api/auth";
 const Search = lazy(() => import("../Search/Search"));
 
 const Header = () => {
-    const navigate = useNavigate();
     const dispatch = useDispatch();
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -33,7 +32,7 @@ const Header = () => {
         const cartItems = store.getState().cart.items;
         const token = localStorage.getItem("token");
 
-        if (token && cartItems.length > 0) {
+        if (token && cartItems.length >= 0) {
             try {
                 await dispatch(syncCartToBackend(cartItems));
             } catch (e) {
@@ -42,6 +41,7 @@ const Header = () => {
         }
 
         dispatch(clearCart());
+        await persistor.flush();
         await persistor.purge();
         setIsLoggedIn(false);
 

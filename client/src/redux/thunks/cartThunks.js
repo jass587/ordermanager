@@ -4,7 +4,6 @@ import {
   setCart,
   setCartLoading,
   setCartError,
-  clearCart,
 } from "../store/cartSlice";
 
 // ✅ Load cart from backend (supports .unwrap)
