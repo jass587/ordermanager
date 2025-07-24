@@ -64,7 +64,7 @@ exports.checkoutCart = async (req, res) => {
   const userId = req.user.id;
   const items = req.body.items; // Expected: [{ productId, quantity }]
 
-  if (!Array.isArray(items) || items.length === 0) {
+  if (!Array.isArray(items)) {
     return res.status(400).json({
       message: "Cart items are required",
       status: false,
