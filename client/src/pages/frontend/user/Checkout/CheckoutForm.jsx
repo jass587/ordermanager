@@ -15,8 +15,6 @@ const CheckoutForm = ({ cartItems }) => {
     const elements = useElements();
 
     const [formData, setFormData] = useState({
-        email: "",
-        mobile: "",
         shippingName: "",
         shippingAddress: "",
         shippingAddress2: "",
@@ -107,21 +105,7 @@ const CheckoutForm = ({ cartItems }) => {
             <div className="row">
                 {/* LEFT SECTION */}
                 <div className="col-md-8">
-                    {/* Contact Info */}
-                    <div className="card mb-4 shadow-sm">
-                        <div className="card-header bg-white fw-semibold">
-                            <i className="bi bi-envelope me-2"></i> Contact Info
-                        </div>
-                        <div className="card-body row g-3">
-                            <div className="col-md-6">
-                                <input type="email" name="email" className="form-control" placeholder="Email Address" value={formData.email} onChange={handleChange} required />
-                            </div>
-                            <div className="col-md-6">
-                                <input type="tel" name="mobile" className="form-control" placeholder="Mobile No" value={formData.mobile} onChange={handleChange} required />
-                            </div>
-                        </div>
-                    </div>
-
+                    
                     {/* Shipping Info */}
                     <div className="card mb-4 shadow-sm">
                         <div className="card-header bg-white fw-semibold">
