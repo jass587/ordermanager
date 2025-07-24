@@ -6,11 +6,11 @@ import Home from '../pages/frontend/user/Home/Home';
 import ProductsList from '../pages/frontend/user/Products/ProductsList';
 import ProductDetail from '../pages/frontend/user/Products/ProductDetail';
 import Cart from '../pages/frontend/user/Cart/Cart';
-import CartItem from '../pages/frontend/user/Cartitems/CartItems';
 import ProtectedRoute from './ProtectedRoute';
 import NotFound from '../pages/common/errors/NotFound';
 import Orders from '../pages/frontend/user/Orders/Orders';
 import Checkout from '../pages/frontend/user/Checkout/Checkout';
+import OrderSuccess from '../pages/common/success/ordersuccess';
 
 export default function UserRoutes() {
   return (
@@ -22,7 +22,6 @@ export default function UserRoutes() {
         <Route path="products" element={<ProductsList />} />
         <Route path="product/:id" element={<ProductDetail />} />
         <Route path="cart" element={<Cart />} />
-        <Route path="cart-items" element={<CartItem />} />
         <Route path="dashboard" element={<Dashboard />} />
       </Route>
 
@@ -37,6 +36,7 @@ export default function UserRoutes() {
         <Route path="edit-profile" element={<EditProfile />} />
         <Route path="orders" element={<Orders />} />
         <Route path="checkout" element={<Checkout />} />
+        <Route path="order-success" element={<OrderSuccess/>} />
       </Route>
 
       {/* Catch-All */}
