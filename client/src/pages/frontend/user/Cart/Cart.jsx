@@ -21,7 +21,6 @@ const CartView = () => {
     const { productId, quantity } = item;
     const newQty = type === "inc" ? quantity + 1 : quantity - 1;
     if (newQty >= 1) {
-      console.log("trigger")
       dispatch(updateQuantity({ productId, quantity: newQty }));
     }
   };

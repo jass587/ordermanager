@@ -76,7 +76,6 @@ export default function ProductsList() {
   };
 
   const handleAddToCart = (product) => {
-    console.log(product)
     dispatch(addItem({
       productId: product.id,
       quantity: 1,
