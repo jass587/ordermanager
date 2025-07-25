@@ -7,22 +7,22 @@ module.exports = {
     const adminPassword = await hashPassword('admin123');
     const userPassword = await hashPassword('user123');
 
-    await queryInterface.bulkInsert('users', [
+    await queryInterface.bulkInsert('Users', [
       {
         name: 'Admin User',
         email: 'admin@example.com',
         password_hash: adminPassword,
         role: 'admin',
-        created_at: new Date(),
-        updated_at: new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
       {
         name: 'Normal User',
         email: 'user@example.com',
         password_hash: userPassword,
         role: 'user',
-        created_at: new Date(),
-        updated_at: new Date(),
+        createdAt: new Date(),
+        updatedAt: new Date(),
       },
     ]);
   },

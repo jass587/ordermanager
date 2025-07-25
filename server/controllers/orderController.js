@@ -5,7 +5,7 @@ exports.createOrder = async (req, res) => {
     const { totalAmount, items } = req.body;
     const userId = req.user.id;
     try {
-        const order = await Order.create({ userId, totalAmount, status: "pending" });
+        const order = await Order.create({ userId, totalAmount, status: "completed" });
 
         const orderItems = items.map(item => ({
             orderId: order.id,

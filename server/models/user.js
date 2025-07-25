@@ -1,4 +1,3 @@
-// server/models/User.js
 module.exports = (sequelize, DataTypes) => {
   const User = sequelize.define('User', {
     name: {
@@ -20,8 +19,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: false,
     },
   }, {
-    underscored: true,  // uses created_at / updated_at instead of camelCase
-    timestamps: true,
+    tableName: 'Users',   
+    freezeTableName: true,        
+    timestamps: true,       
   });
 
   return User;

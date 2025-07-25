@@ -4,6 +4,7 @@ module.exports = (sequelize, DataTypes) => {
     amount: { type: DataTypes.FLOAT, allowNull: false },
     method: { type: DataTypes.STRING, allowNull: false },
     status: { type: DataTypes.STRING, defaultValue: "unpaid" },
+    transactionId: { type: DataTypes.STRING, allowNull: false}
   });
 
   Payment.associate = (models) => {

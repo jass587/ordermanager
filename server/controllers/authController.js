@@ -1,11 +1,9 @@
 const { comparePassword } = require('../utils/password');
 const { generateToken } = require('../utils/jwt');
-const db = require('../models');
-const User = db.User;
+const { User } = require('../models');
 
 exports.login = async (req, res) => {
   const { email, password } = req.body;
-
   try {
     const user = await User.findOne({ where: { email } });
 
