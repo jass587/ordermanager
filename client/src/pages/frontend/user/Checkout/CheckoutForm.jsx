@@ -127,9 +127,9 @@ const CheckoutForm = ({ cartItems }) => {
                 toast.success("Payment successful! 🎉");
                 dispatch(clearCart());
                 dispatch(syncCartToBackend([]));
-                // setTimeout(() => {
-                //     navigate("/order-success");
-                // }, 2000);
+                setTimeout(() => {
+                    navigate("/order-success");
+                }, 2000);
 
             } else {
                 // Optional: Log pending or unknown statuses
@@ -141,7 +141,7 @@ const CheckoutForm = ({ cartItems }) => {
                     transactionId: paymentIntent.id,
                 });
 
-                toast.error(`Payment ${paymentIntent.status}. Order not placed.`);
+                setMessage(`Payment ${paymentIntent.status}. Order not placed.`);
             }
 
         } catch (err) {
