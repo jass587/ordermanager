@@ -48,6 +48,9 @@ const categoryRoutes = require("./routes/category");
 const productRoutes = require("./routes/products");
 const cartRoutes = require("./routes/cart");
 const stripeRoutes = require("./routes/stripe");
+const orderRoutes = require("./routes/orders");
+const orderItemRoutes = require("./routes/orderItems");
+const paymentRoutes = require("./routes/payments");
 
 app.use('/api/auth', authRoutes);
 app.use('/api/users', userRoutes);
@@ -55,5 +58,8 @@ app.use("/api/categories", categoryRoutes);
 app.use("/api/products", productRoutes);
 app.use("/api/cart", cartRoutes);
 app.use("/api/stripe", stripeRoutes);
+app.use("/api/orders", orderRoutes);
+app.use("/api/order-items", orderItemRoutes);
+app.use("/api/payments", paymentRoutes);
 
 module.exports = app;
