@@ -8,7 +8,7 @@
 
 .navbar-text-navajowhite .nav-link:hover,
 .navbar-text-navajowhite .nav-link:focus {
-  color: #fff8dc !important; /* lighter variant on hover */
+  color: #fff8dc !important;
 }
 
 .navbar-toggler-icon {
@@ -16,7 +16,7 @@
 }
 
 .banner-top {
-  padding-top: 5rem; /* Adjust if needed based on header+menu height */
+  padding-top: 5rem;
 }
 
 .custom-no-padding {

@@ -3,9 +3,11 @@ import { toast } from "react-toastify";
 import { useState } from "react";
 import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import StripeService from "../../../../services/api/stripe";
 import { clearCart } from "../../../../redux/store/cartSlice";
 import { syncCartToBackend } from "../../../../redux/thunks/cartThunks";
+import StripeService from "../../../../services/api/stripe";
+import OrderService from "../../../../services/api/orderService";
+import PaymentService from "../../../../services/api/paymentService";
 
 
 const CheckoutForm = ({ cartItems }) => {
@@ -33,6 +35,7 @@ const CheckoutForm = ({ cartItems }) => {
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
 
+    console.log(cartItems)
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         if (name === "sameAddress") {
@@ -65,11 +68,13 @@ const CheckoutForm = ({ cartItems }) => {
 
         setLoading(true);
         try {
+            // Step 1: Create PaymentIntent
             const clientSecret = await StripeService.createPaymentIntent({
                 amount: totalAmount,
                 items: cartItems,
             });
 
+            // Step 2: Confirm Stripe Payment
             const result = await stripe.confirmCardPayment(clientSecret, {
                 payment_method: {
                     card: elements.getElement(CardElement),
@@ -81,31 +86,79 @@ const CheckoutForm = ({ cartItems }) => {
                 receipt_email: formData.email,
             });
 
+            const paymentIntent = result.paymentIntent;
+
+            // Step 3: Handle result
             if (result.error) {
                 setMessage(result.error.message);
-            } else if (result.paymentIntent.status === "succeeded") {
-                toast.success("Payment successful! 🎉");
 
+                // Log failed payment to DB
+                await PaymentService.create({
+                    orderId: null,
+                    amount: totalAmount,
+                    method: "card",
+                    status: "failed",
+                    transactionId: paymentIntent?.id || "stripe_failed",
+                });
+
+            } else if (paymentIntent.status === "succeeded") {
+                // Step 4: Create order
+                const orderResponse = await OrderService.create({
+                    totalAmount,
+                    items: cartItems.map((item) => ({
+                        productId: item.productId,
+                        quantity: item.quantity,
+                        price: item.productInfo.price,
+                    })),
+                });
+
+                const orderId = orderResponse.data.result.orderId;
+
+                // Step 5: Create payment record
+                const data = await PaymentService.create({
+                    orderId,
+                    amount: totalAmount,
+                    method: "card",
+                    status: "succeeded",
+                    transactionId: paymentIntent.id,
+                });
+
+                // Step 6: Finalize
+                toast.success("Payment successful! 🎉");
                 dispatch(clearCart());
                 dispatch(syncCartToBackend([]));
-                setTimeout(() => {
-                    navigate("/order-success");
-                }, 2000);
+                // setTimeout(() => {
+                //     navigate("/order-success");
+                // }, 2000);
+
+            } else {
+                // Optional: Log pending or unknown statuses
+                await PaymentService.create({
+                    orderId: null,
+                    amount: totalAmount,
+                    method: "card",
+                    status: paymentIntent.status,
+                    transactionId: paymentIntent.id,
+                });
+
+                toast.error(`Payment ${paymentIntent.status}. Order not placed.`);
             }
+
         } catch (err) {
-            console.error(err);
+            console.error("Stripe error:", err);
             setMessage("Payment failed.");
         } finally {
             setLoading(false);
         }
     };
 
+
     return (
         <form onSubmit={handleSubmit}>
             <div className="row">
                 {/* LEFT SECTION */}
                 <div className="col-md-8">
-                    
+
                     {/* Shipping Info */}
                     <div className="card mb-4 shadow-sm">
                         <div className="card-header bg-white fw-semibold">
