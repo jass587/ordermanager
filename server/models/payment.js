@@ -1,6 +1,6 @@
 module.exports = (sequelize, DataTypes) => {
   const Payment = sequelize.define("Payment", {
-    orderId: { type: DataTypes.INTEGER, allowNull: false },
+    orderId: { type: DataTypes.INTEGER, allowNull: true },
     amount: { type: DataTypes.FLOAT, allowNull: false },
     method: { type: DataTypes.STRING, allowNull: false },
     status: { type: DataTypes.STRING, defaultValue: "unpaid" },

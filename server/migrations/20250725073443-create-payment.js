@@ -11,7 +11,7 @@ module.exports = {
       },
       orderId: {
         type: Sequelize.INTEGER,
-        allowNull: false,
+        allowNull: true,
       },
       amount: {
         type: Sequelize.FLOAT,
