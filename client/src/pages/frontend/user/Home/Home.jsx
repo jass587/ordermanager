@@ -32,7 +32,7 @@
 //             <div key={index} className="col-md-3">
 //               <Link to="/" className="text-decoration-none">
 //                 <img
-//                   src={`../../images/category/${item.src}`}
+//                   src={`../../images/products".src}`}
 //                   className="img-fluid rounded-circle"
 //                   alt={item.label}
 //                 />
@@ -56,14 +56,14 @@ const Banner = lazy(() => import("../../../../components/frontend/Carousel"));
 
 export default function Home() {
   const categories = [
-    { src: "men.jpg", label: "Men", link: "/category/men" },
-    { src: "female.jpg", label: "Women", link: "/category/women" },
-    { src: "kids.jpg", label: "Kids", link: "/category/kids" },
-    { src: "beauty.jpg", label: "Beauty", link: "/category/beauty" },
-    { src: "home.jpg", label: "Home & Living", link: "/category/home" },
-    { src: "sale-banner-1.jpg", label: "Accessories", link: "/category/kids" },
-    { src: "sale-banner-2.jpg", label: "Footwear", link: "/category/beauty" },
-    { src: "sale-banner-3.jpg", label: "Sportswear", link: "/category/home" },
+    { src: "men.jpg", label: "Men", link: "/products" },
+    { src: "female.jpg", label: "Women", link: "/products" },
+    { src: "kids.jpg", label: "Kids", link: "/products"},
+    { src: "beauty.jpg", label: "Beauty", link: "/products" },
+    { src: "home.jpg", label: "Home & Living", link: "/products"},
+    { src: "sale-banner-1.jpg", label: "Accessories", link: "/products"},
+    { src: "sale-banner-2.jpg", label: "Footwear", link: "/products"},
+    { src: "sale-banner-3.jpg", label: "Sportswear", link: "/products"},
   ];
 
   const features = [
