@@ -67,7 +67,7 @@ export default function Topbar() {
   );
 
   return (
-    <Navbar variant="light" expanded className="px-4 py-2 bg-white shadow-sm">
+    <Navbar variant="light" expanded className="px-4 py-2 bg-white shadow-sm" style={{ position: "sticky", top: 0, zIndex: 1045 }}>
       <Container fluid className="px-0">
         <div className="d-flex justify-content-between align-items-center w-100">
           <div className="d-flex align-items-center" style={{ maxWidth: '400px', flex: '1' }}>
@@ -82,7 +82,7 @@ export default function Topbar() {
           </div>
 
           <div className="d-flex align-items-center gap-3 ms-3">
-            <Dropdown as={Nav.Item} onToggle={markNotificationsAsRead}>
+            <Dropdown as={Nav.Item} onToggle={markNotificationsAsRead}> 
               <Dropdown.Toggle as="button" className="btn btn-link text-dark p-0 position-relative">
                 <FontAwesomeIcon icon={faBell} className="fs-5" />
                 {!areNotificationsRead && (

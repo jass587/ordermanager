@@ -20,7 +20,7 @@ export default function OrderModal({ show, handleClose, orderId, mode = "view" }
   }, [orderId, show]);
 
   return (
-    <Modal show={show} onHide={handleClose} size="lg">
+    <Modal show={show} onHide={handleClose} size="lg" centered>
       <Modal.Header closeButton>
         <Modal.Title>Order #{orderId}</Modal.Title>
       </Modal.Header>

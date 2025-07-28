@@ -24,7 +24,7 @@ export default function PaymentModal({ show, handleClose, paymentId, mode = "vie
   }, [paymentId, show]);
 
   return (
-    <Modal show={show} onHide={handleClose} size="lg">
+    <Modal show={show} onHide={handleClose} size="lg" centered>
       <Modal.Header closeButton>
         <Modal.Title>Payment #{paymentId || "N/A"}</Modal.Title>
       </Modal.Header>
