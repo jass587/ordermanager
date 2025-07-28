@@ -3,8 +3,10 @@ import axiosInstance from "./axiosInstance";
 
 const OrderService = {
   create: (data) => axiosInstance.post("/orders", data),
-  getById: (id) => axiosInstance.get(`/orders/${id}`),
+  getById: (id) => axiosInstance.get(`/orders/${id}`),//Admin view
   getAll: () => axiosInstance.get("/orders"), // Admin view
+  getUserOrders: () => axiosInstance.get("/orders/my-orders"),
+  getUserOrderById: (id) => axiosInstance.get(`/orders/my-orders/${id}`)
 };
 
 export default OrderService;

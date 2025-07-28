@@ -11,6 +11,7 @@ import NotFound from '../pages/common/errors/NotFound';
 import Orders from '../pages/frontend/user/Orders/Orders';
 import Checkout from '../pages/frontend/user/Checkout/Checkout';
 import OrderSuccess from '../pages/common/success/ordersuccess';
+import OrderDetail from '../pages/frontend/user/Orders/OrderDetail';
 
 export default function UserRoutes() {
   return (
@@ -34,7 +35,8 @@ export default function UserRoutes() {
         }
       >
         <Route path="edit-profile" element={<EditProfile />} />
-        <Route path="orders" element={<Orders />} />
+        <Route path="/orders/my-orders" element={<Orders />} />
+        <Route path="/orders/my-orders/:id" element={<OrderDetail />} />
         <Route path="checkout" element={<Checkout />} />
         <Route path="order-success" element={<OrderSuccess/>} />
       </Route>

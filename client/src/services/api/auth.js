@@ -12,8 +12,9 @@ const AuthService = {
       localStorage.setItem("token", token);
 
       const decoded = jwtDecode(token);
-      const { role } = decoded;
+      const { role, name } = decoded;
       localStorage.setItem("role", role);
+      localStorage.setItem("name", name);
 
       return { success: true, role };
     }

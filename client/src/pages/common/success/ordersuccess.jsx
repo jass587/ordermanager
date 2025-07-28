@@ -10,7 +10,7 @@ const OrderSuccess = () => {
 
       <div className="mt-4">
         <Link to="/" className="btn btn-outline-primary me-3">Continue Shopping</Link>
-        <Link to="/my-orders" className="btn btn-primary">View My Orders</Link>
+        <Link to="/orders/my-orders" className="btn btn-primary">View My Orders</Link>
       </div>
     </div>
   );

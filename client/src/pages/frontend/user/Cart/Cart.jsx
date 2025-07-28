@@ -2,13 +2,12 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import {
   updateQuantity,
-  removeItem
+  removeItem,
 } from "../../../../redux/store/cartSlice";
 
 const CartView = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
-
 
   const totalPrice = cartItems.reduce(
     (sum, item) => sum + item.quantity * item.productInfo?.price,
@@ -24,6 +23,27 @@ const CartView = () => {
       dispatch(updateQuantity({ productId, quantity: newQty }));
     }
   };
+
+  // ✅ Show empty cart message if no items
+  if (cartItems.length === 0) {
+    return (
+      <div className="container py-5 text-center">
+        <img
+          src="/images/empty_cart.png"
+          alt="Empty Cart"
+          className="mb-4"
+          style={{ maxWidth: "100px" }}
+        />
+        <h3 className="fw-bold mb-3">Your cart is empty</h3>
+        <p className="text-muted mb-4">
+          Looks like you haven’t added anything to your cart yet.
+        </p>
+        <Link to="/products" className="btn btn-primary">
+          Start Shopping <i className="bi bi-arrow-right"></i>
+        </Link>
+      </div>
+    );
+  }
 
   return (
     <div className="container py-4 mt-80">
@@ -49,7 +69,7 @@ const CartView = () => {
                 </thead>
                 <tbody>
                   {cartItems
-                    .filter(item => item.productInfo)
+                    .filter((item) => item.productInfo)
                     .map((item) => (
                       <tr key={item.productId}>
                         <td>
@@ -94,21 +114,19 @@ const CartView = () => {
                         </td>
                         <td className="text-end">
                           <div className="fw-bold fs-6 text-primary">
-                            $
+                            ₹
                             {(
                               item.quantity * item.productInfo.price
                             ).toFixed(2)}
                           </div>
                           <small className="text-muted d-block">
-                            ${item.productInfo.price} each
+                            ₹{item.productInfo.price} each
                           </small>
                         </td>
                         <td className="text-end">
                           <button
                             className="btn btn-sm btn-outline-danger"
-                            onClick={() =>
-                              dispatch(removeItem(item.productId))
-                            }
+                            onClick={() => dispatch(removeItem(item.productId))}
                           >
                             <i className="bi bi-trash"></i>
                           </button>
@@ -145,21 +163,21 @@ const CartView = () => {
               </h6>
               <dl className="row mb-0">
                 <dt className="col-6">Total price:</dt>
-                <dd className="col-6 text-end">${totalPrice.toFixed(2)}</dd>
+                <dd className="col-6 text-end">₹{totalPrice.toFixed(2)}</dd>
 
                 <dt className="col-6 text-success">Discount:</dt>
-                <dd className="col-6 text-success text-end">-${discount}</dd>
+                <dd className="col-6 text-success text-end">-₹{discount}</dd>
 
                 <dt className="col-6 text-success">Coupon:</dt>
                 <dd className="col-6 text-success text-end">
-                  -${couponDiscount}
+                  -₹{couponDiscount}
                 </dd>
 
                 <hr className="my-2" />
 
                 <dt className="col-6">Total:</dt>
                 <dd className="col-6 text-end fw-bold fs-5">
-                  ${(totalPrice - discount - couponDiscount).toFixed(2)}
+                  ₹{(totalPrice - discount - couponDiscount).toFixed(2)}
                 </dd>
               </dl>
 

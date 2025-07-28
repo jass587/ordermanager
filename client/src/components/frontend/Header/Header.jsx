@@ -91,8 +91,8 @@ const Header = () => {
                                     <i className="bi bi-person-fill"></i>
                                 </button>
                                 <ul className="dropdown-menu dropdown-menu-end">
-                                    <li><Link className="dropdown-item" to="/account/profile"><i className="bi bi-person-square"></i> My Profile</Link></li>
-                                    <li><Link className="dropdown-item" to="/account/orders"><i className="bi bi-list-check text-primary"></i> Orders</Link></li>
+                                    <li><Link className="dropdown-item" to="/profile"><i className="bi bi-person-square"></i> My Profile</Link></li>
+                                    <li><Link className="dropdown-item" to="/orders/my-orders"><i className="bi bi-list-check text-primary"></i> Orders</Link></li>
                                     <li><hr className="dropdown-divider" /></li>
                                     <li><Link className="dropdown-item" to="/account/notification"><i className="bi bi-bell-fill text-primary"></i> Notification</Link></li>
                                     <li><Link className="dropdown-item" to="/support"><i className="bi bi-info-circle-fill text-success"></i> Support</Link></li>
