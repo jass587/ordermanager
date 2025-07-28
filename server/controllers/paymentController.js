@@ -1,10 +1,10 @@
-const { Payment } = require("../models");
+const { Payment, Order, User } = require("../models");
 
 // POST /api/payments
 exports.createPayment = async (req, res) => {
     try {
         const { orderId, amount, method, status, transactionId } = req.body;
-        
+
         const payment = await Payment.create({
             orderId: orderId || null, // Allow null
             amount,
@@ -27,7 +27,6 @@ exports.createPayment = async (req, res) => {
     }
 };
 
-
 // GET /api/payments (with optional ?status=succeeded)
 exports.getAllPayments = async (req, res) => {
     const where = {};
@@ -36,7 +35,21 @@ exports.getAllPayments = async (req, res) => {
     }
 
     try {
-        const payments = await Payment.findAll({ where });
+        const payments = await Payment.findAll({
+            where,
+            include: [
+                {
+                    model: Order,
+                    include: [
+                        {
+                            model: User,
+                            attributes: ['id', 'name'], // or 'username'
+                        },
+                    ],
+                },
+            ],
+        });
+
         res.json({
             message: "Payments fetched successfully",
             status: true,
@@ -51,6 +64,7 @@ exports.getAllPayments = async (req, res) => {
         });
     }
 };
+
 
 // GET /api/payments/:id
 exports.getPaymentById = async (req, res) => {
