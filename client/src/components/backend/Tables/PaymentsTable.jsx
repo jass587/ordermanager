@@ -6,6 +6,7 @@ import PaymentModal from "../Modals/PaymentModal";
 export const PaymentsTable = () => {
   const [payments, setPayments] = useState([]);
   const [selectedPaymentId, setSelectedPaymentId] = useState(null);
+  const [selectedSerialNumber, setSelectedSerialNumber] = useState(null);
   const [showModal, setShowModal] = useState(false);
   const [modalMode, setModalMode] = useState("view");
 
@@ -22,8 +23,9 @@ export const PaymentsTable = () => {
     fetchPayments();
   }, []);
 
-  const handleView = (id) => {
-    setSelectedPaymentId(id);
+  const handleView = (paymentId, serial) => {
+    setSelectedPaymentId(paymentId);
+    setSelectedSerialNumber(serial);
     setModalMode("view");
     setShowModal(true);
   };
@@ -34,6 +36,7 @@ export const PaymentsTable = () => {
         show={showModal}
         handleClose={() => setShowModal(false)}
         paymentId={selectedPaymentId}
+        serialNumber={selectedSerialNumber}
         mode={modalMode}
       />
 
@@ -41,11 +44,15 @@ export const PaymentsTable = () => {
         title="Payments"
         data={payments}
         columns={[
-          { label: "ID", key: "id" },
           {
-            label: "Order ID",
-            key: "orderId",
-            render: (val) => val || "N/A",
+            label: "#",
+            key: "serial",
+            render: (_, __, index) => index + 1,
+          },
+          {
+            label: "User Name",
+            key: "Order.User.name",
+            render: (_, row) => row.Order?.User?.name || "N/A",
           },
           { label: "Amount", key: "amount" },
           {
@@ -58,9 +65,7 @@ export const PaymentsTable = () => {
             key: "status",
             render: (val) => (
               <span
-                className={`badge bg-${
-                  val === "succeeded" ? "success" : "danger"
-                }`}
+                className={`badge bg-${val === "succeeded" ? "success" : "danger"}`}
               >
                 {val}
               </span>
@@ -72,7 +77,11 @@ export const PaymentsTable = () => {
             render: (val) => new Date(val).toLocaleString(),
           },
         ]}
-        onView={handleView}
+        onView={(payment) => {
+          const index = payments.findIndex(p => p.id === payment.id);
+          handleView(payment.id, index + 1);
+        }}
+
       />
     </>
   );

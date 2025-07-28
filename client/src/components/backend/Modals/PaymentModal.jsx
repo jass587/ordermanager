@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import { Modal, Button, Spinner } from "react-bootstrap";
 import PaymentService from "../../../services/api/paymentService";
 
-export default function PaymentModal({ show, handleClose, paymentId, mode = "view" }) {
+export default function PaymentModal({ show, handleClose, paymentId, serialNumber, mode = "view" }) {
   const [payment, setPayment] = useState(null);
   const [loading, setLoading] = useState(true);
   const isViewMode = mode === "view";
@@ -13,7 +13,6 @@ export default function PaymentModal({ show, handleClose, paymentId, mode = "vie
     setLoading(true);
     PaymentService.getById(paymentId)
       .then((res) => {
-        console.log("Payment Response:", res.data.result);
         setPayment(res.data?.result || null);
       })
       .catch((err) => {
@@ -26,7 +25,7 @@ export default function PaymentModal({ show, handleClose, paymentId, mode = "vie
   return (
     <Modal show={show} onHide={handleClose} size="lg" centered>
       <Modal.Header closeButton>
-        <Modal.Title>Payment #{paymentId || "N/A"}</Modal.Title>
+        <Modal.Title>Payment #{serialNumber || "N/A"}</Modal.Title>
       </Modal.Header>
       <Modal.Body>
         {loading ? (
@@ -35,7 +34,6 @@ export default function PaymentModal({ show, handleClose, paymentId, mode = "vie
           </div>
         ) : payment ? (
           <>
-            <h5>Order ID: {payment.orderId || "N/A"}</h5>
             <p>
               Status:{" "}
               <strong className={`text-${payment.status === "succeeded" ? "success" : "danger"}`}>

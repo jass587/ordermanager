@@ -28,7 +28,7 @@ export default function ETable({
       <Card.Body className="pt-0">
         {title && <h5 className="mb-3">{title}</h5>}
 
-        <div style={{ maxHeight: "400px", overflowY: "auto" }}>
+        <div style={{ maxHeight: "600px", overflowY: "auto" }}>
           <Table hover className="user-table align-items-center mb-0">
             <thead className="sticky-top bg-white">
               <tr>
@@ -41,12 +41,12 @@ export default function ETable({
               </tr>
             </thead>
             <tbody>
-              {data.map((item) => (
-                <tr key={item.id}>
+              {data.map((item, index) => (
+                <tr key={item.id || index}>
                   {columns.map((col, idx) => (
                     <td key={idx}>
                       {col.render
-                        ? col.render(item[col.key], item)
+                        ? col.render(item[col.key], item, index) // ✅ Pass index here
                         : item[col.key]}
                     </td>
                   ))}
@@ -67,7 +67,7 @@ export default function ETable({
                       </Dropdown.Toggle>
                       <Dropdown.Menu>
                         {onView && (
-                          <Dropdown.Item onClick={() => onView(item.id)}>
+                          <Dropdown.Item onClick={() => onView(item)}>
                             <FontAwesomeIcon icon={faEye} className="me-2" /> View
                           </Dropdown.Item>
                         )}

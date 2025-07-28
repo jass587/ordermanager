@@ -19,6 +19,7 @@ export default function OrderModal({ show, handleClose, orderId, mode = "view" }
     }
   }, [orderId, show]);
 
+  console.log(order);
   return (
     <Modal show={show} onHide={handleClose} size="lg" centered>
       <Modal.Header closeButton>
@@ -31,7 +32,7 @@ export default function OrderModal({ show, handleClose, orderId, mode = "view" }
           </div>
         ) : order ? (
           <>
-            <h5>User ID: {order.userId}</h5>
+            <h5>User Name: {order.User.name}</h5>
             <p>
               Status:{" "}
               <strong className={order.status === "completed" ? "text-success" : "text-danger"}>
@@ -52,7 +53,7 @@ export default function OrderModal({ show, handleClose, orderId, mode = "view" }
               <tbody>
                 {order.OrderItems?.map((item) => (
                   <tr key={item.id}>
-                    <td>{item.productId}</td>
+                    <td>{item.Product.title}</td>
                     <td>{item.quantity}</td>
                     <td>₹{item.price}</td>
                   </tr>

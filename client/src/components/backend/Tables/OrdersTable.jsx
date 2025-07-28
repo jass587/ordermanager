@@ -42,16 +42,19 @@ export const OrdersTable = () => {
         data={orders}
         columns={[
           { label: "ID", key: "id" },
-          { label: "User ID", key: "userId" },
+          {
+            label: "User",
+            key: "User.username",
+            render: (_, row) => row.User?.name || "N/A",
+          },
           { label: "Total Amount", key: "totalAmount" },
           {
             label: "Status",
             key: "status",
             render: (val) => (
               <span
-                className={`badge bg-${
-                  val === "completed" ? "success" : val === "pending" ? "warning" : "secondary"
-                }`}
+                className={`badge bg-${val === "completed" ? "success" : val === "pending" ? "warning" : "secondary"
+                  }`}
               >
                 {val}
               </span>
@@ -63,6 +66,7 @@ export const OrdersTable = () => {
             render: (val) => new Date(val).toLocaleString(),
           },
         ]}
+
         onView={handleView}
       />
     </>
