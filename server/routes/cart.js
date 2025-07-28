@@ -12,4 +12,5 @@ router.post('/checkout', cartController.checkoutCart);
 router.put('/:id', cartController.updateCartItem);
 router.delete('/:id', cartController.deleteCartItem);
 
+
 module.exports = router;

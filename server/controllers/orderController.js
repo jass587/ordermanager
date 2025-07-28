@@ -91,3 +91,76 @@ exports.getOrderById = async (req, res) => {
         });
     }
 };
+
+//GET user specific all orders
+exports.getUserOrders = async (req, res) => {
+  try {
+    const orders = await Order.findAll({
+      where: { userId: req.user.id },
+      include: [
+        {
+          model: Payment,
+        },
+        {
+          model: OrderItem,
+          include: [{ model: Product, attributes: ["title"] }],
+        },
+      ],
+      order: [["createdAt", "DESC"]],
+    });
+
+    return res.json({
+      msg: "Orders fetched successfully",
+      status: true,
+      result: orders,
+    });
+  } catch (err) {
+    console.error("Error fetching orders:", err);
+    return res.status(500).json({
+      msg: "Something went wrong",
+      status: false,
+      result: [],
+    });
+  }
+};
+
+//GET user specific all orders by orderid
+exports.getUserOrderById = async (req, res) => {
+  try {
+    const order = await Order.findOne({
+      where: { id: req.params.id, userId: req.user.id },
+      include: [
+        {
+          model: Payment,
+        },
+        {
+          model: OrderItem,
+          include: [{ model: Product, attributes: ["title"] }],
+        },
+      ],
+    });
+
+    if (!order) {
+      return res.status(404).json({
+        msg: "Order not found",
+        status: false,
+        result: null,
+      });
+    }
+
+    return res.json({
+      msg: "Order fetched successfully",
+      status: true,
+      result: order,
+    });
+  } catch (err) {
+    console.error("Error fetching order:", err);
+    return res.status(500).json({
+      msg: "Something went wrong",
+      status: false,
+      result: null,
+    });
+  }
+};
+
+
