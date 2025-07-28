@@ -32,7 +32,12 @@ export default function OrderModal({ show, handleClose, orderId, mode = "view" }
         ) : order ? (
           <>
             <h5>User ID: {order.userId}</h5>
-            <p>Status: <strong>{order.status}</strong></p>
+            <p>
+              Status:{" "}
+              <strong className={order.status === "completed" ? "text-success" : "text-danger"}>
+                {order.status}
+              </strong>
+            </p>
             <p>Total: ₹{order.totalAmount}</p>
 
             <h6 className="mt-4">Items:</h6>
@@ -56,7 +61,20 @@ export default function OrderModal({ show, handleClose, orderId, mode = "view" }
             </Table>
 
             <h6 className="mt-4">Payment:</h6>
-            <p>Status: {order.Payments[0]?.status || "N/A"}</p>
+            <p>
+              Status:{" "}
+              <strong
+                className={
+                  order.Payments[0]?.status === "succeeded"
+                    ? "text-success"
+                    : order.Payments[0]?.status === "failed"
+                      ? "text-danger"
+                      : "text-secondary"
+                }
+              >
+                {order.Payments[0]?.status || "N/A"}
+              </strong>
+            </p>
             <p>Method: {order.Payments[0]?.method || "N/A"}</p>
             <p>Transaction ID: {order.Payments[0]?.transactionId || "N/A"}</p>
           </>
