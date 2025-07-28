@@ -13,8 +13,6 @@ const cartSlice = createSlice({
   reducers: {
     // ✅ Replace cart entirely (used when loading from backend)
     setCart: (state, action) => {
-      console.log("🔄 setCart called with:", action.payload);
-      console.trace("setCart called from:");
       state.items = action.payload;
       state.loading = false;
       state.error = null;

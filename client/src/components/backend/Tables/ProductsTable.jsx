@@ -62,8 +62,6 @@ import ETable from "../../../components/backend/Tables/Common/eTable";
       }
     };
 
-    console.log(products)
-
     return (
       <>
         <ProductModal
@@ -91,7 +89,6 @@ import ETable from "../../../components/backend/Tables/Common/eTable";
               label: "Image",
               key: "image",
               render: (val, row) => {
-                console.log(val)
                 return (
                 <img
                   src={val || "/fallback-image.png"}

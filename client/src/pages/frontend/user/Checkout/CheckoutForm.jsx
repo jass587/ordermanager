@@ -34,8 +34,7 @@ const CheckoutForm = ({ cartItems }) => {
     const [sameAsShipping, setSameAsShipping] = useState(false);
     const [loading, setLoading] = useState(false);
     const [message, setMessage] = useState("");
-
-    console.log(cartItems)
+    
     const handleChange = (e) => {
         const { name, value, type, checked } = e.target;
         if (name === "sameAddress") {

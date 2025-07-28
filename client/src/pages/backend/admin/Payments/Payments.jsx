@@ -1,8 +1,9 @@
+import { PaymentsTable } from "../../../../components/backend/Tables/PaymentsTable";
 
 export default () => {
   return (
     <>
-    <h1>Payments Page</h1>
+    <PaymentsTable/>
     </>
   );
 };

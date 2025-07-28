@@ -13,7 +13,7 @@ import Users from '../pages/backend/admin/Users/Users';
 import SiteSettings from '../pages/backend/admin/SiteSettings/SiteSettings';
 
 import NotFound from '../pages/common/errors/NotFound';
-import Dashboard from '../pages/backend/admin/Dashboard/Dashboard'; 
+import Dashboard from '../pages/backend/admin/Dashboard/Dashboard';
 
 export default function AdminRoutes() {
   return (
