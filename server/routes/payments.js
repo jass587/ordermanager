@@ -7,6 +7,6 @@ router.use(authenticateToken);
 
 router.post("/", isUser, controller.createPayment);
 router.get("/", isAdmin, controller.getAllPayments);
-router.get("/:id", controller.getPaymentById); // successful payments only
+router.get("/:id", isAdmin, controller.getPaymentById); // successful payments only
 
 module.exports = router;

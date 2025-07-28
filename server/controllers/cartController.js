@@ -2,8 +2,6 @@ const { CartItem, Product } = require('../models');
 
 // GET /api/cart
 exports.getCartItems = async (req, res) => {
-  console.log("// ------------------------------------- userId", req.user.id)
-  console.log("req", req)
   try {
     const items = await CartItem.findAll({
       where: { userId: req.user.id },

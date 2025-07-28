@@ -52,15 +52,14 @@ exports.getAllPayments = async (req, res) => {
     }
 };
 
-// GET /api/payments/:id (only succeeded if not admin)
+// GET /api/payments/:id
 exports.getPaymentById = async (req, res) => {
     try {
         const isAdmin = req.query.admin === "true";
 
         const payment = await Payment.findOne({
             where: {
-                id: req.params.id,
-                ...(isAdmin ? {} : { status: "succeeded" }),
+                id: req.params.id
             },
         });
 
