@@ -1,8 +1,8 @@
 import { Outlet } from 'react-router-dom';
-import Sidebar from '../components/backend/Sidebar/Sidebar';
-import Navbar from '../components/backend/Navbar/Navbar';
-import ScrollToTop from '../pages/common/scrolltotop/scrolltotop';
-import './admin.css';
+import Sidebar from '@components/backend/Sidebar/Sidebar';
+import Navbar from '@components/backend/Navbar/Navbar';
+import ScrollToTop from '@pages/common/scrolltotop/scrolltotop';
+import '@layout/admin.css';
 
 export default function AdminLayout() {
   return (

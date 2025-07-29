@@ -1,4 +1,4 @@
-import {ProductsTable} from "../../../../components/backend/Tables/ProductsTable"
+import {ProductsTable} from "@components/backend/Tables/ProductsTable"
 
 
 export default () => {

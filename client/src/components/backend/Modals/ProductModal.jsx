@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import { useProductForm } from "../../../hooks/useProductForm";
+import { useProductForm } from "@hooks/useProductForm";
 
-import ProductService from "../../../services/api/products";
-import CategoryService from "../../../services/api/categories";
+import ProductService from "@services/api/products";
+import CategoryService from "@services/api/categories";
 
 export default function ProductModal({
   show,

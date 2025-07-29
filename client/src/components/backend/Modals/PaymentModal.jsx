@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Modal, Button, Spinner } from "react-bootstrap";
-import PaymentService from "../../../services/api/paymentService";
+import PaymentService from "@services/api/paymentService";
 
 export default function PaymentModal({ show, handleClose, paymentId, serialNumber, mode = "view" }) {
   const [payment, setPayment] = useState(null);

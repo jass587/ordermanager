@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import ETable from "../../../components/backend/Tables/Common/eTable";
-import PaymentService from "../../../services/api/paymentService";
-import PaymentModal from "../Modals/PaymentModal";
+import ETable from "@components/backend/Tables/Common/eTable";
+import PaymentService from "@services/api/paymentService";
+import PaymentModal from "@components/backend/Modals/PaymentModal";
 
 export const PaymentsTable = () => {
   const [payments, setPayments] = useState([]);

@@ -50,7 +50,7 @@
 //-------------------------------------
 import { lazy } from "react";
 import { Link } from "react-router-dom";
-import { data } from "../../../../data/banner";
+import { data } from "@data/banner";
 
 const Banner = lazy(() => import("../../../../components/frontend/Carousel"));
 

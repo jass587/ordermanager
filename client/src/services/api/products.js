@@ -1,4 +1,4 @@
-import axiosInstance from "./axiosInstance";
+import axiosInstance from "@services/api/axiosInstance";
 
 const ProductService = {
   getAll: async (params) => {

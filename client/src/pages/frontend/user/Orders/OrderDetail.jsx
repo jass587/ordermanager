@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
-import OrderService from "../../../../services/api/orderService";
+import OrderService from "@services/api/orderService";
 import { Card, Badge, Table, Spinner } from "react-bootstrap";
 
 const OrderDetail = () => {

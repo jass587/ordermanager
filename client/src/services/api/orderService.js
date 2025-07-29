@@ -1,5 +1,5 @@
 // client/src/services/api/orders.js
-import axiosInstance from "./axiosInstance";
+import axiosInstance from "@services/api/axiosInstance";
 
 const OrderService = {
   create: (data) => axiosInstance.post("/orders", data),

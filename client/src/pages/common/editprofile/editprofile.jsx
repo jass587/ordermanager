@@ -2,12 +2,11 @@ import { useEffect, useState } from "react";
 import { Form, Button, Card, Spinner, Toast, ToastContainer } from "react-bootstrap";
 import { useFormik } from "formik";
 import * as Yup from "yup";
-import AuthService from "../../../services/api/auth";
+import AuthService from "@services/api/auth";
+import { toast } from "react-toastify";
 
 export default function EditProfile() {
   const [loading, setLoading] = useState(false);
-  const [showToast, setShowToast] = useState(false);
-  const [toastMsg, setToastMsg] = useState({ type: "", text: "" });
 
   const formik = useFormik({
     initialValues: { name: "", email: "", password: "" },
@@ -26,9 +25,9 @@ export default function EditProfile() {
         if (values.password) payload.password = values.password;
 
         await AuthService.updateProfile(payload);
-        setToastMsg({ type: "success", text: "Profile updated successfully!" });
+        toast.success("Profile updated successfully!")
       } catch (err) {
-        setToastMsg({ type: "danger", text: "Update failed. Please try again." });
+        toast.error("Update failed. Please try again.")
       } finally {
         setLoading(false);
         setShowToast(true);
@@ -43,7 +42,7 @@ export default function EditProfile() {
         formik.setValues({ name, email, password: "" });
       })
       .catch(() => {
-        setToastMsg({ type: "danger", text: "Failed to load user data." });
+        toast.error("Failed to load user data.")
         setShowToast(true);
       });
   }, []);
@@ -106,18 +105,6 @@ export default function EditProfile() {
           </Button>
         </Form>
       </Card>
-
-      <ToastContainer position="top-end" className="p-3">
-        <Toast
-          bg={toastMsg.type}
-          show={showToast}
-          delay={3000}
-          autohide
-          onClose={() => setShowToast(false)}
-        >
-          <Toast.Body className="text-white">{toastMsg.text}</Toast.Body>
-        </Toast>
-      </ToastContainer>
     </>
   );
 }

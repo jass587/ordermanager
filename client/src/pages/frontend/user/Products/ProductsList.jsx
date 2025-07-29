@@ -2,11 +2,11 @@ import { useState, useEffect, useCallback, lazy } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 
-import CardProductGrid from "../../../../components/frontend/card/CardProductGrid";
-import CardProductList from "../../../../components/frontend/card/CardProductList";
-import ProductService from "../../../../services/api/products";
-import CategoryService from "../../../../services/api/categories";
-import Paging from "../../../../components/Paging";
+import CardProductGrid from "@components/frontend/card/CardProductGrid";
+import CardProductList from "@components/frontend/card/CardProductList";
+import ProductService from "@services/api/products";
+import CategoryService from "@services/api/categories";
+import Paging from "@components/Paging";
 import { addItem} from "../../../../redux/store/cartSlice";
 import { toast } from 'react-toastify';
 

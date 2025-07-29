@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { Modal, Button, Form } from "react-bootstrap";
-import axiosInstance from "../../../services/api/axiosInstance";
-import { useCategoryForm } from "../../../hooks/useCategoryForm";
+import axiosInstance from "@services/api/axiosInstance";
+import { useCategoryForm } from "@hooks/useCategoryForm";
 
 export default function CategoryModal({ show, handleClose, categoryId, refreshCategories, mode = "edit" }) {
   const [initialValues, setInitialValues] = useState({ name: "" });

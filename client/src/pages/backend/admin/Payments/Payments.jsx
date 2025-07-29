@@ -1,4 +1,4 @@
-import { PaymentsTable } from "../../../../components/backend/Tables/PaymentsTable";
+import { PaymentsTable } from "@components/backend/Tables/PaymentsTable";
 
 export default () => {
   return (

@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import CategoryService from "../../../services/api/categories";
+import CategoryService from "@services/api/categories";
 
 export default function FilterCategory({ selected, onSelect }) {
   const [categories, setCategories] = useState([]);

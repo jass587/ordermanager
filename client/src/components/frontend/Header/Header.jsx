@@ -4,12 +4,14 @@ import { useDispatch, useSelector } from "react-redux";
 import { fetchCartFromBackend, syncCartToBackend } from "../../../redux/thunks/cartThunks";
 import store, { persistor } from "../../../redux/store/store";
 import { clearCart } from "../../../redux/store/cartSlice";
-import AuthService from "../../../services/api/auth";
+import AuthService from "@services/api/auth";
+import { getLoggedInUser } from "@utils/authUtils";
 
 const Search = lazy(() => import("../Search/Search"));
 
 const Header = () => {
     const dispatch = useDispatch();
+    const { name } = getLoggedInUser();
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -26,7 +28,7 @@ const Header = () => {
             setIsLoggedIn(true);
 
             // Only load cart if not already loaded
-            if (!isCartLoaded  && cartItems.length === 0) {
+            if (!isCartLoaded && cartItems.length === 0) {
                 dispatch(fetchCartFromBackend());
             }
         } else {
@@ -84,25 +86,55 @@ const Header = () => {
                             <div className="btn-group">
                                 <button
                                     type="button"
-                                    className="btn btn-secondary dropdown-toggle"
+                                    className="btn btn-secondary dropdown-toggle d-flex align-items-center gap-2"
                                     data-bs-toggle="dropdown"
                                     aria-expanded="false"
                                 >
-                                    <i className="bi bi-person-fill"></i>
+                                    <span>
+                                        {(() => {
+                                            const parts = name?.trim().split(" ") || [];
+                                            const firstInitial = parts[0]?.[0]?.toUpperCase() || "";
+                                            const lastInitial = parts[1]?.[0]?.toUpperCase() || "";
+                                            return `${firstInitial}${lastInitial}`;
+                                        })()}
+                                    </span>
                                 </button>
+
                                 <ul className="dropdown-menu dropdown-menu-end">
-                                    <li><Link className="dropdown-item" to="/profile"><i className="bi bi-person-square"></i> My Profile</Link></li>
-                                    <li><Link className="dropdown-item" to="/orders/my-orders"><i className="bi bi-list-check text-primary"></i> Orders</Link></li>
+                                    <li>
+                                        <Link className="dropdown-item" to="/edit-profile">
+                                            <i className="bi bi-person-square"></i> My Profile
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link className="dropdown-item" to="/orders/my-orders">
+                                            <i className="bi bi-list-check text-primary"></i> Orders
+                                        </Link>
+                                    </li>
                                     <li><hr className="dropdown-divider" /></li>
-                                    <li><Link className="dropdown-item" to="/account/notification"><i className="bi bi-bell-fill text-primary"></i> Notification</Link></li>
-                                    <li><Link className="dropdown-item" to="/support"><i className="bi bi-info-circle-fill text-success"></i> Support</Link></li>
+                                    <li>
+                                        <Link className="dropdown-item" to="/account/notification">
+                                            <i className="bi bi-bell-fill text-primary"></i> Notification
+                                        </Link>
+                                    </li>
+                                    <li>
+                                        <Link className="dropdown-item" to="/support">
+                                            <i className="bi bi-info-circle-fill text-success"></i> Support
+                                        </Link>
+                                    </li>
                                     <li><hr className="dropdown-divider" /></li>
-                                    <li><button className="dropdown-item text-danger" onClick={handleLogout}><i className="bi bi-door-closed-fill"></i> Logout</button></li>
+                                    <li>
+                                        <button className="dropdown-item text-danger" onClick={handleLogout}>
+                                            <i className="bi bi-door-closed-fill"></i> Logout
+                                        </button>
+                                    </li>
                                 </ul>
                             </div>
                         ) : (
                             <Link to="/signin" className="btn btn-outline-primary">Sign In</Link>
                         )}
+
+
                     </div>
                 </div>
             </div>

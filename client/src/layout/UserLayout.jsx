@@ -1,9 +1,7 @@
 import { Outlet } from 'react-router-dom';
-import { Suspense, lazy } from 'react';
-import TopMenu from '../components/frontend/TopMenu';
-import Footer from '../pages/common/footer/footer';
-import ScrollToTop from '../pages/common/scrolltotop/scrolltotop';
-import Search from '../components/frontend/Search/Search';
+import {  lazy } from 'react';
+import TopMenu from '@components/frontend/TopMenu';
+import Footer from '@pages/common/footer/footer';
 const Header = lazy(() => import('../components/frontend/Header/Header'));
 
 

@@ -1,17 +1,17 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
-import UserLayout from '../layout/UserLayout';
-import Dashboard from '../pages/frontend/user/Dashboard/Dashboard';
-import EditProfile from '../pages/common/editprofile/editprofile';
-import Home from '../pages/frontend/user/Home/Home';
-import ProductsList from '../pages/frontend/user/Products/ProductsList';
-import ProductDetail from '../pages/frontend/user/Products/ProductDetail';
-import Cart from '../pages/frontend/user/Cart/Cart';
+import UserLayout from '@layout/UserLayout';
+import Dashboard from '@pages/frontend/user/Dashboard/Dashboard';
+import EditProfile from '@pages/common/editprofile/editprofile';
+import Home from '@pages/frontend/user/Home/Home';
+import ProductsList from '@pages/frontend/user/Products/ProductsList';
+import ProductDetail from '@pages/frontend/user/Products/ProductDetail';
+import Cart from '@pages/frontend/user/Cart/Cart';
 import ProtectedRoute from './ProtectedRoute';
-import NotFound from '../pages/common/errors/NotFound';
-import Orders from '../pages/frontend/user/Orders/Orders';
-import Checkout from '../pages/frontend/user/Checkout/Checkout';
-import OrderSuccess from '../pages/common/success/ordersuccess';
-import OrderDetail from '../pages/frontend/user/Orders/OrderDetail';
+import NotFound from '@pages/common/errors/NotFound';
+import Orders from '@pages/frontend/user/Orders/Orders';
+import Checkout from '@pages/frontend/user/Checkout/Checkout';
+import OrderSuccess from '@pages/common/success/ordersuccess';
+import OrderDetail from '@pages/frontend/user/Orders/OrderDetail';
 
 export default function UserRoutes() {
   return (

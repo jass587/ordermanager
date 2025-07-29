@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import OrderService from "../../../../services/api/orderService";
-import { getLoggedInUser } from "../../../../utilities/authUtils";
+import OrderService from "@services/api/orderService";
+import { getLoggedInUser } from "@utils/authUtils";
 import { Card, Table, Badge } from "@themesberg/react-bootstrap";
 import { Spinner } from "react-bootstrap";
 

@@ -1,5 +1,5 @@
 // client/src/services/api/orderItems.js
-import axiosInstance from "./axiosInstance";
+import axiosInstance from "@services/api/axiosInstance";
 
 const OrderItemService = {
     // Admin usage only

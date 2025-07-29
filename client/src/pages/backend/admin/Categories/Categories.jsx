@@ -1,4 +1,4 @@
-import {CategoriesTable} from "../../../../components/backend/Tables/CategoriesTable"
+import {CategoriesTable} from "@components/backend/Tables/CategoriesTable"
 
 
 

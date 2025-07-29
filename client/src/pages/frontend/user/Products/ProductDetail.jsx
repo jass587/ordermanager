@@ -4,8 +4,8 @@ import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
 import { addItem, updateQuantity } from "../../../../redux/store/cartSlice";
-import ProductService from "../../../../services/api/products";
-import CardServices from "../../../../components/frontend/card/CardServices";
+import ProductService from "@services/api/products";
+import CardServices from "@components/frontend/card/CardServices";
 
 const ProductDetailView = () => {
   const { id } = useParams();

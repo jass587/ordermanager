@@ -1,8 +1,8 @@
 import { useEffect, useState } from "react";
-import ProductService from "../../../services/api/products";
-import CategoryService from "../../../services/api/categories"
-import ProductModal from "../Modals/ProductModal";
-import ETable from "../../../components/backend/Tables/Common/eTable";
+import ProductService from "@services/api/products";
+import CategoryService from "@services/api/categories"
+import ProductModal from "@components/backend/Modals/ProductModal";
+import ETable from "@components/backend/Tables/Common/eTable";
 
   export const ProductsTable = () => {
     const [products, setProducts] = useState([]);

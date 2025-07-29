@@ -4,12 +4,12 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import AdminRoutes from './routes/AdminRoutes';
 import UserRoutes from './routes/UserRoutes';
-import SignIn from './pages/common/signin/SignIn';
-import SocialLoginSuccess from './pages/common/sociallogin/SocialLoginSuccess';
-import Forbidden from './pages/common/errors/Forbidden';
-import ServerError from './pages/common/errors/ServerError';
-import NotFound from './pages/common/errors/NotFound';
-import DefaultError from './pages/common/errors/DefaultError';
+import SignIn from '@pages/common/signin/SignIn';
+import SocialLoginSuccess from '@pages/common/sociallogin/SocialLoginSuccess';
+import Forbidden from '@pages/common/errors/Forbidden';
+import ServerError from '@pages/common/errors/ServerError';
+import NotFound from '@pages/common/errors/NotFound';
+import DefaultError from '@pages/common/errors/DefaultError';
 
 function App() {
   return (

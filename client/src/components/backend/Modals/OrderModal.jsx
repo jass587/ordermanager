@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { Modal, Button, Table, Spinner } from "react-bootstrap";
-import OrderService from "../../../services/api/orderService";
+import OrderService from "@services/api/orderService";
 
 export default function OrderModal({ show, handleClose, orderId, mode = "view" }) {
   const [order, setOrder] = useState(null);

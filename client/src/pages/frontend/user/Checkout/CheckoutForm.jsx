@@ -5,9 +5,9 @@ import { useDispatch } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import { clearCart } from "../../../../redux/store/cartSlice";
 import { syncCartToBackend } from "../../../../redux/thunks/cartThunks";
-import StripeService from "../../../../services/api/stripe";
-import OrderService from "../../../../services/api/orderService";
-import PaymentService from "../../../../services/api/paymentService";
+import StripeService from "@services/api/stripe";
+import OrderService from "@services/api/orderService";
+import PaymentService from "@services/api/paymentService";
 
 
 const CheckoutForm = ({ cartItems }) => {

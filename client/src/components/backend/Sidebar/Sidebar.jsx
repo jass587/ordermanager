@@ -17,7 +17,7 @@ import { Nav, Badge, Image, Button, Navbar } from 'react-bootstrap';
 
 import { Routes } from "../../../routes";
 import ReactHero from "../../../assets/img/technologies/react-hero-logo.svg";
-import "./Sidebar.css";
+import "@components/backend/Sidebar/Sidebar.css";
 
 export default function Sidebar(props = {}) {
   const location = useLocation();

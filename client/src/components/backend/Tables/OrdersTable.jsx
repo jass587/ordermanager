@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
-import ETable from "../../../components/backend/Tables/Common/eTable";
-import OrderService from "../../../services/api/orderService";
-import OrderModal from "../Modals/OrderModal";
+import ETable from "@components/backend/Tables/Common/eTable";
+import OrderService from "@services/api/orderService";
+import OrderModal from "@components/backend/Modals/OrderModal";
 
 export const OrdersTable = () => {
   const [orders, setOrders] = useState([]);
@@ -22,8 +22,8 @@ export const OrdersTable = () => {
     fetchOrders();
   }, []);
 
-  const handleView = (id) => {
-    setSelectedOrderId(id);
+  const handleView = (order) => {
+    setSelectedOrderId(order.id);
     setModalMode("view");
     setShowModal(true);
   };
@@ -36,7 +36,7 @@ export const OrdersTable = () => {
         orderId={selectedOrderId}
         mode={modalMode}
       />
-
+      
       <ETable
         title="Orders"
         data={orders}
@@ -66,9 +66,9 @@ export const OrdersTable = () => {
             render: (val) => new Date(val).toLocaleString(),
           },
         ]}
-
         onView={handleView}
       />
+
     </>
   );
 };

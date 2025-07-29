@@ -3,7 +3,7 @@ import * as Yup from "yup";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
-import AuthService from "../../../services/api/auth";
+import AuthService from "@services/api/auth";
 import { faEnvelope, faUnlockAlt } from "@fortawesome/free-solid-svg-icons";
 import { faGithub, faTwitter, faGoogle } from "@fortawesome/free-brands-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
@@ -12,7 +12,7 @@ import {
 } from "@themesberg/react-bootstrap";
 import BgImage from "../../../assets/img/illustrations/signin.svg";
 import { fetchCartFromBackend, syncCartToBackend } from "../../../redux/thunks/cartThunks";
-import { mergeCarts } from "../../../utilities/mergeCart";
+import { mergeCarts } from "@utils/mergeCart";
 import { clearCart, setCart } from "../../../redux/store/cartSlice";
 import { toast } from "react-toastify";
 

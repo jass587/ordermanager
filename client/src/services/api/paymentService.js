@@ -1,5 +1,5 @@
 // client/src/services/api/payments.js
-import axiosInstance from "./axiosInstance";
+import axiosInstance from "@services/api/axiosInstance";
 
 const PaymentService = {
   create: (data) => axiosInstance.post("/payments", data),

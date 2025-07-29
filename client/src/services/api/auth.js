@@ -1,5 +1,5 @@
 // client/src/services/api/auth.js
-import axiosInstance from "./axiosInstance";
+import axiosInstance from "@services/api/axiosInstance";
 import { jwtDecode } from "jwt-decode";
 
 const AuthService = {
