@@ -7,27 +7,27 @@ import { clearCart } from "../../../redux/store/cartSlice";
 import AuthService from "@services/api/auth";
 import { getLoggedInUser } from "@utils/authUtils";
 
+import { Container, Row, Col, Button, Badge, Dropdown, ButtonGroup } from "react-bootstrap";
+
 const Search = lazy(() => import("../Search/Search"));
 
 const Header = () => {
     const dispatch = useDispatch();
     const { name } = getLoggedInUser();
-
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
     const cartItems = useSelector((state) => state.cart.items);
+    const isCartLoaded = useSelector((state) => state.cart.isCartLoaded);
+
     const cartCount = cartItems
         .filter((item) => item.productInfo)
         .reduce((acc, item) => acc + item.quantity, 0);
-    const isCartLoaded = useSelector((state) => state.cart.isCartLoaded);
 
     useEffect(() => {
         const token = localStorage.getItem("token");
 
         if (token) {
             setIsLoggedIn(true);
-
-            // Only load cart if not already loaded
             if (!isCartLoaded && cartItems.length === 0) {
                 dispatch(fetchCartFromBackend());
             }
@@ -35,7 +35,6 @@ const Header = () => {
             setIsLoggedIn(false);
         }
     }, [dispatch, isCartLoaded]);
-
 
     const handleLogout = async () => {
         const cartItems = store.getState().cart.items;
@@ -54,90 +53,88 @@ const Header = () => {
         await persistor.purge();
 
         setIsLoggedIn(false);
-        AuthService.logout(); // Clears token + redirects
+        AuthService.logout();
     };
 
     return (
-        <header className="p-3 border-bottom bg-white shadow-sm" style={{ minHeight: "65px" }}>
-            <div className="container-fluid">
-                <div className="row align-items-center">
-                    <div className="col-md-3 text-center text-md-start mb-2 mb-md-0">
+        <header className="p-3 border-bottom bg-white shadow-sm">
+            <Container fluid>
+                <Row className="align-items-center">
+                    <Col md={3} className="text-center text-md-start mb-2 mb-md-0">
                         <Link to="/home" className="d-flex align-items-center gap-2 text-decoration-none">
-                            <img src="/images/rb_logo.png" alt="Logo" className="img-fluid" style={{ maxHeight: "40px" }} />
+                            <img
+                                src="/images/rb_logo.png"
+                                alt="Logo"
+                                className="img-fluid"
+                                style={{ maxHeight: "40px" }}
+                            />
                             <span className="fw-bold text-dark fs-5">Ecomm.wired</span>
                         </Link>
-                    </div>
+                    </Col>
 
-                    <div className="col-md-5">
+                    <Col md={5}>
                         <Search />
-                    </div>
+                    </Col>
 
-                    <div className="col-md-4 text-end">
+                    <Col md={4} className="text-end">
                         <Link to="/cart" className="btn btn-outline-primary position-relative me-3">
-                            <i className="bi bi-cart3"></i>
+                            <i className="bi bi-cart3 fs-5"></i>
                             {cartCount > 0 && (
-                                <span className="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                                <Badge
+                                    bg="danger"
+                                    pill
+                                    className="position-absolute top-0 start-100 translate-middle"
+                                    style={{
+                                        fontSize: '0.65rem',
+                                        padding: '0.35em 0.5em',
+                                        transform: 'translate(-30%, -40%)',
+                                        zIndex: 1,
+                                    }}
+                                >
                                     {cartCount}
-                                </span>
+                                </Badge>
                             )}
                         </Link>
 
                         {isLoggedIn ? (
-                            <div className="btn-group">
-                                <button
-                                    type="button"
-                                    className="btn btn-secondary dropdown-toggle d-flex align-items-center gap-2"
-                                    data-bs-toggle="dropdown"
-                                    aria-expanded="false"
-                                >
-                                    <span>
-                                        {(() => {
-                                            const parts = name?.trim().split(" ") || [];
-                                            const firstInitial = parts[0]?.[0]?.toUpperCase() || "";
-                                            const lastInitial = parts[1]?.[0]?.toUpperCase() || "";
-                                            return `${firstInitial}${lastInitial}`;
-                                        })()}
-                                    </span>
-                                </button>
+                            <Dropdown as={ButtonGroup}>
+                                <Dropdown.Toggle variant="secondary" className="d-flex align-items-center gap-2">
+                                    {(() => {
+                                        const parts = name?.trim().split(" ") || [];
+                                        const firstInitial = parts[0]?.[0]?.toUpperCase() || "";
+                                        const lastInitial = parts[1]?.[0]?.toUpperCase() || "";
+                                        return `${firstInitial}${lastInitial}`;
+                                    })()}
+                                </Dropdown.Toggle>
 
-                                <ul className="dropdown-menu dropdown-menu-end">
-                                    <li>
-                                        <Link className="dropdown-item" to="/edit-profile">
-                                            <i className="bi bi-person-square"></i> My Profile
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item" to="/orders/my-orders">
-                                            <i className="bi bi-list-check text-primary"></i> Orders
-                                        </Link>
-                                    </li>
-                                    <li><hr className="dropdown-divider" /></li>
-                                    <li>
-                                        <Link className="dropdown-item" to="/account/notification">
-                                            <i className="bi bi-bell-fill text-primary"></i> Notification
-                                        </Link>
-                                    </li>
-                                    <li>
-                                        <Link className="dropdown-item" to="/support">
-                                            <i className="bi bi-info-circle-fill text-success"></i> Support
-                                        </Link>
-                                    </li>
-                                    <li><hr className="dropdown-divider" /></li>
-                                    <li>
-                                        <button className="dropdown-item text-danger" onClick={handleLogout}>
-                                            <i className="bi bi-door-closed-fill"></i> Logout
-                                        </button>
-                                    </li>
-                                </ul>
-                            </div>
+                                <Dropdown.Menu align="end">
+                                    <Dropdown.Item as={Link} to="/edit-profile">
+                                        <i className="bi bi-person-square"></i> My Profile
+                                    </Dropdown.Item>
+                                    <Dropdown.Item as={Link} to="/orders/my-orders">
+                                        <i className="bi bi-list-check text-primary"></i> Orders
+                                    </Dropdown.Item>
+                                    <Dropdown.Divider />
+                                    <Dropdown.Item as={Link} to="/account/notification">
+                                        <i className="bi bi-bell-fill text-primary"></i> Notification
+                                    </Dropdown.Item>
+                                    <Dropdown.Item as={Link} to="/support">
+                                        <i className="bi bi-info-circle-fill text-success"></i> Support
+                                    </Dropdown.Item>
+                                    <Dropdown.Divider />
+                                    <Dropdown.Item onClick={handleLogout} className="text-danger">
+                                        <i className="bi bi-door-closed-fill"></i> Logout
+                                    </Dropdown.Item>
+                                </Dropdown.Menu>
+                            </Dropdown>
                         ) : (
-                            <Link to="/signin" className="btn btn-outline-primary">Sign In</Link>
+                            <Link to="/signin" className="btn btn-outline-primary">
+                                Sign In
+                            </Link>
                         )}
-
-
-                    </div>
-                </div>
-            </div>
+                    </Col>
+                </Row>
+            </Container>
         </header>
     );
 };

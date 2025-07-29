@@ -9,7 +9,7 @@ const CheckoutView = () => {
   const cartItems = useSelector((state) => state.cart.items);
 
   return (
-    <div className="checkout-container bg-light py-5">
+    <div className="bg-light py-5">
       <div className="container">
         <div className="row mb-4">
           <div className="col-md-12">

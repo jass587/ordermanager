@@ -19,7 +19,6 @@ export default function OrderModal({ show, handleClose, orderId, mode = "view" }
     }
   }, [orderId, show]);
 
-  console.log(order);
   return (
     <Modal show={show} onHide={handleClose} size="lg" centered>
       <Modal.Header closeButton>

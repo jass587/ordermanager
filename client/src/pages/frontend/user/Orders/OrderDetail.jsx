@@ -45,7 +45,7 @@ const OrderDetail = () => {
     );
 
     return (
-        <div className="container py-4 order-invoice-wrapper">
+        <div className="container py-4">
             <Card className="shadow rounded-4 p-4">
                 <div className="text-center mb-4">
                     <h3 className="fw-bold">MyStore</h3>

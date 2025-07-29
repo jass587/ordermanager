@@ -8,7 +8,7 @@ const Header = lazy(() => import('../components/frontend/Header/Header'));
 export default function UserLayout() {
   return (
     <div className="d-flex flex-column min-vh-100 bg-light" style={{ width: '100vw' }}>
-      <header className="sticky-top shadow-sm" style={{ marginBottom: "5rem" }}>
+      <header className="sticky-top shadow-sm">
         <Header />
         <TopMenu />
       </header>

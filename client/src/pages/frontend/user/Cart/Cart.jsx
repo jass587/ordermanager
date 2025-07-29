@@ -46,7 +46,7 @@ const CartView = () => {
   }
 
   return (
-    <div className="container py-4 mt-80">
+    <div className="container py-4">
       <h2 className="fw-bold mb-3 border-bottom pb-2">Shopping Cart</h2>
       <div className="row">
         {/* Cart Items */}

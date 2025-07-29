@@ -1,9 +1,17 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import path from 'path';
+import { visualizer } from 'rollup-plugin-visualizer';
+import purgeCss from 'vite-plugin-purgecss';
 
 export default defineConfig({
-  plugins: [react()],
+  plugins: [
+    react(),
+    visualizer({ open: true }),
+    purgeCss({
+      content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}']
+    }),
+  ],
   resolve: {
     alias: {
       '@components': path.resolve(__dirname, './src/components'),
@@ -17,7 +25,25 @@ export default defineConfig({
     },
   },
   optimizeDeps: {
-    include: ['react', 'react-dom', 'react-router-dom', 'react-toastify'],
+    include: [
+      'react',
+      'react-dom',
+      'react-router-dom',
+      'react-toastify'
+    ],
+  },
+  build: {
+    target: 'es2015',
+    minify: 'terser',
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          react: ['react', 'react-dom'],
+          vendor: ['react-router-dom', 'react-toastify', 'redux', 'react-redux'],
+          ui: ['bootstrap'],
+        },
+      },
+    },
   },
   server: {
     watch: {

@@ -1,69 +1,20 @@
-// import  { lazy } from "react";
-// import { Link } from "react-router-dom";
-// import { data } from "../../../../data/banner";
-
-// // const Support = lazy(() => import("../components/Support"));
-// const Banner = lazy(() => import("../../../../components/frontend/Carousel"));
-// // const Carousel = lazy(() => import("../components/carousel/Carousel"));
-// // const CardIcon = lazy(() => import("../components/card/CardIcon"));
-// // const CardLogin = lazy(() => import("../components/card/CardLogin"));
-// // const CardImage = lazy(() => import("../components/card/CardImage"));
-
-// export default function Home() {
-
-//   return (
-//     <div className="p-4" style={{width : '100vw'}} >
-//       <Banner className="mb-3" id="carouselHomeBanner" data={data.banner} />
-
-//       {/* Categories Section */}
-
-//       <div className="bg-info bg-gradient p-3 text-center mb-3">
-//         <h4 className="m-0">Explore Fashion Collection</h4>
-//       </div>
-
-//       <div className="container">
-//         <div className="row">
-//           {[
-//             { src: "male.webp", label: "Men's Clothing" },
-//             { src: "female.webp", label: "Women's Clothing" },
-//             { src: "smartwatch.webp", label: "Smartwatch" },
-//             { src: "footwear.webp", label: "Footwear" },
-//           ].map((item, index) => (
-//             <div key={index} className="col-md-3">
-//               <Link to="/" className="text-decoration-none">
-//                 <img
-//                   src={`../../images/products".src}`}
-//                   className="img-fluid rounded-circle"
-//                   alt={item.label}
-//                 />
-//                 <div className="text-center h6">{item.label}</div>
-//               </Link>
-//             </div>
-//           ))}
-//         </div>
-//       </div>
-//     </div>
-//   );
-// }
-
-
-//-------------------------------------
-import { lazy } from "react";
+import { lazy, Suspense } from "react";
 import { Link } from "react-router-dom";
 import { data } from "@data/banner";
 
+// Lazy load banner
 const Banner = lazy(() => import("../../../../components/frontend/Carousel"));
 
 export default function Home() {
   const categories = [
-    { src: "men.jpg", label: "Men", link: "/products" },
-    { src: "female.jpg", label: "Women", link: "/products" },
-    { src: "kids.jpg", label: "Kids", link: "/products"},
-    { src: "beauty.jpg", label: "Beauty", link: "/products" },
-    { src: "home.jpg", label: "Home & Living", link: "/products"},
-    { src: "sale-banner-1.jpg", label: "Accessories", link: "/products"},
-    { src: "sale-banner-2.jpg", label: "Footwear", link: "/products"},
-    { src: "sale-banner-3.jpg", label: "Sportswear", link: "/products"},
+    { src: "men.webp", label: "Men", link: "/products" },
+    { src: "female.webp", label: "Women", link: "/products" },
+    { src: "kids.webp", label: "Kids", link: "/products" },
+    { src: "beauty.webp", label: "Beauty", link: "/products" },
+    { src: "home.webp", label: "Home & Living", link: "/products" },
+    { src: "sale-banner-1.webp", label: "Accessories", link: "/products" },
+    { src: "sale-banner-2.webp", label: "Footwear", link: "/products" },
+    { src: "sale-banner-3.webp", label: "Sportswear", link: "/products" },
   ];
 
   const features = [
@@ -74,11 +25,13 @@ export default function Home() {
   ];
 
   return (
-    <div className="w-100 bg-light" style={{ marginTop: '35rem' }}>
+    <div className="w-100 bg-light">
       {/* Banner */}
-      <div className="container-fluid px-0 mt-4" >
+      <div className="container-fluid px-0">
         <div className="banner-wrapper">
-          <Banner className="w-100" id="carouselHomeBanner" data={data.banner} />
+          <Suspense fallback={<div style={{ height: '200px' }}></div>}>
+            <Banner className="w-100" id="carouselHomeBanner" data={data.banner} />
+          </Suspense>
         </div>
       </div>
 
@@ -97,6 +50,7 @@ export default function Home() {
         </div>
       </div>
 
+      {/* Categories */}
       <div className="container py-5">
         <div className="text-center mb-4">
           <h4 className="fw-bold">Explore Fashion Collection</h4>
@@ -110,6 +64,8 @@ export default function Home() {
                 <div className="category-tile text-center">
                   <div className="category-img-container mx-auto">
                     <img
+                      loading="lazy"
+                      decoding="async"
                       src={`/images/banner/${item.src}`}
                       alt={item.label}
                       className="w-100 h-100 object-fit-cover"
@@ -123,8 +79,7 @@ export default function Home() {
         </div>
       </div>
 
-
-      {/* Promo Section (optional) */}
+      {/* Promo Section */}
       <div className="container py-5">
         <div className="bg-primary text-white p-4 rounded text-center shadow">
           <h5 className="fw-bold">Limited Time Offer!</h5>
@@ -137,5 +92,3 @@ export default function Home() {
     </div>
   );
 }
-
-
