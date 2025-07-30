@@ -80,3 +80,34 @@
   overflow: hidden;
   border-radius: 6px;
 }
+
+.main-content {
+  min-height: 80vh;
+  padding-bottom: 2rem;
+}
+
+/* Mobile and Tablet Adjustments */
+@media (max-width: 768px) {
+  .main-content {
+    padding: 1rem;
+  }
+
+  .product-card img,
+  .card-product-list img {
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+  }
+
+  .cart-container {
+    padding: 1rem;
+  }
+}
+
+/* Ensure images inside cards fit well */
+.card-product-list img,
+.card img {
+  max-width: 100%;
+  height: auto;
+  object-fit: contain;
+}

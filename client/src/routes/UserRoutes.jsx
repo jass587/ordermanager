@@ -2,7 +2,6 @@ import { lazy, Suspense } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 
 const UserLayout = lazy(() => import('@layout/UserLayout'));
-const Dashboard = lazy(() => import('@pages/frontend/user/Dashboard/Dashboard'));
 const EditProfile = lazy(() => import('@pages/common/editprofile/editprofile'));
 const Home = lazy(() => import('@pages/frontend/user/Home/Home'));
 const ProductsList = lazy(() => import('@pages/frontend/user/Products/ProductsList'));
@@ -26,7 +25,6 @@ export default function UserRoutes() {
           <Route path="products" element={<ProductsList />} />
           <Route path="product/:id" element={<ProductDetail />} />
           <Route path="cart" element={<Cart />} />
-          <Route path="dashboard" element={<Dashboard />} />
         </Route>
 
         {/* Protected Routes (Requires Sign-In) */}
