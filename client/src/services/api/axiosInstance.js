@@ -1,6 +1,7 @@
-// client/src/services/api/axiosInstance.js
 import axios from "axios";
+import { toast } from "react-toastify";
 
+// Create Axios instance
 const axiosInstance = axios.create({
   baseURL: "http://localhost:5000/api",
   headers: {
@@ -8,7 +9,7 @@ const axiosInstance = axios.create({
   },
 });
 
-// ✅ Request Interceptor: Attach token
+// ✅ Request Interceptor: Attach token to headers
 axiosInstance.interceptors.request.use(
   (config) => {
     const token = localStorage.getItem("token");
@@ -20,32 +21,44 @@ axiosInstance.interceptors.request.use(
   (error) => Promise.reject(error)
 );
 
-// ✅ Response Interceptor: Handle errors
+// ✅ Response Interceptor: Handle errors gracefully
 axiosInstance.interceptors.response.use(
   (response) => response,
   (error) => {
     const status = error.response?.status;
+    const message = error.response?.data?.message;
 
     switch (status) {
       case 400:
-        alert("Bad Request");
-        window.location.href = "/home";
+        toast.error(message || "Bad Request");
         break;
+
       case 401:
+        toast.error("Session expired. Please log in again.");
         localStorage.removeItem("token");
-        window.location.href = "/signin"; // force redirect
+
+        // Optional: Redirect to signin after a short delay
+        setTimeout(() => {
+          if (window.location.pathname !== "/signin") {
+            window.location.href = "/signin";
+          }
+        }, 2000);
         break;
+
       case 403:
-        window.location.href = "/forbidden";
+        toast.error("You are not authorized to access this resource.");
         break;
+
       case 404:
-        window.location.href = "/not-found";
+        toast.error("Resource not found.");
         break;
+
       case 500:
-        window.location.href = "/server-error";
+        toast.error("Server error. Please try again later.");
         break;
+
       default:
-        window.location.href = "/default-error";
+        toast.error("Something went wrong. Please try again.");
         break;
     }
 

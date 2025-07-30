@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import ETable from "@components/backend/Tables/Common/eTable";
 import CategoryModal from "@components/backend/Modals/CategoryModal";
 import CategoryService from "@services/api/categories";
+import { toast } from "react-toastify";
 
 export const CategoriesTable = () => {
   const [categories, setCategories] = useState([]);
@@ -11,7 +12,7 @@ export const CategoriesTable = () => {
 
   const fetchCategories = async () => {
     try {
-      const data = await CategoryService.getAll(); 
+      const data = await CategoryService.getAll();
       setCategories(data);
     } catch (err) {
       console.error("Failed to fetch categories", err);
@@ -22,8 +23,8 @@ export const CategoriesTable = () => {
     fetchCategories();
   }, []);
 
-  const handleView = (id) => {
-    setSelectedId(id);
+  const handleView = (item) => {
+    setSelectedId(item.id);
     setModalMode("view");
     setShowModal(true);
   };
@@ -35,12 +36,14 @@ export const CategoriesTable = () => {
   };
 
   const handleDelete = async (id) => {
-    if (!window.confirm("Are you sure?")) return;
+    if (!window.confirm("Are you sure you want to delete this category?")) return;
+
     try {
-      await CategoryService.delete(id);
+      await CategoryService.delete(id); 
+      toast.success("Category deleted successfully");
       fetchCategories();
     } catch (err) {
-      console.error("Delete failed", err);
+      console.error("Delete failed:", err);
     }
   };
 

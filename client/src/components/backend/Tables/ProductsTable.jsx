@@ -4,92 +4,92 @@ import CategoryService from "@services/api/categories"
 import ProductModal from "@components/backend/Modals/ProductModal";
 import ETable from "@components/backend/Tables/Common/eTable";
 
-  export const ProductsTable = () => {
-    const [products, setProducts] = useState([]);
-    const [categories, setCategories] = useState([]);
-    const [selectedProductId, setSelectedProductId] = useState(null);
-    const [showModal, setShowModal] = useState(false);
-    const [modalMode, setModalMode] = useState("view");
+export const ProductsTable = () => {
+  const [products, setProducts] = useState([]);
+  const [categories, setCategories] = useState([]);
+  const [selectedProductId, setSelectedProductId] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [modalMode, setModalMode] = useState("view");
 
-    const fetchProducts = async () => {
-      try {
-        const { result: { products } } = await ProductService.getAll();
-        setProducts(products);
-      } catch (err) {
-        console.error("Failed to fetch products:", err);
-      }
-    };
+  const fetchProducts = async () => {
+    try {
+      const { result: { products } } = await ProductService.getAll();
+      setProducts(products);
+    } catch (err) {
+      console.error("Failed to fetch products:", err);
+    }
+  };
 
-    const fetchCategories = async () => {
-      try {
-        const data = await CategoryService.getAll();
-        setCategories(data);
-      } catch (err) {
-        console.error("Failed to fetch categories:", err);
-      }
-    };
+  const fetchCategories = async () => {
+    try {
+      const data = await CategoryService.getAll();
+      setCategories(data);
+    } catch (err) {
+      console.error("Failed to fetch categories:", err);
+    }
+  };
 
-    useEffect(() => {
+  useEffect(() => {
+    fetchProducts();
+    fetchCategories();
+  }, []);
+
+  const getCategoryName = (categoryId) => {
+    const cat = categories.find((c) => c.id === categoryId);
+    return cat ? cat.name : "N/A";
+  };
+
+  const handleView = (item) => {
+    setSelectedProductId(item.id);
+    setModalMode("view");
+    setShowModal(true);
+  };
+
+  const handleEdit = (id) => {
+    setSelectedProductId(id);
+    setModalMode("edit");
+    setShowModal(true);
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Are you sure you want to delete this product?")) return;
+
+    try {
+      await ProductService.delete(id);
       fetchProducts();
-      fetchCategories();
-    }, []);
+    } catch (err) {
+      console.error("Failed to delete product:", err);
+    }
+  };
 
-    const getCategoryName = (categoryId) => {
-      const cat = categories.find((c) => c.id === categoryId);
-      return cat ? cat.name : "N/A";
-    };
+  return (
+    <>
+      <ProductModal
+        show={showModal}
+        handleClose={() => setShowModal(false)}
+        productId={selectedProductId}
+        refreshProducts={fetchProducts}
+        mode={modalMode}
+      />
 
-    const handleView = (id) => {
-      setSelectedProductId(id);
-      setModalMode("view");
-      setShowModal(true);
-    };
-
-    const handleEdit = (id) => {
-      setSelectedProductId(id);
-      setModalMode("edit");
-      setShowModal(true);
-    };
-
-    const handleDelete = async (id) => {
-      if (!window.confirm("Are you sure you want to delete this product?")) return;
-
-      try {
-        await ProductService.delete(id);
-        fetchProducts();
-      } catch (err) {
-        console.error("Failed to delete product:", err);
-      }
-    };
-
-    return (
-      <>
-        <ProductModal
-          show={showModal}
-          handleClose={() => setShowModal(false)}
-          productId={selectedProductId}
-          refreshProducts={fetchProducts}
-          mode={modalMode}
-        />
-
-        <ETable
-          data={products}
-          title="Products"
-          columns={[
-            { label: "#", key: "id" },
-            { label: "Title", key: "title" },
-            { label: "Price", key: "price" },
-            {
-              label: "Category",
-              key: "categoryId",
-              render: (val) => getCategoryName(val),
-            },
-            { label: "Description", key: "description" },
-            {
-              label: "Image",
-              key: "image",
-              render: (val, row) => {
-                return (
+      <ETable
+        data={products}
+        title="Products"
+        columns={[
+          { label: "#", key: "id" },
+          { label: "Title", key: "title" },
+          { label: "Price", key: "price" },
+          {
+            label: "Category",
+            key: "categoryId",
+            render: (val) => getCategoryName(val),
+          },
+          { label: "Description", key: "description" },
+          {
+            label: "Image",
+            key: "image",
+            render: (val, row) => {
+              return (
                 <img
                   src={val || "/fallback-image.png"}
                   alt={row.title}
@@ -103,18 +103,19 @@ import ETable from "@components/backend/Tables/Common/eTable";
                     objectFit: "cover",
                   }}
                 />
-              )},
+              )
             },
-            {
-              label: "Created At",
-              key: "createdAt",
-              render: (val) => new Date(val).toLocaleDateString(),
-            },
-          ]}
-          onView={handleView}
-          onEdit={handleEdit}
-          onDelete={handleDelete}
-        />
-      </>
-    );
-  };
+          },
+          {
+            label: "Created At",
+            key: "createdAt",
+            render: (val) => new Date(val).toLocaleDateString(),
+          },
+        ]}
+        onView={handleView}
+        onEdit={handleEdit}
+        onDelete={handleDelete}
+      />
+    </>
+  );
+};

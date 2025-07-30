@@ -10,9 +10,15 @@ export default function CategoryModal({ show, handleClose, categoryId, refreshCa
   const handleSubmit = async (values) => {
     try {
       await axiosInstance.put(`/categories/${categoryId}`, values);
+      toast.success("Category updated successfully"); // ✅ success message
       refreshCategories();
       handleClose();
     } catch (err) {
+      if (err.response?.status === 400) {
+        toast.error(err.response.data.message || "Validation error"); // ✅ e.g. duplicate
+      } else {
+        toast.error("Failed to update category");
+      }
       console.error("Update failed:", err);
     }
   };
