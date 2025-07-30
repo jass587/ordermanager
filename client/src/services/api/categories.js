@@ -18,7 +18,7 @@ const CategoryService = {
 
   delete: async (id) => {
     const res = await axiosInstance.delete(`/categories/${id}`);
-    return res.data; // might include message/status only
+    return res.data;
   },
 };
 
