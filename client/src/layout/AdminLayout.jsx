@@ -1,15 +1,17 @@
 import { Outlet } from 'react-router-dom';
-import Sidebar from './Sidebar';
-import Header from './Header';
-import './admin.css'; // optional
+import Sidebar from '@components/backend/Sidebar/Sidebar';
+import Navbar from '@components/backend/Navbar/Navbar';
+import ScrollToTop from '@pages/common/scrolltotop/scrolltotop';
+import '@layout/admin.css';
 
 export default function AdminLayout() {
   return (
     <div className="admin-layout">
-      <Sidebar />
+      <Sidebar/>
       <div className="main-content">
-        <Header />
+        <Navbar />
         <div className="page-content">
+          <ScrollToTop/>
           <Outlet />
         </div>
       </div>

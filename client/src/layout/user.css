@@ -1,0 +1,29 @@
+/* Prevent scrollbars */
+body, html {
+  overflow-x: hidden;
+  margin: 0;
+  padding: 0;
+}
+
+/* Layout */
+.user-layout {
+  min-height: 100vh;
+  display: flex;
+  width: 100vw;
+  overflow-x: hidden;
+}
+
+.main-content {
+  flex: 1;
+  background-color: #f8f9fa;
+  overflow-x: hidden;
+}
+
+.page-content {
+  min-height: calc(100vh - 60px);
+  padding: 1rem;
+}
+
+* {
+  box-sizing: border-box;
+}

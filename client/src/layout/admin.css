@@ -1,39 +1,46 @@
+/* admin.css */
+
+body, html {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  overflow-x: hidden;
+}
+
 .admin-layout {
   display: flex;
   height: 100vh;
-}
-
-.main-content {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-}
-
-.content-area {
-  padding: 1rem;
-  overflow-y: auto;
+  width: 100vw;
+  overflow: hidden;
 }
 
 .sidebar {
-  width: 240px;
-  background-color: #343a40;
+  width: 250px;
+  min-width: 250px;
+  max-width: 250px;
+  background-color: #1e1e2f; /* dark background for sidebar */
   color: white;
-  padding: 1rem;
+  overflow-y: auto;
+  height: 100vh;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
 }
 
-.sidebar a {
-  display: block;
-  color: white;
-  padding: 0.5rem 0;
-  text-decoration: none;
-}
-
-.sidebar a:hover {
-  text-decoration: underline;
-}
-
-.header {
+.main-content {
+  margin-left: 250px; /* Same as sidebar width */
+  flex-grow: 1;
   background-color: #f8f9fa;
-  padding: 1rem;
-  border-bottom: 1px solid #dee2e6;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  overflow: auto;
+}
+
+.page-content {
+  flex-grow: 1;
+  padding: 1.5rem;
+  overflow-y: auto;
 }

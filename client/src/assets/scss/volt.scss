@@ -1,0 +1,22 @@
+// Fonts
+@import url('https://fonts.googleapis.com/css?family=Nunito+Sans:300,400,600,700,800&display=swap');
+
+// Bootstrap SCSS core setup
+@import "../../../node_modules/bootstrap/scss/functions";
+@import "../../../node_modules/bootstrap/scss/variables";  // optional if you need base values
+@import "../../../node_modules/bootstrap/scss/mixins";
+
+// Custom overrides BEFORE bootstrap
+@import "volt/variables"; // your custom $primary, etc.
+
+// Bootstrap core
+@import "../../../node_modules/bootstrap/scss/bootstrap";
+
+// Volt-specific
+@import "volt/vendor";
+@import "volt/mixins";
+@import "volt/functions";
+@import "volt/reboot";
+@import "volt/utilities";
+@import "volt/layout";
+@import "volt/components";
