@@ -9,7 +9,6 @@ import {
 } from "react-bootstrap";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import Profile3 from "../../../assets/img/team/profile-picture-3.jpg";
 
 
 export default function Topbar() {
@@ -58,7 +57,7 @@ export default function Topbar() {
           <div className="d-flex align-items-center gap-3 ms-3">
             <Dropdown as={Nav.Item}>
               <Dropdown.Toggle as="button" className="btn btn-link p-0 d-flex align-items-center">
-                <Image src={Profile3} className="user-avatar md-avatar rounded-circle" />
+                <Image src='/images/team/profile-picture-3.webp' className="user-avatar md-avatar rounded-circle" />
                 <span className="ms-2 fw-bold d-none d-md-inline text-dark">Bonnie Green</span>
               </Dropdown.Toggle>
               <Dropdown.Menu align="end" className="user-dropdown mt-2">

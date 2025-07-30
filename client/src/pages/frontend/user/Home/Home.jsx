@@ -12,9 +12,9 @@ export default function Home() {
     { src: "kids.webp", label: "Kids", link: "/products" },
     { src: "beauty.webp", label: "Beauty", link: "/products" },
     { src: "home.webp", label: "Home & Living", link: "/products" },
-    { src: "sale-banner-1.webp", label: "Accessories", link: "/products" },
-    { src: "sale-banner-2.webp", label: "Footwear", link: "/products" },
-    { src: "sale-banner-3.webp", label: "Sportswear", link: "/products" },
+    { src: "accessories.webp", label: "Accessories", link: "/products" },
+    { src: "footwear.webp", label: "Footwear", link: "/products" },
+    { src: "sportswear.webp", label: "Sportswear", link: "/products" },
   ];
 
   const features = [
@@ -59,16 +59,17 @@ export default function Home() {
 
         <div className="row justify-content-center g-4">
           {categories.map((item, index) => (
-            <div key={index} className="col-6 col-sm-6 col-md-4 col-lg-3">
+            <div key={index} className="col-6 col-md-4 col-lg-4">
               <Link to={item.link} className="text-decoration-none text-dark">
-                <div className="category-tile text-center">
-                  <div className="category-img-container mx-auto">
+                <div className="category-tile text-center shadow-sm border rounded h-100 overflow-hidden">
+                  <div className="category-img-container">
                     <img
                       loading="lazy"
                       decoding="async"
-                      src={`/images/banner/${item.src}`}
+                      src={`/images/categories/${item.src}`}
                       alt={item.label}
-                      className="w-100 h-100 object-fit-cover"
+                      className="w-100 h-100"
+                      style={{ objectFit: "cover", maxHeight: "300px" }}
                     />
                   </div>
                   <h5 className="mt-3 fw-semibold">{item.label}</h5>

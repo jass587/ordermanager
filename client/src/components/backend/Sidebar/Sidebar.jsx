@@ -16,7 +16,6 @@ import { jwtDecode } from "jwt-decode";
 import { Nav, Badge, Image, Button, Navbar } from 'react-bootstrap';
 
 import { Routes } from "../../../routes";
-import ReactHero from "../../../assets/img/technologies/react-hero-logo.svg";
 import "@components/backend/Sidebar/Sidebar.css";
 
 export default function Sidebar(props = {}) {
@@ -79,7 +78,7 @@ export default function Sidebar(props = {}) {
     <>
       <Navbar expand={false} collapseOnSelect variant="dark" className="navbar-theme-primary px-4 d-md-none">
         <Navbar.Brand className="me-lg-5" as={Link} to={Routes.DashboardOverview.path}>
-          <Image src={ReactHero} className="navbar-brand-light" />
+          <Image src={'/images/technologies/react-hero-logo.svg'} className="navbar-brand-light" />
         </Navbar.Brand>
         <Navbar.Toggle as={Button} aria-controls="main-navbar" onClick={onCollapse}>
           <span className="navbar-toggler-icon" />
@@ -93,7 +92,7 @@ export default function Sidebar(props = {}) {
               <NavItem
                 title={userRole === "admin" ? "Admin Panel" : "User Panel"}
                 link={userRole === "admin" ? "/admin/dashboard" : "/home"}
-                image={ReactHero}
+                image={'/images/technologies/react-hero-logo.svg'}
               />
 
               <SectionHeading title="Dashboard" />

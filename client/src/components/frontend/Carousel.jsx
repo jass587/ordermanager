@@ -1,9 +1,14 @@
 import { Link } from "react-router-dom";
 
 const Item = ({ item, index }) => (
-  <div className={`carousel-item ${index === 0 ? "active" : ""}`}>
+  <div className={`carousel-item ${index === 0 ? "active" : ""}`} style={{ height: "512px" }}>
     <Link to={item.to}>
-      <img src={item.image} className="img-fluid" style={{ width: "100vw" }} alt={item.title} />
+      <img
+        src={item.image}
+        alt={item.title}
+        className="w-100 h-100"
+        style={{ objectFit: "cover" }}
+      />
       {(item.title || item.description) && (
         <div className="carousel-caption d-none d-md-block">
           {item.title && <h5>{item.title}</h5>}
@@ -23,29 +28,34 @@ const Indicator = ({ item, index }) => (
 );
 
 const Banner = (props) => {
-  // Clone and reorder the data array
+  // Clone and reorder the data array (optional customization)
   const reorderedData = [
-    ...(props.data[2] ? [props.data[2]] : []), // third item as first
-    ...props.data.filter((_, index) => index !== 2), // rest excluding third
+    ...(props.data[2] ? [props.data[2]] : []),
+    ...props.data.filter((_, index) => index !== 2),
   ];
 
   return (
     <div
       id={props.id}
-      className={`carousel slide ${props.className}`}
+      className={`carousel slide ${props.className || ""}`}
       data-bs-ride="carousel"
-      style={{ minHeight: 100, width: "100vw" }}
+      style={{ height: "512px", width: "100vw", overflow: "hidden" }}
     >
+      {/* Indicators */}
       <ol className="carousel-indicators">
         {reorderedData.map((item, index) => (
           <Indicator item={props.id} index={index} key={index} />
         ))}
       </ol>
+
+      {/* Slides */}
       <div className="carousel-inner">
         {reorderedData.map((item, index) => (
           <Item item={item} index={index} key={index} />
         ))}
       </div>
+
+      {/* Controls */}
       <a
         className="carousel-control-prev"
         href={`#${props.id}`}

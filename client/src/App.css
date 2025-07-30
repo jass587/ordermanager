@@ -63,3 +63,20 @@
   object-fit: cover;
   display: block;
 }
+
+@media (max-width: 576px) {
+  .carousel.slide {
+    height: 300px !important;
+  }
+
+  .carousel-item {
+    height: 300px !important;
+  }
+}
+
+.category-img-container {
+  width: 100%;
+  height: 250px;
+  overflow: hidden;
+  border-radius: 6px;
+}
