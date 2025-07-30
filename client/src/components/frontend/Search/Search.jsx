@@ -1,14 +1,23 @@
 import { useState } from "react";
-import { useSearchParams } from "react-router-dom";
+import { useLocation, useNavigate, useSearchParams } from "react-router-dom";
+import { Search as SearchIcon } from "react-bootstrap-icons";
 
 const Search = () => {
   const [query, setQuery] = useState("");
   const [searchParams, setSearchParams] = useSearchParams();
+  const location = useLocation();
+  const navigate = useNavigate();
 
   const handleSearch = () => {
-    if (query.trim()) {
+    if (!query.trim()) return;
+
+    if (location.pathname.startsWith("/home")) {
+      // 👇 Redirect to products with search query
+      navigate(`/products?search=${encodeURIComponent(query.trim())}`);
+    } else {
+      // 👇 Already on /products, just update searchParams
       searchParams.set("search", query.trim());
-      searchParams.delete("page"); // reset to page 1
+      searchParams.delete("page"); // reset pagination
       setSearchParams(searchParams);
     }
   };
@@ -28,7 +37,7 @@ const Search = () => {
         onKeyDown={handleKeyDown}
       />
       <button className="btn btn-outline-primary" onClick={handleSearch}>
-        <i className="bi bi-search" />
+        <SearchIcon size={18} />
       </button>
     </div>
   );

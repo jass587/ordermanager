@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { CartPlus } from "react-bootstrap-icons";
 
 const CardProductList = ({ data, onAddToCart }) => {
   const {
@@ -35,13 +36,22 @@ const CardProductList = ({ data, onAddToCart }) => {
   return (
     <div className="card shadow-sm">
       <div className="row g-0">
-        <div className="col-md-3 text-center d-flex align-items-center p-2">
-          <img
-            src={image}
-            className="img-fluid"
-            alt={title}
-            onError={(e) => (e.target.src = "/fallback-image.webp")}
-          />
+        <div className="col-md-3 d-flex align-items-center p-2">
+          <div className="w-100">
+            <img
+              src={image}
+              alt={title}
+              onError={(e) => (e.target.src = "/fallback-image.webp")}
+              style={{
+                width: "100%",
+                height: "auto",
+                objectFit: "contain",
+                maxHeight: "160px",
+                backgroundColor: "#f8f9fa",
+              }}
+              className="img-fluid"
+            />
+          </div>
         </div>
 
         <div className="col-md-6">
@@ -57,20 +67,20 @@ const CardProductList = ({ data, onAddToCart }) => {
           </div>
         </div>
 
-        <div className="col-md-3">
-          <div className="card-body">
-            <div className="mb-2">
+        <div className="col-md-3 d-flex flex-column justify-content-center align-items-start">
+          <div className="card-body w-100">
+            <div className="mb-3">
               <span className="fw-bold h5">${price}</span>
             </div>
 
-            <div className="btn-group d-flex" role="group">
+            <div className="btn-group d-flex" role="group" style={{ height: "36px" }}>
               <button
                 type="button"
-                className="btn btn-sm btn-primary"
+                className="btn btn-sm btn-primary d-flex align-items-center justify-content-center"
                 title="Add to cart"
                 onClick={() => onAddToCart(data)}
               >
-                <i className="bi bi-cart-plus" />
+                <CartPlus size={18} />
               </button>
             </div>
           </div>

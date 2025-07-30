@@ -5,6 +5,19 @@ import {
   removeItem,
 } from "../../../../redux/store/cartSlice";
 
+// Import react-bootstrap-icons
+import {
+  Plus,
+  Dash,
+  Trash,
+  ChevronLeft,
+  ChevronRight,
+  Truck,
+  CreditCard2BackFill,
+  CreditCardFill,
+  CreditCard,
+} from "react-bootstrap-icons";
+
 const CartView = () => {
   const dispatch = useDispatch();
   const cartItems = useSelector((state) => state.cart.items);
@@ -24,7 +37,6 @@ const CartView = () => {
     }
   };
 
-  // ✅ Show empty cart message if no items
   if (cartItems.length === 0) {
     return (
       <div className="container py-5 text-center">
@@ -39,7 +51,7 @@ const CartView = () => {
           Looks like you haven’t added anything to your cart yet.
         </p>
         <Link to="/products" className="btn btn-primary">
-          Start Shopping <i className="bi bi-arrow-right"></i>
+          Start Shopping <ChevronRight className="ms-1" />
         </Link>
       </div>
     );
@@ -96,7 +108,7 @@ const CartView = () => {
                               className="btn btn-outline-secondary"
                               onClick={() => handleQuantityChange(item, "dec")}
                             >
-                              <i className="bi bi-dash"></i>
+                              <Dash />
                             </button>
                             <input
                               type="text"
@@ -108,7 +120,7 @@ const CartView = () => {
                               className="btn btn-outline-secondary"
                               onClick={() => handleQuantityChange(item, "inc")}
                             >
-                              <i className="bi bi-plus"></i>
+                              <Plus />
                             </button>
                           </div>
                         </td>
@@ -128,7 +140,7 @@ const CartView = () => {
                             className="btn btn-sm btn-outline-danger"
                             onClick={() => dispatch(removeItem(item.productId))}
                           >
-                            <i className="bi bi-trash"></i>
+                            <Trash />
                           </button>
                         </td>
                       </tr>
@@ -141,16 +153,16 @@ const CartView = () => {
           {/* Action Buttons */}
           <div className="d-flex justify-content-between">
             <Link to="/products" className="btn btn-outline-primary">
-              <i className="bi bi-chevron-left"></i> Continue Shopping
+              <ChevronLeft /> Continue Shopping
             </Link>
             <Link to="/checkout" className="btn btn-primary">
-              Make Purchase <i className="bi bi-chevron-right"></i>
+              Make Purchase <ChevronRight />
             </Link>
           </div>
 
           {/* Free Delivery Banner */}
           <div className="alert alert-success mt-4">
-            <i className="bi bi-truck"></i> Free Delivery within 1–2 weeks
+            <Truck className="me-2" /> Free Delivery within 1–2 weeks
           </div>
         </div>
 
@@ -182,11 +194,11 @@ const CartView = () => {
               </dl>
 
               <hr />
-              <div className="text-center">
+              <div className="text-center mt-3">
                 <img
-                  src="/images/payment/payments.webp"
-                  alt="Payments"
-                  height={26}
+                  src="/images/payments/payments.webp"
+                  alt="Payment Methods"
+                  style={{ width : "100vh", height: "32px", objectFit: "cover" }}
                 />
               </div>
             </div>

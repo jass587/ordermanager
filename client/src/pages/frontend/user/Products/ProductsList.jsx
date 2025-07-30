@@ -1,16 +1,18 @@
 import { useState, useEffect, useCallback, lazy } from "react";
 import { useSearchParams, useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+import { toast } from "react-toastify";
+
+import { Cart3, Grid3x3Gap, List } from "react-bootstrap-icons";
 
 import CardProductGrid from "@components/frontend/card/CardProductGrid";
 import CardProductList from "@components/frontend/card/CardProductList";
 import ProductService from "@services/api/products";
 import CategoryService from "@services/api/categories";
 import Paging from "@components/Paging";
-import { addItem} from "../../../../redux/store/cartSlice";
-import { toast } from 'react-toastify';
+import { addItem } from "@redux/store/cartSlice";
 
-const FilterCategory = lazy(() => import("../../../../components/frontend/filter/FilterCategory"));
+const FilterCategory = lazy(() => import("@components/frontend/filter/FilterCategory"));
 
 export default function ProductsList() {
   const [view, setView] = useState("grid");
@@ -86,6 +88,7 @@ export default function ProductsList() {
 
   return (
     <div className="w-100" style={{ maxHeight: "calc(100vh - 180px)", overflowY: "auto" }}>
+      {/* Banner */}
       <div
         className="p-5 bg-primary bs-cover banner-top"
         style={{ backgroundImage: 'url("/images/banner/50-Banner.webp")', height: "31vh" }}
@@ -97,8 +100,10 @@ export default function ProductsList() {
         </div>
       </div>
 
+      {/* Content */}
       <div className="container-fluid my-4">
         <div className="row">
+          {/* Sidebar */}
           <div className="col-md-3">
             <FilterCategory
               selected={searchTerm ? "" : selectedCategory}
@@ -112,11 +117,12 @@ export default function ProductsList() {
             />
           </div>
 
+          {/* Product List */}
           <div className="col-md-9">
             <div className="row mb-3 align-items-center">
               <div className="col-md-6">
                 <h6 className="fw-bold">
-                  {products.length} result(s) for {" "}
+                  {products.length} result(s) for{" "}
                   <span className="text-warning">
                     "{searchTerm ? searchTerm : selectedCategory}"
                   </span>
@@ -124,7 +130,7 @@ export default function ProductsList() {
               </div>
               <div className="col-md-6 d-flex justify-content-end align-items-center gap-2">
                 <select
-                  className="form-select w-auto"
+                  className="form-select w-50"
                   value={sort}
                   onChange={(e) => setSort(e.target.value)}
                 >
@@ -132,20 +138,24 @@ export default function ProductsList() {
                   <option value="price_high">Price high to low</option>
                   <option value="latest">Latest items</option>
                 </select>
+
+                {/* View Toggle */}
                 <div className="btn-group">
                   <button
                     type="button"
                     onClick={() => setView("grid")}
                     className={`btn btn-sm ${view === "grid" ? "btn-primary" : "btn-outline-primary"}`}
+                    title="Grid view"
                   >
-                    <i className="bi bi-grid" />
+                    <Grid3x3Gap size={18} />
                   </button>
                   <button
                     type="button"
                     onClick={() => setView("list")}
                     className={`btn btn-sm ${view === "list" ? "btn-primary" : "btn-outline-primary"}`}
+                    title="List view"
                   >
-                    <i className="bi bi-list" />
+                    <List size={18} />
                   </button>
                 </div>
               </div>
@@ -168,6 +178,7 @@ export default function ProductsList() {
                 <div className="col-12 text-muted">No products found.</div>
               )}
 
+              {/* Pagination */}
               {products.length > 0 && (
                 <div className="col-12">
                   <Paging

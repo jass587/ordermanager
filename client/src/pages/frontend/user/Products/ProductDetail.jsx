@@ -3,6 +3,8 @@ import { useParams } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import { toast } from "react-toastify";
 
+import { DashLg, PlusLg, CartPlus, Cart3, StarFill } from "react-bootstrap-icons";
+
 import { addItem, updateQuantity } from "../../../../redux/store/cartSlice";
 import ProductService from "@services/api/products";
 import CardServices from "@components/frontend/card/CardServices";
@@ -78,7 +80,10 @@ const ProductDetailView = () => {
 
               <div className="d-flex align-items-center flex-wrap gap-1 mb-3">
                 {Array.from({ length: 5 }, (_, i) => (
-                  <i key={i} className={`bi bi-star-fill ${i < star ? "text-warning" : "text-secondary"}`} />
+                  <StarFill
+                    key={i}
+                    className={`me-1 ${i < star ? "text-warning" : "text-secondary"}`}
+                  />
                 ))}
                 <span className="text-muted small ms-2">
                   {Math.floor(Math.random() * 100)} ratings and 4 reviews
@@ -107,7 +112,7 @@ const ProductDetailView = () => {
                       type="button"
                       onClick={() => handleQtyChange("dec")}
                     >
-                      <i className="bi bi-dash-lg"></i>
+                      <DashLg />
                     </button>
 
                     <input
@@ -122,7 +127,7 @@ const ProductDetailView = () => {
                       type="button"
                       onClick={() => handleQtyChange("inc")}
                     >
-                      <i className="bi bi-plus-lg"></i>
+                      <PlusLg />
                     </button>
                   </div>
                 </div>
@@ -132,10 +137,10 @@ const ProductDetailView = () => {
                   className="btn btn-sm btn-primary me-2"
                   onClick={handleAddToCart}
                 >
-                  <i className="bi bi-cart-plus me-1" /> Add to cart
+                  <CartPlus className="me-1" /> Add to cart
                 </button>
                 <button className="btn btn-sm btn-warning me-2">
-                  <i className="bi bi-cart3 me-1" /> Buy now
+                  <Cart3 className="me-1" /> Buy now
                 </button>
               </div>
             </div>

@@ -1,4 +1,5 @@
 import { Link } from "react-router-dom";
+import { CartPlus } from "react-bootstrap-icons";
 
 const CardProductGrid = ({ data, onAddToCart }) => {
   const {
@@ -51,7 +52,7 @@ const CardProductGrid = ({ data, onAddToCart }) => {
             title="Add to cart"
             onClick={() => onAddToCart(data)}
           >
-            <i className="bi bi-cart-plus" />
+            <CartPlus size={18} />
           </button>
         </div>
       </div>

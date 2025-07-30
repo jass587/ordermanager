@@ -1,15 +1,16 @@
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import OrderService from "@services/api/orderService";
 import { getLoggedInUser } from "@utils/authUtils";
-import { Card, Table, Badge } from "@themesberg/react-bootstrap";
-import { Spinner } from "react-bootstrap";
+
+import { Card, Table, Badge, Spinner, Button } from "react-bootstrap";
+import { Eye, BoxArrowLeft } from "react-bootstrap-icons";
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [loading, setLoading] = useState(true);
   const { name } = getLoggedInUser();
-  const navigate = useNavigate(); // <-- for navigation
+  const navigate = useNavigate();
 
   const fetchOrders = async () => {
     try {
@@ -40,15 +41,22 @@ const Orders = () => {
   };
 
   const getPaymentBadge = (status) => {
-    if (status === "succeeded") return <Badge bg="success">Success</Badge>;
-    return <Badge bg="danger">Unpaid</Badge>;
+    return status === "succeeded"
+      ? <Badge bg="success">Success</Badge>
+      : <Badge bg="danger">Unpaid</Badge>;
   };
 
   return (
     <div className="container py-4">
       <Card border="light" className="shadow rounded-4">
         <Card.Body>
-          <Card.Title className="fs-4 mb-4 fw-semibold text-dark">My Orders</Card.Title>
+          <div className="d-flex justify-content-between align-items-center mb-4">
+            <Card.Title className="fs-4 fw-semibold text-dark mb-0">My Orders</Card.Title>
+
+            <Link to="/products" className="btn btn-dark btn-sm fw-semibold rounded-pill shadow-sm">
+              <BoxArrowLeft className="me-1" size={16} /> Keep Shopping
+            </Link>
+          </div>
 
           {loading ? (
             <div className="text-center py-4">
@@ -82,12 +90,15 @@ const Orders = () => {
                       <td>{getPaymentBadge(order.Payments[0]?.status)}</td>
                       <td>{new Date(order.createdAt).toLocaleString()}</td>
                       <td>
-                        <button
-                          className="btn btn-sm btn-outline-primary"
+                        <Button
+                          variant="outline-primary"
+                          size="sm"
                           onClick={() => navigate(`/orders/my-orders/${order.id}`)}
+                          title="View Order"
                         >
-                          View Details
-                        </button>
+                          <Eye className="me-1" size={16} />
+                          View
+                        </Button>
                       </td>
                     </tr>
                   ))}
@@ -100,6 +111,5 @@ const Orders = () => {
     </div>
   );
 };
-
 
 export default Orders;
