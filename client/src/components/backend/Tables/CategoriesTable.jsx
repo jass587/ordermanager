@@ -3,6 +3,7 @@ import ETable from "@components/backend/Tables/Common/eTable";
 import CategoryModal from "@components/backend/Modals/CategoryModal";
 import CategoryService from "@services/api/categories";
 import { toast } from "react-toastify";
+import { Button } from "react-bootstrap";
 
 export const CategoriesTable = () => {
   const [categories, setCategories] = useState([]);
@@ -39,7 +40,7 @@ export const CategoriesTable = () => {
     if (!window.confirm("Are you sure you want to delete this category?")) return;
 
     try {
-      await CategoryService.delete(id); 
+      await CategoryService.delete(id);
       toast.success("Category deleted successfully");
       fetchCategories();
     } catch (err) {
@@ -47,8 +48,20 @@ export const CategoriesTable = () => {
     }
   };
 
+  const handleAdd = () => {
+    setSelectedId(null);
+    setModalMode("add");
+    setShowModal(true);
+  };
+
   return (
     <>
+      <div className="d-flex justify-content-end mb-3">
+        <Button variant="primary" onClick={handleAdd}>
+          + Add Category
+        </Button>
+      </div>
+
       <CategoryModal
         show={showModal}
         handleClose={() => setShowModal(false)}
@@ -56,6 +69,7 @@ export const CategoriesTable = () => {
         refreshCategories={fetchCategories}
         mode={modalMode}
       />
+
       <ETable
         data={categories}
         title="Categories"
