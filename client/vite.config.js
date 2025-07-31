@@ -4,12 +4,18 @@ import path from 'path';
 import { visualizer } from 'rollup-plugin-visualizer';
 import purgeCss from 'vite-plugin-purgecss';
 
-export default defineConfig({
+export default defineConfig(({ mode }) => ({
+  base: '/', // Ensures correct paths for production build
   plugins: [
     react(),
-    visualizer({ open: true }),
+    visualizer({
+      open: mode === 'development', // Only auto-open in dev
+      filename: 'stats.html',
+      gzipSize: true,
+      brotliSize: true,
+    }),
     purgeCss({
-      content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}']
+      content: ['./index.html', './src/**/*.{js,jsx,ts,tsx}'],
     }),
   ],
   resolve: {
@@ -29,7 +35,7 @@ export default defineConfig({
       'react',
       'react-dom',
       'react-router-dom',
-      'react-toastify'
+      'react-toastify',
     ],
   },
   build: {
@@ -46,9 +52,9 @@ export default defineConfig({
     },
   },
   server: {
+    port: 5173,
     watch: {
       usePolling: false,
     },
-    port: 5173,
   },
-});
+}));

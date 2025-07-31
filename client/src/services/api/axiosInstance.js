@@ -9,6 +9,8 @@ const axiosInstance = axios.create({
   },
 });
 
+console.log(import.meta.env.VITE_API_URL);
+
 // ✅ Request Interceptor: Attach token to headers
 axiosInstance.interceptors.request.use(
   (config) => {
