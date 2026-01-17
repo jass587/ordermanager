@@ -5,11 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate } from 'react-router-dom';
 import AuthService from '@services/api/auth';
 import { faEnvelope, faUnlockAlt } from '@fortawesome/free-solid-svg-icons';
-import {
-  faGithub,
-  faTwitter,
-  faGoogle,
-} from '@fortawesome/free-brands-svg-icons';
+import { faGoogle } from '@fortawesome/free-brands-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import {
   Col,
@@ -164,7 +160,7 @@ export default function SignIn() {
                   >
                     <FontAwesomeIcon icon={faGoogle} />
                   </Button>
-                  <Button
+                  {/* <Button
                     variant="outline-light"
                     className="btn-icon-only btn-pill text-twitter me-2"
                     onClick={() => AuthService.socialRedirect('twitter')}
@@ -177,7 +173,7 @@ export default function SignIn() {
                     onClick={() => AuthService.socialRedirect('github')}
                   >
                     <FontAwesomeIcon icon={faGithub} />
-                  </Button>
+                  </Button> */}
                 </div>
               </div>
             </Col>
