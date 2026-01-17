@@ -13,6 +13,7 @@ module.exports = {
         email: 'admin@example.com',
         password_hash: adminPassword,
         role: 'admin',
+        provider: 'local',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -21,6 +22,7 @@ module.exports = {
         email: 'user@example.com',
         password_hash: userPassword,
         role: 'user',
+        provider: 'local',
         createdAt: new Date(),
         updatedAt: new Date(),
       },
@@ -29,5 +31,5 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     await queryInterface.bulkDelete('Users', null, {});
-  }
+  },
 };

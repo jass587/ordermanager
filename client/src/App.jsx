@@ -7,7 +7,9 @@ import 'react-toastify/dist/ReactToastify.css';
 const AdminRoutes = lazy(() => import('./routes/AdminRoutes'));
 const UserRoutes = lazy(() => import('./routes/UserRoutes'));
 const SignIn = lazy(() => import('@pages/common/signin/SignIn'));
-const SocialLoginSuccess = lazy(() => import('@pages/common/sociallogin/SocialLoginSuccess'));
+const SocialLoginSuccess = lazy(() =>
+  import('@pages/common/sociallogin/SocialLoginSuccess')
+);
 const Forbidden = lazy(() => import('@pages/common/errors/Forbidden'));
 const ServerError = lazy(() => import('@pages/common/errors/ServerError'));
 const NotFound = lazy(() => import('@pages/common/errors/NotFound'));
@@ -20,7 +22,10 @@ function App() {
         <Routes>
           <Route path="/signin" element={<SignIn />} />
           <Route path="/admin/*" element={<AdminRoutes />} />
-          <Route path="/social-login-success" element={<SocialLoginSuccess />} />
+          <Route
+            path="/social-login-success"
+            element={<SocialLoginSuccess />}
+          />
 
           {/* Error pages */}
           <Route path="/not-found" element={<NotFound />} />

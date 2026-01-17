@@ -1,28 +1,40 @@
 module.exports = (sequelize, DataTypes) => {
-  const User = sequelize.define('User', {
-    name: {
-      type: DataTypes.STRING,
-      allowNull: false,
+  const User = sequelize.define(
+    'User',
+    {
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      email: {
+        type: DataTypes.STRING,
+        unique: true,
+        allowNull: false,
+        validate: { isEmail: true },
+      },
+
+      password_hash: {
+        type: DataTypes.STRING,
+        // ✅ MUST be nullable for OAuth
+        allowNull: true,
+      },
+      provider: {
+        type: DataTypes.ENUM('local', 'google', 'github', 'twitter'),
+        allowNull: false,
+        defaultValue: 'local',
+      },
+      role: {
+        type: DataTypes.ENUM('admin', 'user'),
+        allowNull: false,
+        defaultValue: 'user',
+      },
     },
-    email: {
-      type: DataTypes.STRING,
-      unique: true,
-      allowNull: false,
-      validate: { isEmail: true },
-    },
-    password_hash: {
-      type: DataTypes.STRING,
-      allowNull: false,
-    },
-    role: {
-      type: DataTypes.ENUM('admin', 'user'),
-      allowNull: false,
-    },
-  }, {
-    tableName: 'Users',
-    freezeTableName: true,
-    timestamps: true,
-  });
+    {
+      tableName: 'Users',
+      freezeTableName: true,
+      timestamps: true,
+    }
+  );
 
   return User;
 };

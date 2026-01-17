@@ -1,44 +1,44 @@
 // client/src/services/api/auth.js
-import axiosInstance from "@services/api/axiosInstance";
-import { jwtDecode } from "jwt-decode";
+import axiosInstance from '@services/api/axiosInstance';
+import { jwtDecode } from 'jwt-decode';
 
 const AuthService = {
   login: async (email, password) => {
-    const res = await axiosInstance.post("/auth/login", { email, password });
+    const res = await axiosInstance.post('/auth/login', { email, password });
     const data = res.data;
 
     if (data.status === 200 && data.result.length > 0) {
       const token = data.result[0].token;
-      localStorage.setItem("token", token);
+      localStorage.setItem('token', token);
 
       const decoded = jwtDecode(token);
       const { role, name } = decoded;
-      localStorage.setItem("role", role);
-      localStorage.setItem("name", name);
+      localStorage.setItem('role', role);
+      localStorage.setItem('name', name);
 
       return { success: true, role };
     }
 
-    return { success: false, message: data.message || "Login failed." };
+    return { success: false, message: data.message || 'Login failed.' };
   },
 
   getProfile: async () => {
-    const res = await axiosInstance.get("/users");
+    const res = await axiosInstance.get('/users');
     return res.data.result[0];
   },
 
   updateProfile: async (payload) => {
-    return axiosInstance.put("/users/update", payload);
+    return axiosInstance.put('/users/update', payload);
   },
 
   socialRedirect: (provider) => {
-    window.location.href = `http://localhost:5000/api/auth/${provider}`;
+    window.location.href = `${import.meta.env.VITE_API_URL}/auth/${provider}`;
   },
 
   logout: () => {
-    localStorage.removeItem("token");
-    localStorage.removeItem("role");
-    window.location.href = "/home";
+    localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    window.location.href = '/home';
   },
 };
 

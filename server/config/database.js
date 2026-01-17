@@ -6,7 +6,7 @@ module.exports = {
     password: process.env.DB_PASSWORD || 'admin123',
     database: process.env.DB_NAME || 'ecommerce_db',
     host: process.env.DB_HOST || '127.0.0.1',
-    dialect: 'postgres'
+    dialect: 'postgres',
   },
   production: {
     use_env_variable: 'DATABASE_URL',
@@ -14,8 +14,8 @@ module.exports = {
     dialectOptions: {
       ssl: {
         require: true,
-        rejectUnauthorized: false // Required for Render
-      }
-    }
-  }
+        rejectUnauthorized: false, // Required for Render
+      },
+    },
+  },
 };
