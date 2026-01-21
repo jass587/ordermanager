@@ -4,8 +4,6 @@ const db = require('../../models');
 const User = db.User;
 
 module.exports = (passport) => {
-  console.log('Google Strategy initialized');
-  console.log('GOOGLE_CLIENT_ID:', process.env.GOOGLE_CLIENT_ID);
   passport.use(
     new GoogleStrategy(
       {

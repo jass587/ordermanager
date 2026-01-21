@@ -63,7 +63,6 @@ exports.logout = (req, res) => {
 };
 
 exports.socialCallback = (req, res) => {
-  console.log('Social login user:', req.user);
   try {
     const token = generateToken({
       id: req.user.id,
@@ -76,7 +75,6 @@ exports.socialCallback = (req, res) => {
       `${process.env.FE_CallBACK_URL}/social-login-success?token=${token}`
     );
   } catch (err) {
-    console.log('Social login error:', err);
     return res.status(500).json({
       message: 'Social login failed',
       status: 500,

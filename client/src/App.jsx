@@ -7,8 +7,8 @@ import 'react-toastify/dist/ReactToastify.css';
 const AdminRoutes = lazy(() => import('./routes/AdminRoutes'));
 const UserRoutes = lazy(() => import('./routes/UserRoutes'));
 const SignIn = lazy(() => import('@pages/common/signin/SignIn'));
-const SocialLoginSuccess = lazy(() =>
-  import('@pages/common/sociallogin/SocialLoginSuccess')
+const SocialLoginSuccess = lazy(
+  () => import('@pages/common/sociallogin/SocialLoginSuccess')
 );
 const Forbidden = lazy(() => import('@pages/common/errors/Forbidden'));
 const ServerError = lazy(() => import('@pages/common/errors/ServerError'));

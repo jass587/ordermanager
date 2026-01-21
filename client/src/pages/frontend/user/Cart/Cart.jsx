@@ -1,9 +1,6 @@
-import { useSelector, useDispatch } from "react-redux";
-import { Link } from "react-router-dom";
-import {
-  updateQuantity,
-  removeItem,
-} from "../../../../redux/store/cartSlice";
+import { useSelector, useDispatch } from 'react-redux';
+import { Link } from 'react-router-dom';
+import { updateQuantity, removeItem } from '../../../../redux/store/cartSlice';
 
 // Import react-bootstrap-icons
 import {
@@ -13,10 +10,7 @@ import {
   ChevronLeft,
   ChevronRight,
   Truck,
-  CreditCard2BackFill,
-  CreditCardFill,
-  CreditCard,
-} from "react-bootstrap-icons";
+} from 'react-bootstrap-icons';
 
 const CartView = () => {
   const dispatch = useDispatch();
@@ -31,7 +25,7 @@ const CartView = () => {
 
   const handleQuantityChange = (item, type) => {
     const { productId, quantity } = item;
-    const newQty = type === "inc" ? quantity + 1 : quantity - 1;
+    const newQty = type === 'inc' ? quantity + 1 : quantity - 1;
     if (newQty >= 1) {
       dispatch(updateQuantity({ productId, quantity: newQty }));
     }
@@ -44,7 +38,7 @@ const CartView = () => {
           src="/images/empty_cart.png"
           alt="Empty Cart"
           className="mb-4"
-          style={{ maxWidth: "100px" }}
+          style={{ maxWidth: '100px' }}
         />
         <h3 className="fw-bold mb-3">Your cart is empty</h3>
         <p className="text-muted mb-4">
@@ -65,15 +59,15 @@ const CartView = () => {
         <div className="col-lg-9">
           <div
             className="card shadow-sm mb-4"
-            style={{ maxHeight: "250px", overflowY: "auto" }}
+            style={{ maxHeight: '250px', overflowY: 'auto' }}
           >
             <div className="table-responsive">
               <table className="table align-middle mb-0">
                 <thead className="text-muted border-bottom">
                   <tr>
                     <th>Product</th>
-                    <th style={{ width: "140px" }}>Quantity</th>
-                    <th style={{ width: "150px" }} className="text-end">
+                    <th style={{ width: '140px' }}>Quantity</th>
+                    <th style={{ width: '150px' }} className="text-end">
                       Price
                     </th>
                     <th className="text-end">Action</th>
@@ -106,7 +100,7 @@ const CartView = () => {
                           <div className="input-group input-group-sm">
                             <button
                               className="btn btn-outline-secondary"
-                              onClick={() => handleQuantityChange(item, "dec")}
+                              onClick={() => handleQuantityChange(item, 'dec')}
                             >
                               <Dash />
                             </button>
@@ -118,7 +112,7 @@ const CartView = () => {
                             />
                             <button
                               className="btn btn-outline-secondary"
-                              onClick={() => handleQuantityChange(item, "inc")}
+                              onClick={() => handleQuantityChange(item, 'inc')}
                             >
                               <Plus />
                             </button>
@@ -127,9 +121,9 @@ const CartView = () => {
                         <td className="text-end">
                           <div className="fw-bold fs-6 text-primary">
                             ₹
-                            {(
-                              item.quantity * item.productInfo.price
-                            ).toFixed(2)}
+                            {(item.quantity * item.productInfo.price).toFixed(
+                              2
+                            )}
                           </div>
                           <small className="text-muted d-block">
                             ₹{item.productInfo.price} each
@@ -198,7 +192,7 @@ const CartView = () => {
                 <img
                   src="/images/payments/payments.webp"
                   alt="Payment Methods"
-                  style={{ width : "100vh", height: "32px", objectFit: "cover" }}
+                  style={{ width: '100vh', height: '32px', objectFit: 'cover' }}
                 />
               </div>
             </div>
