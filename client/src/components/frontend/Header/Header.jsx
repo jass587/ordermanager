@@ -1,11 +1,11 @@
-import { lazy, useEffect, useState } from 'react';
+import { lazy, useEffect, useState, Suspense } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { useDispatch, useSelector } from 'react-redux';
 import {
   fetchCartFromBackend,
   syncCartToBackend,
 } from '../../../redux/thunks/cartThunks';
-import store, { persistor } from '../../../redux/store/store';
+import { persistor } from '../../../redux/store/store';
 import { clearCart } from '../../../redux/store/cartSlice';
 import AuthService from '@services/api/auth';
 import { getLoggedInUser } from '@utils/authUtils';
@@ -23,7 +23,7 @@ const Search = lazy(() => import('../Search/Search'));
 
 const Header = () => {
   const dispatch = useDispatch();
-  const location = useLocation(); // ✅ current route path
+  const location = useLocation();
   const { name } = getLoggedInUser();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
 
@@ -36,46 +36,36 @@ const Header = () => {
 
   useEffect(() => {
     const token = localStorage.getItem('token');
+    setIsLoggedIn(!!token);
 
-    if (token) {
-      setIsLoggedIn(true);
-      if (!isCartLoaded && cartItems.length === 0) {
-        dispatch(fetchCartFromBackend());
-      }
-    } else {
-      setIsLoggedIn(false);
+    if (token && !isCartLoaded && cartItems.length === 0) {
+      dispatch(fetchCartFromBackend());
     }
-  }, [dispatch, isCartLoaded]);
+  }, [dispatch, isCartLoaded, cartItems.length]);
 
   const handleLogout = async () => {
-    const cartItems = store.getState().cart.items;
-    const token = localStorage.getItem('token');
-
-    if (token && cartItems.length >= 0) {
-      try {
-        await dispatch(syncCartToBackend(cartItems));
-      } catch (e) {
-        console.warn('⚠️ Failed to sync cart during logout:', e);
-      }
+    try {
+      await dispatch(syncCartToBackend(cartItems)).unwrap();
+    } catch (e) {
+      console.warn('⚠️ Cart sync failed on logout', e);
     }
 
     await persistor.purge();
     dispatch(clearCart());
-
-    setIsLoggedIn(false);
     AuthService.logout();
+    setIsLoggedIn(false);
   };
 
-  // ✅ Show Search only on /home or /products
   const showSearch = ['/home', '/products'].some((path) =>
     location.pathname.startsWith(path)
   );
 
   return (
-    <header className="p-3 border-bottom bg-white shadow-sm">
-      <Container fluid>
-        <Row className="align-items-center">
-          <Col md={3} className="text-center text-md-start mb-2 mb-md-0">
+    <header className="border-bottom bg-white shadow-sm">
+      <Container fluid className="py-2 py-md-3">
+        <Row className="align-items-center g-2">
+          {/* Logo */}
+          <Col xs={6} md={3} className="d-flex align-items-center">
             <Link
               to="/home"
               className="d-flex align-items-center gap-2 text-decoration-none"
@@ -84,75 +74,80 @@ const Header = () => {
                 src="/images/rb_logo.png"
                 alt="Logo"
                 className="img-fluid"
-                style={{ maxHeight: '40px' }}
+                style={{ maxHeight: '36px' }}
               />
-              <span className="fw-bold text-dark fs-5">Ecomm.wired</span>
+              <span className="fw-bold text-dark fs-6 fs-md-5">
+                Ecomm.wired
+              </span>
             </Link>
           </Col>
 
-          <Col md={5}>{showSearch && <Search />}</Col>
+          {/* Search */}
+          <Col xs={12} md={5} className="order-3 order-md-2">
+            {showSearch && (
+              <Suspense fallback={<div className="py-2"></div>}>
+                <Search />
+              </Suspense>
+            )}
+          </Col>
 
-          <Col md={4} className="text-end">
+          {/* Cart + User */}
+          <Col
+            xs={6}
+            md={4}
+            className="d-flex justify-content-end align-items-center gap-2 order-2 order-md-3"
+          >
+            {/* Cart */}
             <Link
               to="/cart"
-              className="btn btn-outline-primary position-relative me-3"
+              className="btn btn-outline-primary position-relative"
             >
-              <Cart3 size={20} />
+              <Cart3 size={18} />
               {cartCount > 0 && (
                 <Badge
                   bg="danger"
                   pill
                   className="position-absolute top-0 start-100 translate-middle"
-                  style={{
-                    fontSize: '0.65rem',
-                    padding: '0.35em 0.5em',
-                    transform: 'translate(-30%, -40%)',
-                    zIndex: 1,
-                  }}
+                  style={{ fontSize: '0.6rem' }}
                 >
                   {cartCount}
                 </Badge>
               )}
             </Link>
 
+            {/* User */}
             {isLoggedIn ? (
               <Dropdown as={ButtonGroup}>
                 <Dropdown.Toggle
                   variant="secondary"
-                  className="d-flex align-items-center gap-2"
+                  size="sm"
+                  className="d-flex align-items-center justify-content-center"
                 >
                   {(() => {
                     const parts = name?.trim().split(' ') || [];
-                    const firstInitial = parts[0]?.[0]?.toUpperCase() || '';
-                    const lastInitial = parts[1]?.[0]?.toUpperCase() || '';
-                    return `${firstInitial}${lastInitial}`;
+                    return `${parts[0]?.[0] || ''}${parts[1]?.[0] || ''}`;
                   })()}
                 </Dropdown.Toggle>
 
                 <Dropdown.Menu align="end">
                   <Dropdown.Item as={Link} to="/edit-profile">
-                    <i className="bi bi-person-square"></i> My Profile
+                    My Profile
                   </Dropdown.Item>
                   <Dropdown.Item as={Link} to="/orders/my-orders">
-                    <i className="bi bi-list-check text-primary"></i> Orders
+                    Orders
                   </Dropdown.Item>
                   <Dropdown.Divider />
-                  <Dropdown.Item as={Link} to="/account/notification">
-                    <i className="bi bi-bell-fill text-primary"></i>{' '}
-                    Notification
-                  </Dropdown.Item>
                   <Dropdown.Item as={Link} to="/support">
-                    <i className="bi bi-info-circle-fill text-success"></i>{' '}
                     Support
                   </Dropdown.Item>
                   <Dropdown.Divider />
                   <Dropdown.Item onClick={handleLogout} className="text-danger">
-                    <i className="bi bi-door-closed-fill"></i> Logout
+                    Logout
                   </Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             ) : (
-              <Link to="/signin" className="btn btn-outline-primary">
+              <Link to="/signin" className="btn btn-outline-primary btn-sm">
                 Sign In
               </Link>
             )}

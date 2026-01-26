@@ -1,10 +1,10 @@
-import { useEffect, useState } from "react";
-import { useNavigate, Link } from "react-router-dom";
-import OrderService from "@services/api/orderService";
-import { getLoggedInUser } from "@utils/authUtils";
+import { useEffect, useState } from 'react';
+import { useNavigate, Link } from 'react-router-dom';
+import OrderService from '@services/api/orderService';
+import { getLoggedInUser } from '@utils/authUtils';
 
-import { Card, Table, Badge, Spinner, Button } from "react-bootstrap";
-import { Eye, BoxArrowLeft } from "react-bootstrap-icons";
+import { Card, Table, Badge, Spinner, Button } from 'react-bootstrap';
+import { Eye, BoxArrowLeft } from 'react-bootstrap-icons';
 
 const Orders = () => {
   const [orders, setOrders] = useState([]);
@@ -17,7 +17,7 @@ const Orders = () => {
       const res = await OrderService.getUserOrders();
       setOrders(res.data.result);
     } catch (err) {
-      console.error("Failed to fetch orders:", err);
+      console.error('Failed to fetch orders:', err);
     } finally {
       setLoading(false);
     }
@@ -29,11 +29,15 @@ const Orders = () => {
 
   const getStatusBadge = (status) => {
     switch (status) {
-      case "pending":
-        return <Badge bg="warning" text="dark">Pending</Badge>;
-      case "completed":
+      case 'pending':
+        return (
+          <Badge bg="warning" text="dark">
+            Pending
+          </Badge>
+        );
+      case 'completed':
         return <Badge bg="success">Completed</Badge>;
-      case "cancelled":
+      case 'cancelled':
         return <Badge bg="danger">Cancelled</Badge>;
       default:
         return <Badge bg="secondary">{status}</Badge>;
@@ -41,9 +45,11 @@ const Orders = () => {
   };
 
   const getPaymentBadge = (status) => {
-    return status === "succeeded"
-      ? <Badge bg="success">Success</Badge>
-      : <Badge bg="danger">Unpaid</Badge>;
+    return status === 'succeeded' ? (
+      <Badge bg="success">Success</Badge>
+    ) : (
+      <Badge bg="danger">Unpaid</Badge>
+    );
   };
 
   return (
@@ -51,9 +57,14 @@ const Orders = () => {
       <Card border="light" className="shadow rounded-4">
         <Card.Body>
           <div className="d-flex justify-content-between align-items-center mb-4">
-            <Card.Title className="fs-4 fw-semibold text-dark mb-0">My Orders</Card.Title>
+            <Card.Title className="fs-4 fw-semibold text-dark mb-0">
+              My Orders
+            </Card.Title>
 
-            <Link to="/products" className="btn btn-dark btn-sm fw-semibold rounded-pill shadow-sm">
+            <Link
+              to="/products"
+              className="btn btn-dark btn-sm fw-semibold rounded-pill shadow-sm"
+            >
               <BoxArrowLeft className="me-1" size={16} /> Keep Shopping
             </Link>
           </div>
@@ -67,8 +78,12 @@ const Orders = () => {
               You have no orders yet.
             </div>
           ) : (
-            <div style={{ maxHeight: "400px", overflowY: "auto" }}>
-              <Table hover responsive className="align-items-center text-nowrap mb-0">
+            <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
+              <Table
+                hover
+                responsive
+                className="align-items-center text-nowrap mb-0"
+              >
                 <thead className="table-light">
                   <tr>
                     <th>#Order ID</th>
@@ -84,7 +99,7 @@ const Orders = () => {
                   {orders.map((order) => (
                     <tr key={order.id}>
                       <td className="fw-semibold">#{order.id}</td>
-                      <td>{name || "N/A"}</td>
+                      <td>{name || 'N/A'}</td>
                       <td>₹{order.totalAmount.toFixed(2)}</td>
                       <td>{getStatusBadge(order.status)}</td>
                       <td>{getPaymentBadge(order.Payments[0]?.status)}</td>
@@ -93,7 +108,9 @@ const Orders = () => {
                         <Button
                           variant="outline-primary"
                           size="sm"
-                          onClick={() => navigate(`/orders/my-orders/${order.id}`)}
+                          onClick={() =>
+                            navigate(`/orders/my-orders/${order.id}`)
+                          }
                           title="View Order"
                         >
                           <Eye className="me-1" size={16} />

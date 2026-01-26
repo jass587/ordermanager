@@ -1,36 +1,51 @@
-import { useState, useEffect, useCallback, lazy } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { useDispatch } from "react-redux";
-import { toast } from "react-toastify";
+import { useState, useEffect, useCallback, lazy, useRef } from 'react';
+import { useSearchParams, useNavigate, useLocation } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
+import { toast } from 'react-toastify';
 
-import { Cart3, Grid3x3Gap, List } from "react-bootstrap-icons";
+import { Grid3x3Gap, List } from 'react-bootstrap-icons';
 
-import CardProductGrid from "@components/frontend/card/CardProductGrid";
-import CardProductList from "@components/frontend/card/CardProductList";
-import ProductService from "@services/api/products";
-import CategoryService from "@services/api/categories";
-import Paging from "@components/Paging";
-import { addItem } from "@redux/store/cartSlice";
+import CardProductGrid from '@components/frontend/card/CardProductGrid';
+import CardProductList from '@components/frontend/card/CardProductList';
+import ProductService from '@services/api/products';
+import CategoryService from '@services/api/categories';
+import Paging from '@components/Paging';
+import { addItem } from '@redux/store/cartSlice';
 
-const FilterCategory = lazy(() => import("@components/frontend/filter/FilterCategory"));
+const FilterCategory = lazy(
+  () => import('@components/frontend/filter/FilterCategory')
+);
 
 export default function ProductsList() {
-  const [view, setView] = useState("grid");
-  const [selectedCategory, setSelectedCategory] = useState("Electronics");
+  const [view, setView] = useState('grid');
+  const [selectedCategory, setSelectedCategory] = useState('Electronics');
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
   const [total, setTotal] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [sort, setSort] = useState("price_low");
+  const [sort, setSort] = useState('price_low');
 
   const [searchParams] = useSearchParams();
-  const searchTerm = searchParams.get("search") || "";
+  const searchTerm = searchParams.get('search') || '';
+
   const navigate = useNavigate();
+  const location = useLocation();
   const dispatch = useDispatch();
 
-  const effectiveCategory = searchTerm ? "" : selectedCategory;
+  const productListRef = useRef(null);
+
+  const effectiveCategory = searchTerm ? '' : selectedCategory;
   const pageLimit = 6;
 
+  /* 🔥 ACCEPT CATEGORY FROM TOP MENU (NAVIGATION STATE) */
+  useEffect(() => {
+    if (location.state?.category) {
+      setSelectedCategory(location.state.category);
+      setCurrentPage(1);
+    }
+  }, [location.state]);
+
+  /* 🔥 FETCH PRODUCTS */
   const fetchProducts = useCallback(async () => {
     try {
       const res = await ProductService.getAll({
@@ -39,26 +54,25 @@ export default function ProductsList() {
         sort,
         search: searchTerm,
       });
+
       setProducts(res.result.products || []);
       setTotal(res.result.total || 0);
     } catch (err) {
-      console.error("Error fetching products:", err);
+      console.error('Error fetching products:', err);
       setProducts([]);
       setTotal(0);
     }
-  }, [currentPage, selectedCategory, sort, searchTerm]);
+  }, [currentPage, effectiveCategory, sort, searchTerm]);
 
+  /* 🔥 FETCH CATEGORIES */
   const fetchCategories = useCallback(async () => {
     try {
       const result = await CategoryService.getAll();
       setCategories(result);
-      if (result.length > 0 && !selectedCategory) {
-        setSelectedCategory("Electronics");
-      }
     } catch (err) {
-      console.error("Error fetching categories:", err);
+      console.error('Error fetching categories:', err);
     }
-  }, [selectedCategory]);
+  }, []);
 
   useEffect(() => {
     fetchCategories();
@@ -68,30 +82,48 @@ export default function ProductsList() {
     fetchProducts();
   }, [fetchProducts]);
 
+  /* 🔥 RESET PAGE ON FILTER CHANGE */
   useEffect(() => {
     setCurrentPage(1);
   }, [selectedCategory, sort]);
 
+  /* 🔥 SCROLL TO PRODUCT LIST AFTER DATA LOAD */
+  useEffect(() => {
+    if (location.state?.scrollTo === 'product-list' && productListRef.current) {
+      productListRef.current.scrollIntoView({
+        behavior: 'smooth',
+        block: 'start',
+      });
+    }
+  }, [products, location.state]);
+
   const onPageChanged = ({ currentPage }) => {
     setCurrentPage(currentPage);
-    window.scrollTo({ top: 0, behavior: "smooth" });
+    window.scrollTo({ top: 0, behavior: 'smooth' });
   };
 
   const handleAddToCart = (product) => {
-    dispatch(addItem({
-      productId: product.id,
-      quantity: 1,
-      productInfo: product,
-    }));
+    dispatch(
+      addItem({
+        productId: product.id,
+        quantity: 1,
+        productInfo: product,
+      })
+    );
     toast.success(`${product.title} added to cart`);
   };
 
   return (
-    <div className="w-100" style={{ maxHeight: "calc(100vh - 180px)", overflowY: "auto" }}>
+    <div className="w-100">
       {/* Banner */}
       <div
-        className="p-5 bg-primary bs-cover banner-top"
-        style={{ backgroundImage: 'url("/images/banner/50-Banner.webp")', height: "31vh" }}
+        className="p-5 bg-primary banner-top"
+        style={{
+          backgroundImage: 'url("/images/banner/50-Banner.webp")',
+          height: '31vh',
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
       >
         <div className="container text-center pt-5 mt-5">
           <span className="fs-2 p-2 bg-white rounded shadow d-inline-block mt-3">
@@ -104,30 +136,36 @@ export default function ProductsList() {
       <div className="container-fluid my-4">
         <div className="row">
           {/* Sidebar */}
-          <div className="col-md-3">
+          <div className="col-md-3 mb-3 mb-md-0">
             <FilterCategory
-              selected={searchTerm ? "" : selectedCategory}
+              selected={searchTerm ? '' : selectedCategory}
+              categories={categories}
               onSelect={(cat) => {
-                if (searchTerm) {
-                  navigate("/products");
-                }
+                navigate('/products', {
+                  state: {
+                    scrollTo: 'product-list',
+                    category: cat,
+                  },
+                });
+
                 setSelectedCategory(cat);
               }}
-              categories={categories}
             />
           </div>
 
           {/* Product List */}
           <div className="col-md-9">
+            {/* Header */}
             <div className="row mb-3 align-items-center">
               <div className="col-md-6">
                 <h6 className="fw-bold">
-                  {products.length} result(s) for{" "}
+                  {products.length} result(s) for{' '}
                   <span className="text-warning">
                     "{searchTerm ? searchTerm : selectedCategory}"
                   </span>
                 </h6>
               </div>
+
               <div className="col-md-6 d-flex justify-content-end align-items-center gap-2">
                 <select
                   className="form-select w-50"
@@ -143,17 +181,19 @@ export default function ProductsList() {
                 <div className="btn-group">
                   <button
                     type="button"
-                    onClick={() => setView("grid")}
-                    className={`btn btn-sm ${view === "grid" ? "btn-primary" : "btn-outline-primary"}`}
-                    title="Grid view"
+                    onClick={() => setView('grid')}
+                    className={`btn btn-sm ${
+                      view === 'grid' ? 'btn-primary' : 'btn-outline-primary'
+                    }`}
                   >
                     <Grid3x3Gap size={18} />
                   </button>
                   <button
                     type="button"
-                    onClick={() => setView("list")}
-                    className={`btn btn-sm ${view === "list" ? "btn-primary" : "btn-outline-primary"}`}
-                    title="List view"
+                    onClick={() => setView('list')}
+                    className={`btn btn-sm ${
+                      view === 'list' ? 'btn-primary' : 'btn-outline-primary'
+                    }`}
                   >
                     <List size={18} />
                   </button>
@@ -161,16 +201,27 @@ export default function ProductsList() {
               </div>
             </div>
 
-            <div className="row g-3">
+            {/* 🔥 PRODUCT GRID SCROLL TARGET */}
+            <div
+              className="row g-3"
+              ref={productListRef}
+              style={{ scrollMarginTop: '120px' }}
+            >
               {products.length > 0 ? (
                 products.map((product) =>
-                  view === "grid" ? (
+                  view === 'grid' ? (
                     <div className="col-md-4 mb-4" key={product.id}>
-                      <CardProductGrid data={product} onAddToCart={handleAddToCart} />
+                      <CardProductGrid
+                        data={product}
+                        onAddToCart={handleAddToCart}
+                      />
                     </div>
                   ) : (
                     <div className="col-12" key={product.id}>
-                      <CardProductList data={product} onAddToCart={handleAddToCart} />
+                      <CardProductList
+                        data={product}
+                        onAddToCart={handleAddToCart}
+                      />
                     </div>
                   )
                 )
