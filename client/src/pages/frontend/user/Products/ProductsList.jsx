@@ -117,16 +117,28 @@ export default function ProductsList() {
     <div className="w-100">
       {/* Banner */}
       <div
-        className="p-5 bg-primary banner-top"
+        className="bg-primary d-flex align-items-center"
         style={{
           backgroundImage: 'url("/images/banner/50-Banner.webp")',
-          height: '31vh',
+          minHeight: '22vh',
           backgroundSize: 'cover',
           backgroundPosition: 'center',
         }}
       >
-        <div className="container text-center pt-5 mt-5">
-          <span className="fs-2 p-2 bg-white rounded shadow d-inline-block mt-3">
+        <div className="container text-center">
+          <span
+            className="
+        d-inline-block
+        bg-white
+        rounded
+        shadow
+        px-3 py-2
+        fw-semibold
+        fs-6 fs-sm-5 fs-md-4
+        text-break
+      "
+            style={{ maxWidth: '100%' }}
+          >
             {searchTerm ? searchTerm : selectedCategory}
           </span>
         </div>

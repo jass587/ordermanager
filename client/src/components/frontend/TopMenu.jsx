@@ -14,7 +14,7 @@ const TopMenu = ({ onItemClick }) => {
   return (
     <nav className="navbar navbar-dark bg-dark py-1">
       <div className="container-fluid">
-        <ul className="navbar-nav gap-1">
+        <ul className="navbar-nav d-flex flex-column flex-md-row gap-3">
           <li className="nav-item">
             <button
               className="nav-link btn btn-link text-start text-white"

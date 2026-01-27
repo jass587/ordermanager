@@ -1,5 +1,5 @@
-const { Product, Category } = require("../models");
-const { Op } = require("sequelize");
+const { Product, Category } = require('../models');
+const { Op } = require('sequelize');
 
 // Get all products with category name and search
 
@@ -8,9 +8,9 @@ exports.getAllProducts = async (req, res) => {
     const {
       page = 1,
       limit = 6,
-      sort = "latest",
-      search = "",
-      category = ""
+      sort = 'latest',
+      search = '',
+      category = '',
     } = req.query;
 
     const offset = (page - 1) * limit;
@@ -26,7 +26,7 @@ exports.getAllProducts = async (req, res) => {
 
     if (category) {
       const categoryRecord = await Category.findOne({
-        where: { name: { [Op.iLike]: category } }
+        where: { name: { [Op.iLike]: category } },
       });
       if (categoryRecord) {
         searchFilter.categoryId = categoryRecord.id;
@@ -34,22 +34,22 @@ exports.getAllProducts = async (req, res) => {
     }
 
     // Sorting
-    let order = [["createdAt", "DESC"]];
-    if (sort === "price_low") order = [["price", "ASC"]];
-    else if (sort === "price_high") order = [["price", "DESC"]];
+    let order = [['createdAt', 'DESC']];
+    if (sort === 'price_low') order = [['price', 'ASC']];
+    else if (sort === 'price_high') order = [['price', 'DESC']];
 
     const total = await Product.count({ where: searchFilter });
 
     const products = await Product.findAll({
       where: searchFilter,
-      include: [{ model: Category, as: "category", attributes: ["name"] }],
+      include: [{ model: Category, as: 'category', attributes: ['name'] }],
       order,
       limit: parseInt(limit),
       offset: parseInt(offset),
     });
 
     res.status(200).json({
-      message: "Products fetched successfully",
+      message: 'Products fetched successfully',
       status: 200,
       result: {
         products,
@@ -60,7 +60,7 @@ exports.getAllProducts = async (req, res) => {
     });
   } catch (error) {
     console.error(error);
-    res.status(500).json({ message: "Server error", status: 500 });
+    res.status(500).json({ message: 'Server error', status: 500 });
   }
 };
 
@@ -77,20 +77,20 @@ exports.getProductById = async (req, res) => {
 
     if (!product) {
       return res.status(404).json({
-        message: "Product not found",
+        message: 'Product not found',
         status: 404,
         result: [],
       });
     }
 
     return res.status(200).json({
-      message: "Product fetched successfully",
+      message: 'Product fetched successfully',
       status: 200,
       result: [product],
     });
   } catch (err) {
     return res.status(500).json({
-      message: "Failed to fetch product",
+      message: 'Failed to fetch product',
       status: 500,
       result: [],
       error: err.message,
@@ -112,13 +112,13 @@ exports.createProduct = async (req, res) => {
     });
 
     return res.status(201).json({
-      message: "Product created successfully",
+      message: 'Product created successfully',
       status: 201,
       result: [newProduct],
     });
   } catch (err) {
     return res.status(500).json({
-      message: "Failed to create product",
+      message: 'Failed to create product',
       status: 500,
       result: [],
       error: err.message,
@@ -134,7 +134,7 @@ exports.updateProduct = async (req, res) => {
     const product = await Product.findByPk(req.params.id);
     if (!product) {
       return res.status(404).json({
-        message: "Product not found",
+        message: 'Product not found',
         status: 404,
         result: [],
       });
@@ -142,7 +142,7 @@ exports.updateProduct = async (req, res) => {
 
     // Update image if file uploaded
     if (req.file) {
-      product.image = `${req.protocol}://${req.get("host")}/uploads/${req.file.filename}`;
+      product.image = `${req.protocol}://${req.get('host')}/uploads/${req.file.filename}`;
     }
 
     await product.update({
@@ -154,13 +154,13 @@ exports.updateProduct = async (req, res) => {
     });
 
     return res.status(200).json({
-      message: "Product updated successfully",
+      message: 'Product updated successfully',
       status: 200,
       result: [product],
     });
   } catch (err) {
     return res.status(500).json({
-      message: "Failed to update product",
+      message: 'Failed to update product',
       status: 500,
       result: [],
       error: err.message,
@@ -175,7 +175,7 @@ exports.deleteProduct = async (req, res) => {
 
     if (!product) {
       return res.status(404).json({
-        message: "Product not found",
+        message: 'Product not found',
         status: 404,
         result: [],
       });
@@ -184,13 +184,13 @@ exports.deleteProduct = async (req, res) => {
     await product.destroy();
 
     return res.status(200).json({
-      message: "Product deleted successfully",
+      message: 'Product deleted successfully',
       status: 200,
       result: [],
     });
   } catch (err) {
     return res.status(500).json({
-      message: "Failed to delete product",
+      message: 'Failed to delete product',
       status: 500,
       result: [],
       error: err.message,

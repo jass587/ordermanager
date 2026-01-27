@@ -1,5 +1,5 @@
-import { useEffect, useState } from "react";
-import CategoryService from "@services/api/categories";
+import { useEffect, useState } from 'react';
+import CategoryService from '@services/api/categories';
 
 export default function FilterCategory({ selected, onSelect }) {
   const [categories, setCategories] = useState([]);
@@ -10,7 +10,7 @@ export default function FilterCategory({ selected, onSelect }) {
         const data = await CategoryService.getAll();
         setCategories(data);
       } catch (error) {
-        console.error("Failed to fetch categories", error);
+        console.error('Failed to fetch categories', error);
       }
     };
     fetchCategories();
@@ -42,7 +42,7 @@ export default function FilterCategory({ selected, onSelect }) {
                 <li
                   key={cat.id}
                   className={`list-group-item ${
-                    selected === cat.name ? "active fw-bold" : ""
+                    selected === cat.name ? 'active fw-bold' : ''
                   }`}
                   role="button"
                   onClick={() => onSelect(cat.name)}

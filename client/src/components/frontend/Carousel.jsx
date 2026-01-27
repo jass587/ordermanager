@@ -1,13 +1,16 @@
-import { Link } from "react-router-dom";
+import { Link } from 'react-router-dom';
 
 const Item = ({ item, index }) => (
-  <div className={`carousel-item ${index === 0 ? "active" : ""}`} style={{ height: "512px" }}>
+  <div
+    className={`carousel-item ${index === 0 ? 'active' : ''}`}
+    style={{ height: '512px' }}
+  >
     <Link to={item.to}>
       <img
         src={item.image}
         alt={item.title}
         className="w-100 h-100"
-        style={{ objectFit: "cover" }}
+        style={{ objectFit: 'cover' }}
       />
       {(item.title || item.description) && (
         <div className="carousel-caption d-none d-md-block">
@@ -23,7 +26,7 @@ const Indicator = ({ item, index }) => (
   <li
     data-bs-target={`#${item}`}
     data-bs-slide-to={index}
-    className={`${index === 0 ? "active" : ""}`}
+    className={`${index === 0 ? 'active' : ''}`}
   />
 );
 
@@ -37,9 +40,9 @@ const Banner = (props) => {
   return (
     <div
       id={props.id}
-      className={`carousel slide ${props.className || ""}`}
+      className={`carousel slide ${props.className || ''}`}
       data-bs-ride="carousel"
-      style={{ height: "512px", width: "100vw", overflow: "hidden" }}
+      style={{ height: '512px', width: '100vw', overflow: 'hidden' }}
     >
       {/* Indicators */}
       <ol className="carousel-indicators">
