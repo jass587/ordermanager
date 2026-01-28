@@ -1,13 +1,19 @@
-import { useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { useDispatch, useSelector } from "react-redux";
-import { toast } from "react-toastify";
+import { useEffect, useState } from 'react';
+import { useParams } from 'react-router-dom';
+import { useDispatch, useSelector } from 'react-redux';
+import { toast } from 'react-toastify';
 
-import { DashLg, PlusLg, CartPlus, Cart3, StarFill } from "react-bootstrap-icons";
+import {
+  DashLg,
+  PlusLg,
+  CartPlus,
+  Cart3,
+  StarFill,
+} from 'react-bootstrap-icons';
 
-import { addItem, updateQuantity } from "../../../../redux/store/cartSlice";
-import ProductService from "@services/api/products";
-import CardServices from "@components/frontend/card/CardServices";
+import { addItem, updateQuantity } from '../../../../redux/store/cartSlice';
+import ProductService from '@services/api/products';
+import CardServices from '@components/frontend/card/CardServices';
 
 const ProductDetailView = () => {
   const { id } = useParams();
@@ -28,12 +34,15 @@ const ProductDetailView = () => {
 
   const handleQtyChange = (type) => {
     if (cartItem) {
-      const newQty = type === "inc" ? cartItem.quantity + 1 : cartItem.quantity - 1;
+      const newQty =
+        type === 'inc' ? cartItem.quantity + 1 : cartItem.quantity - 1;
       if (newQty >= 1) {
-        dispatch(updateQuantity({ productId: cartItem.productId, quantity: newQty }));
+        dispatch(
+          updateQuantity({ productId: cartItem.productId, quantity: newQty })
+        );
       }
     } else {
-      const newQty = type === "inc" ? quantity + 1 : quantity - 1;
+      const newQty = type === 'inc' ? quantity + 1 : quantity - 1;
       if (newQty >= 1) {
         setQuantity(newQty);
       }
@@ -44,13 +53,15 @@ const ProductDetailView = () => {
     if (!product) return;
 
     if (cartItem) {
-      toast.info("Product already in cart");
+      toast.info('Product already in cart');
     } else {
-      dispatch(addItem({
-        productId: product.id,
-        quantity,
-        productInfo: product,
-      }));
+      dispatch(
+        addItem({
+          productId: product.id,
+          quantity,
+          productInfo: product,
+        })
+      );
       toast.success(`${product.title} added to cart`);
     }
   };
@@ -62,27 +73,31 @@ const ProductDetailView = () => {
   const { title, image, price, star = 4, description } = product;
 
   return (
-    <div className="container-fluid mt-6">
+    <div className="container-fluid mt-3 mt-md-4">
       <div className="row">
         <div className="col-md-8">
           <div className="row mb-4">
-            <div className="col-md-5 text-center d-flex flex-column align-items-center">
+            <div className="col-12 col-md-5 text-center mb-3 mb-md-0">
               <img
                 src={image}
-                className="img-fluid mb-3"
+                className="img-fluid"
                 alt={title}
-                style={{ maxHeight: "300px", objectFit: "contain" }}
+                style={{
+                  maxHeight: '260px',
+                  width: '100%',
+                  objectFit: 'contain',
+                }}
               />
             </div>
 
             <div className="col-md-7">
-              <h1 className="h5 mb-2">{title}</h1>
+              <h1 className="h6 h-md-5 mb-2">{title}</h1>
 
               <div className="d-flex align-items-center flex-wrap gap-1 mb-3">
                 {Array.from({ length: 5 }, (_, i) => (
                   <StarFill
                     key={i}
-                    className={`me-1 ${i < star ? "text-warning" : "text-secondary"}`}
+                    className={`me-1 ${i < star ? 'text-warning' : 'text-secondary'}`}
                   />
                 ))}
                 <span className="text-muted small ms-2">
@@ -90,27 +105,29 @@ const ProductDetailView = () => {
                 </span>
               </div>
 
-              <div className="mb-3 mt-4">
+              <div className="mb-2 mt-3 mt-md-4">
                 <span className="fw-bold h5 me-2">${price}</span>
               </div>
 
               <div>
                 <p className="fw-bold small">Product Highlights</p>
                 <ul className="small mb-0 mt-0">
-                  {description?.includes("|")
-                    ? description.split("|").map((d, i) => <li key={i}>{d}</li>)
-                    : <li>{description}</li>}
+                  {description?.includes('|') ? (
+                    description.split('|').map((d, i) => <li key={i}>{d}</li>)
+                  ) : (
+                    <li>{description}</li>
+                  )}
                 </ul>
               </div>
 
-              <div className="mb-3 mt-5">
+              <div className="mt-4 d-flex flex-wrap align-items-center gap-2">
                 {/* Quantity Selector */}
                 <div className="d-inline float-start me-2">
                   <div className="input-group input-group-sm mw-140">
                     <button
                       className="btn btn-primary text-white"
                       type="button"
-                      onClick={() => handleQtyChange("dec")}
+                      onClick={() => handleQtyChange('dec')}
                     >
                       <DashLg />
                     </button>
@@ -125,7 +142,7 @@ const ProductDetailView = () => {
                     <button
                       className="btn btn-primary text-white"
                       type="button"
-                      onClick={() => handleQtyChange("inc")}
+                      onClick={() => handleQtyChange('inc')}
                     >
                       <PlusLg />
                     </button>
@@ -134,7 +151,7 @@ const ProductDetailView = () => {
 
                 {/* Add to Cart / Buy Now */}
                 <button
-                  className="btn btn-sm btn-primary me-2"
+                  className="btn btn-sm btn-primary"
                   onClick={handleAddToCart}
                 >
                   <CartPlus className="me-1" /> Add to cart
