@@ -59,12 +59,12 @@ const CartView = () => {
         <div className="col-lg-9">
           <div
             className="card shadow-sm mb-4"
-            style={{ maxHeight: '250px', overflowY: 'auto' }}
+            // style={{ maxHeight: '250px', overflowY: 'auto' }}
           >
-            <div className="table-responsive">
+            <div className="table-responsive-sm">
               <table className="table align-middle mb-0">
                 <thead className="text-muted border-bottom">
-                  <tr>
+                  <tr className="d-none d-md-table-row">
                     <th>Product</th>
                     <th style={{ width: '140px' }}>Quantity</th>
                     <th style={{ width: '150px' }} className="text-end">
@@ -79,7 +79,7 @@ const CartView = () => {
                     .map((item) => (
                       <tr key={item.productId}>
                         <td>
-                          <div className="d-flex align-items-center">
+                          <div className="d-flex flex-column flex-md-row align-items-start align-items-md-center gap-2">
                             <img
                               src={item.productInfo.image}
                               alt={item.productInfo.title}
@@ -145,7 +145,7 @@ const CartView = () => {
           </div>
 
           {/* Action Buttons */}
-          <div className="d-flex justify-content-between">
+          <div className="d-flex flex-column flex-md-row justify-content-between gap-2">
             <Link to="/products" className="btn btn-outline-primary">
               <ChevronLeft /> Continue Shopping
             </Link>
@@ -161,7 +161,7 @@ const CartView = () => {
         </div>
 
         {/* Order Summary */}
-        <div className="col-lg-3">
+        <div className="col-12 col-lg-3 mt-4 mt-lg-0">
           <div className="card shadow-sm">
             <div className="card-body">
               <h6 className="border-bottom pb-2 mb-3 fw-semibold">
@@ -192,7 +192,8 @@ const CartView = () => {
                 <img
                   src="/images/payments/payments.webp"
                   alt="Payment Methods"
-                  style={{ width: '100vh', height: '32px', objectFit: 'cover' }}
+                  className="img-fluid"
+                  style={{ maxHeight: '100px' }}
                 />
               </div>
             </div>
