@@ -56,14 +56,14 @@ const Orders = () => {
     <div className="container py-4">
       <Card border="light" className="shadow rounded-4">
         <Card.Body>
-          <div className="d-flex justify-content-between align-items-center mb-4">
+          <div className="d-flex flex-column flex-md-row justify-content-between align-items-start align-items-md-center gap-2 mb-4">
             <Card.Title className="fs-4 fw-semibold text-dark mb-0">
               My Orders
             </Card.Title>
 
             <Link
               to="/products"
-              className="btn btn-dark btn-sm fw-semibold rounded-pill shadow-sm"
+              className="btn btn-dark btn-sm fw-semibold rounded-pill shadow-sm align-self-start align-self-md-auto"
             >
               <BoxArrowLeft className="me-1" size={16} /> Keep Shopping
             </Link>
@@ -78,14 +78,10 @@ const Orders = () => {
               You have no orders yet.
             </div>
           ) : (
-            <div style={{ maxHeight: '400px', overflowY: 'auto' }}>
-              <Table
-                hover
-                responsive
-                className="align-items-center text-nowrap mb-0"
-              >
+            <div className="overflow-auto" style={{ maxHeight: '400px' }}>
+              <Table hover responsive className="align-middle text-nowrap mb-0">
                 <thead className="table-light">
-                  <tr>
+                  <tr className="d-none d-md-table-row">
                     <th>#Order ID</th>
                     <th>User</th>
                     <th>Total Amount</th>
@@ -99,11 +95,15 @@ const Orders = () => {
                   {orders.map((order) => (
                     <tr key={order.id}>
                       <td className="fw-semibold">#{order.id}</td>
-                      <td>{name || 'N/A'}</td>
+                      <td className="d-none d-md-table-cell">
+                        {name || 'N/A'}
+                      </td>
                       <td>₹{order.totalAmount.toFixed(2)}</td>
                       <td>{getStatusBadge(order.status)}</td>
                       <td>{getPaymentBadge(order.Payments[0]?.status)}</td>
-                      <td>{new Date(order.createdAt).toLocaleString()}</td>
+                      <td className="d-none d-md-table-cell">
+                        {new Date(order.createdAt).toLocaleString()}
+                      </td>
                       <td>
                         <Button
                           variant="outline-primary"
