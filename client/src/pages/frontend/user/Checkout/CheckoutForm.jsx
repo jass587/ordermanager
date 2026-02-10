@@ -321,7 +321,18 @@ const CheckoutForm = ({ cartItems }) => {
               <i className="bi bi-credit-card-2-front me-2"></i> Payment Method
             </div>
             <div className="card-body">
-              <CardElement className="form-control p-3 border" />
+              <div className="form-control p-2 p-md-3 border">
+                <CardElement
+                  options={{
+                    style: {
+                      base: {
+                        fontSize: '14px',
+                        lineHeight: '1.6',
+                      },
+                    },
+                  }}
+                />
+              </div>
               {message && <div className="text-danger mt-2">{message}</div>}
             </div>
             <div className="card-footer bg-transparent border-0">
