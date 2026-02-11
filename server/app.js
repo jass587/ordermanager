@@ -17,25 +17,26 @@ app.get('/', (req, res) => {
 });
 
 // Middleware
-const allowedOrigins = [
-  'http://localhost:5173', // for local dev
-  'http://localhost:5000', // for local dev
-  'https://ordermanager-psi.vercel.app', // your deployed frontend
-];
+// const allowedOrigins = [
+//   'http://localhost:5173', // for local dev
+//   'http://localhost:5000', // for local dev
+//   'https://ordermanager-psi.vercel.app', // your deployed frontend
+// ];
 
-app.use(
-  cors({
-    origin: function (origin, callback) {
-      // allow requests with no origin (e.g. mobile apps or curl)
-      if (!origin || allowedOrigins.includes(origin)) {
-        callback(null, true);
-      } else {
-        callback(new Error('Not allowed by CORS'));
-      }
-    },
-    credentials: true,
-  })
-);
+// app.use(
+//   cors({
+//     origin: function (origin, callback) {
+//       // allow requests with no origin (e.g. mobile apps or curl)
+//       if (!origin || allowedOrigins.includes(origin)) {
+//         callback(null, true);
+//       } else {
+//         callback(new Error('Not allowed by CORS'));
+//       }
+//     },
+//     credentials: true,
+//   })
+// );
+app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 
