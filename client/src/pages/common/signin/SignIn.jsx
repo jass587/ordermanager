@@ -77,26 +77,28 @@ export default function SignIn() {
   });
 
   return (
-    <main style={{ width: '100vw' }}>
-      <section className="d-flex align-items-center my-5 mt-lg-6 mb-lg-5">
+    <main className="w-100">
+      <section className="d-flex align-items-center py-4 py-md-5">
         <Container>
           <Row
             className="justify-content-center form-bg-image"
             style={{
               backgroundImage: `url('/images/illustrations/signin.svg')`,
+              backgroundSize: 'contain',
+              backgroundPosition: 'center',
+              backgroundRepeat: 'no-repeat',
             }}
           >
             <Col
               xs={12}
               className="d-flex align-items-center justify-content-center"
             >
-              <div className="bg-white shadow-soft border rounded border-light p-4 p-lg-5 w-100 fmxw-500">
+              <div className="bg-white shadow-soft border rounded border-light p-3 p-md-4 p-lg-5 w-100 fmxw-500">
+                {' '}
                 <div className="text-center mb-4">
-                  <h3 className="mb-0">Sign in to our platform</h3>
+                  <h3 className="h5 h-md-3 mb-0">Sign in to our platform</h3>
                 </div>
-
                 {error && <p className="text-danger text-center">{error}</p>}
-
                 <Form onSubmit={formik.handleSubmit}>
                   <Form.Group className="mb-4">
                     <Form.Label>Your Email</Form.Label>
@@ -148,11 +150,11 @@ export default function SignIn() {
                     Sign in
                   </Button>
                 </Form>
-
                 <div className="mt-3 mb-4 text-center">
                   <span className="fw-normal">or login with</span>
                 </div>
-                <div className="d-flex justify-content-center my-4">
+                <div className="d-flex justify-content-center flex-wrap gap-2 my-3">
+                  {' '}
                   <Button
                     variant="outline-light"
                     className="btn-icon-only btn-pill text-danger me-2"
